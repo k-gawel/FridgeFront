@@ -1,0 +1,33 @@
+<script src="user.component.ts"></script>
+<div class="container-fullwidth" *ngIf="_accountDatas != null">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+
+    <a class="navbar-brand" role="button" (click)="setAccountManagement()" style="cursor: default">{{_accountDatas.name}}</a>
+
+    <div class="collapse navbar-collapse" role="button" id="navbarsExample09" style="cursor: default;">
+
+      <ul class="navbar-nav mr-auto" style="padding-bottom: 0">
+
+        <li ngbDropdown class="nav-itemId dropdown" style="padding-bottom: 0;">
+          <a class="nav-link dropdown-toggle"  id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>Places</a>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown09" style="padding-bottom: 0; min-width: 200px">
+            <app-place-menu [places]="_accountDatas.places" [removedPlace]="removedPlace" (chosenPlace)="setPlace($event)"></app-place-menu>
+          </div>
+        </li>
+
+      </ul>
+
+      <form class="form-inline my-2 my-md-0">
+        <i class="fas fa-sign-out-alt fa-2x" role="button" (click)="logout()"></i>
+      </form>
+
+    </div>
+  </nav>
+
+  <main role="main">
+    <app-place *ngIf="_userContent === 'PLACE'" [place]="_contentParams" (leavedPlace)="removePlace($event)"></app-place>
+    <app-account-managment *ngIf="_userContent === 'ACCOUNT'"></app-account-managment>
+  </main>
+
+</div>

@@ -1,0 +1,18 @@
+<table class="table table-striped">
+
+  <thead>
+    <tr>
+      <th scope="col">Added</th>
+      <th scope="col">Expire</th>
+      <th scope="col">Container</th>
+      <th scope="col"></th>
+      <th scope="col"><i class="fas fa-ellipsis-v fa-sm" style="float: right"></i></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let instance of _instances.list" single-instance [instance]="instance">
+    </tr>
+  </tbody>
+
+</table>

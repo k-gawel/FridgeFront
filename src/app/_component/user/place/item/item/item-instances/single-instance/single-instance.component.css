@@ -1,0 +1,8 @@
+.cut-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-cursor {
+  cursor: pointer;
+}

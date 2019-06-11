@@ -1,0 +1,82 @@
+<ng-container *ngIf="_wishList !== null">
+
+  <!--NAME, ICONS-->
+  <div class="row">
+
+    <div class="row col-4" style="margin: 0; margin-right: 7px; padding: 0; padding-right: 7px;">
+
+
+      <div class="col" style="padding: 0;">
+        <!--NAME-->
+        <h3>{{_wishList.name}} </h3>
+      </div>
+
+      <!--ICONS-->
+      <div class="col-4" style="position: relative">
+        <!--DESCRIPTION-->
+        <i class="fas fa-info-circle fa-2x" placement="bottom" style="position: absolute; left: 0;"
+           [ngbTooltip]="_wishList.description"></i>
+
+        <!--ARCHIVE-->
+        <i class="far fa-trash-alt fa-2x" placement="bottom" style="position: absolute; left: calc(50% - 16px)"
+           [ngbTooltip]="'archive'" ></i>
+
+        <!--CLOSE-->
+        <i class="far fa-window-close fa-2x" placement="bottom" style="position: absolute; right: 0;"
+           [ngbTooltip]="'close'" (click)="closeWishList.emit()"></i>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+
+    <!--LEFT MENU-->
+    <div class="list-group col-4" style="padding: 0; padding-right: 7px;">
+
+      <!--NEW WISH ALL ITEM FORM BUTTON-->
+      <a (click)="openForm()" style="cursor: default" class="list-group-itemId list-group-itemId-action list-group-itemId-primary">
+        Add new itemId to list
+      </a>
+
+      <!--ITEMS MENU-->
+      <a (click)="selectItem(item)" *ngFor="let item of items" style="cursor: default"
+         [ngClass]="'list-group-itemId list-group-itemId-action flex-column align-items-start' + (item.equals(activeItem) ? ' active' : '')">
+
+        <div class="d-flex w-100 justify-content-between">
+          <h5 *ngIf="item.item !== null" class="mb-1"> {{item.item.name}} ({{itemsInstances.getByItem(item.itemId).size()}}) </h5>
+          <h5 *ngIf="item.item === null" class="mb-1"> {{item.category.name}} </h5>
+          <small>{{item.createdOn | date:'dd-MM'}}</small>
+        </div>
+
+        <div class="d-flex w-100 justify-content-between">
+          <p class="mb-1">{{item.comment}}</p>
+          <i *ngIf="item.addedInstance != null" class="fa fa-check fa-2x" aria-hidden="true"></i>
+        </div>
+
+        <small> {{item.authorId.name}} </small>
+
+      </a>
+
+
+    </div>
+
+    <div class="list-group col-8" style="padding-left: 7px;">
+      <div *ngIf="activeItem !== null">
+        <app-wish-list-item [item]="activeItem" [containers]="containers" ></app-wish-list-item>
+      </div>
+    </div>
+
+  </div>
+
+
+</ng-container>
+
+
+<ng-container *ngIf="_wishList === null">
+
+  <img src="http://gif-finder.com/wp-content/uploads/2015/09/Donald-Trump-Wait.gif">
+
+</ng-container>

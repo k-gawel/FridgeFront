@@ -1,0 +1,24 @@
+<!--<ngb-carousel >-->
+  <!--<ng-template ngbSlide *ngFor="let i of numbers">-->
+
+    <!--<div class="card-deck" >-->
+
+      <!--<div class="card" style="position: relative" (click)="chosen.emit(_items.list[i])">-->
+        <!--<img class="card-img-top" [attr.src]="'http://localhost:8080/itemImage/' + _items.list[i].id + '.jpg'" alt="Card image cap">-->
+        <!--<h5 class="card-title"-->
+            <!--style="position: absolute; bottom: 0; background-color: rgba(0, 0, 0, 0.3); min-width: max-content;-->
+        <!--">{{_items.list[i].name}}</h5>-->
+      <!--</div>-->
+
+      <!--<div class="card" *ngIf="i + 1 < _items.list.length" style="position: relative;" (click)="chosen.emit(_items.list[i+1])">-->
+        <!--<img class="card-img-top" [attr.src]="'http://localhost:8080/itemImage/' + _items.list[i+1].id + '.jpg'" alt="Card image cap">-->
+        <!--<h5 class="card-title"-->
+            <!--style="position: absolute; bottom: 0; background-color: rgba(0, 0, 0, 0.3); min-width: max-content;"-->
+        <!--&gt;{{_items.list[i+1].name}}</h5>-->
+      <!--</div>-->
+
+    <!--</div>-->
+
+  <!--</ng-template>-->
+
+<!--</ngb-carousel>-->

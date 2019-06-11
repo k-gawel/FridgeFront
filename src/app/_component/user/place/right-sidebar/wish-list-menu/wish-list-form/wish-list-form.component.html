@@ -1,0 +1,33 @@
+<div class="container" *ngIf="place != null">
+
+  <div class="row">
+    <button style="border-bottom: none; border-right: none; border-left: none;" class="btn btn-outline-info btn-lg btn-block" disabled>Add new WishList</button>
+  </div>
+
+  <div class="row" style="padding-right: 18px; padding-left: 18px; margin-top: 15px;">
+
+    <form style="width: 100%">
+      <div class="form-group">
+        <input type="text" class="form-control" style="box-sizing: border-box" name="name" [(ngModel)]="form.name" placeholder="New wishlist name...">
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" style="box-sizing: border-box; resize: none" name="description" [(ngModel)]="form.description" rows="2" placeholder="Wishlsit description..."></textarea>
+      </div>
+      <div class="form-group" *ngIf="form.errors != null">
+        <label>
+          <p style="color: red;" *ngFor="let error of form.errors.messages">{{error}}</p>
+        </label>
+      </div>
+    </form>
+
+  </div>
+
+  <div class="row" style="margin-top: 15px">
+    <button style="border: none;" class="btn btn-primary btn-lg btn-block" (click)="submit()">Add new itemId to wishlist</button>
+  </div>
+
+</div>
+
+<div class="container" *ngIf="!(place != null)">
+  <img src="https://i.pinimg.com/originals/32/77/b7/3277b7c9f90288d254153a752c1297a0.gif"/>
+</div>

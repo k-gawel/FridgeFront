@@ -1,0 +1,33 @@
+<div class="body-box">
+  <div class="login-box">
+    <img src="http://3.bp.blogspot.com/_7U3SWB4tHEY/S6GD9iYdOAI/AAAAAAAAAUk/6P1M0dQY_TE/s400/Harry-Potter-Avatar-3%5B1%5D.jpg" class="avatar">
+    <div class="h1-box">Register here</div>
+
+    <form>
+      <ng-container *ngIf="form.errors != null">
+        <p style="color: red" *ngFor="let e of form.errors.messages">{{e}}</p>
+      </ng-container>
+
+      <p>Username</p>
+      <input type="text"
+             name="username" [(ngModel)]="form.name" placeholder="Enter Username">
+
+      <p>Password</p>
+      <input type="password" name="password1" [(ngModel)]="form.password1" placeholder="Enter Password">
+
+      <p>Password</p>
+      <input type="password" name="password2" [(ngModel)]="form.password2" placeholder="Enter Password again">
+
+      <p>E-mail</p>
+      <input type="text" name="email" [(ngModel)]="form.email" placeholder="Enter Password">
+
+      <input type="submit" name="submit" (click)="submit()" value="SIGN UP">
+
+      <div style="display: flex; justify-content: space-between">
+        <a href="#" (click)="switchToLogin()">Sign in</a>
+      </div>
+
+    </form>
+
+  </div>
+</div>

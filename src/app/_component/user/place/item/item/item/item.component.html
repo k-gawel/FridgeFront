@@ -1,0 +1,96 @@
+<div class="card" style="" >
+
+  <!--AFTER LOADED-->
+  <ng-container *ngIf="_item != null">
+
+
+    <!--NAME, IMAGE, CATEGORIES-->
+    <div class="card-header" style="padding: 10px;">
+
+      <div class="row" style="padding: 0; margin: 0; min-width: 100%">
+
+        <!--NAME, CATEGORIES-->
+        <div class="col-sm-9" style="margin: 0; padding: 0; overflow-wrap: break-word">
+
+          <!--CATEGORIES-->
+          <div class="row" style="margin: 0;">
+            <ul class="cat-breadcrumb card-subtitle mb-2 text-muted" style="padding-left: 0; float: left">
+              <li *ngFor="let category of _item.category.getTrack()" >{{category.name}}</li>
+            </ul>
+          </div>
+
+          <!--NAME-->
+          <div class="row" style="margin: 0">
+            <h5 class="card-title" >{{_item.name}}</h5>
+          </div>
+
+        </div>
+
+        <!--IMAGE-->
+        <div class="col-sm-2" style="padding: 0">
+          <img [attr.src]="'http://localhost:8080/itemImage/' + _item.id + '.jpg'" class="rounded-circle" style="max-width: 100%; height: auto;">
+        </div>
+
+      </div>
+
+     </div>
+
+
+    <!--BUTTONS-->
+    <div class="btn-group" role="group">
+
+       <!--NEW INSTANCE BUTTON-->
+       <button type="button" class="btn btn-secondary" style="width: calc(100% / 3)"
+               (click)="expand('NEW_INSTANCE')"
+       >
+         + instance
+       </button>
+
+       <!--INSTANCES ALL BUTTON-->
+       <button type="button" class="btn btn-secondary" style="width: calc(100% / 3)"
+               (click)="expand('INSTANCES')"
+       >
+         {{_instances.size()}} instances
+       </button>
+
+       <!--DETAILS BUTTON-->
+       <button type="button" class="btn btn-secondary" style="width: calc(100% / 3)"
+               (click)="expand('DETAILS')"
+       >
+         Show details
+       </button>
+
+     </div>
+
+
+    <!--DETAILS-->
+    <div [ngClass]="{'card-body in' : !_collapsed}" style="padding: 0;">
+
+      <app-item-instances *ngIf="_content === 'INSTANCES'"
+                          [instances]="_instances"
+      ></app-item-instances>
+
+      <app-new-instance-form *ngIf="_content === 'NEW_INSTANCE'"
+                             [containers]="containers" [item]="_item"
+                             (newInstance)="newItemInstance.emit($event)"
+      ></app-new-instance-form>
+
+      <app-item-description *ngIf="_content === 'DETAILS'"
+                            [item]="_item"
+      ></app-item-description>
+
+    </div>
+
+
+  </ng-container>
+
+
+  <!--BEFORE LOADED-->
+  <ng-container *ngIf="_item == null">
+    <img src="https://i.gifer.com/EXfl.gif"/>
+  </ng-container>
+
+</div>
+
+
+

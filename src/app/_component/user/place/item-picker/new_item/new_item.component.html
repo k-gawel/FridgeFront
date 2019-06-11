@@ -1,0 +1,178 @@
+<div class="modal-body">
+  <form>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <input type="text" class="form-control" id="name"
+               placeholder="Name"
+               name="name" [(ngModel)]="form.name">
+      </div>
+      <div class="form-group col-md-6">
+        <input type="text" class="form-control" id="barcode"
+               placeholder="Barcode"
+               name="barcode" [(ngModel)]="form.barcode">
+      </div>
+    </div>
+
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <input type="text" class="form-control" id="producerName"
+               placeholder="Producer name"
+               name="producer" [(ngModel)]="form.producer.name">
+      </div>
+      <div class="form-group col-md-6">
+        <input type="text" class="form-control" id="netWeight"
+               placeholder="Net weight"
+               name="netWeight" [(ngModel)]="form.netWeight">
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <input type="text" class="form-control" id="storage"
+             placeholder="Storage rules"
+             name="storage" [(ngModel)]="form.storage">
+    </div>
+
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+
+        <ul class="list-unstyled">
+
+          <li *ngFor="let ingredient of form.ingredients">
+            <div class="input-group input-group-sm">
+              <span class="form-control">{{ingredient.name}}</span>
+
+              <div class="input-group-preppend">
+                <button class="btn btn-danger" type="button" (click)="removeIngredient(ingredient)">X</button>
+              </div>
+            </div>
+          </li>
+
+          <li >
+            <div class="input-group mb-3 input-group-sm">
+                <input type="text" class="form-control" name="name"
+                     placeholder="Ingredient" [(ngModel)]="newIngredient.name"
+                     (keyup.enter)="addIngredient()">
+
+                <button class="btn" type="button" (click)="addAllergen()">+</button>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+      <div class="form-group col-md-6">
+
+        <ul class="list-unstyled">
+
+          <li *ngFor="let allergen of form.allergens">
+
+            <div class="input-group input-group-sm">
+              <span class="form-control">{{allergen.name}}</span>
+
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <input type="checkbox" name="allergen-{{allergen.name}}" [checked]="allergen.contains" [(ngModel)]="allergen.contains">
+                </div>
+
+                <button class="btn btn-danger" type="button" (click)="removeAllergen(allergen)">X</button>
+              </div>
+            </div>
+
+          </li>
+
+          <li >
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control" name="name"
+                     placeholder="Allergen" [(ngModel)]="newAllergen.name"
+                     (keyup.enter)="addAllergen()">
+
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <input type="checkbox" name="newAllergen-contains" value="true" [(ngModel)]="newAllergen.contains">
+                </div>
+
+                <button class="btn" type="button" (click)="addAllergen()">+</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+
+    <div class="row">
+
+      <div class="col-md-6">
+
+        <table>
+          <thead>
+            Nutrition
+          </thead>
+          <tbody class="nutrtition-form">
+            <tr>
+              <td>Energy: </td>
+              <td>
+                <input type="text" size="4" name="energy" [(ngModel)]="form.nutrition.energy" placeholder="kcal">
+              </td>
+            </tr>
+            <tr>
+              <td>Fat: </td>
+              <td>
+                <input type="text" size="4" name="fat" [(ngModel)]="form.nutrition.fat" placeholder="grams">
+              </td>
+            </tr>
+            <tr>
+              <td>in which Saturated: </td>
+              <td>
+                <input type="text" size="4" name="saturatedFat" [(ngModel)]="form.nutrition.saturatedFat" placeholder="grams">
+              </td>
+            </tr>
+            <tr>
+              <td>Carbohydrate: </td>
+              <td>
+                <input type="text" size="4" name="carbohydrate" [(ngModel)]="form.nutrition.carbohydrate" placeholder="grams">
+              </td>
+            </tr>
+            <tr>
+              <td>in which Sugar: </td>
+              <td>
+                <input type="text" size="4" name="sugar" [(ngModel)]="form.nutrition.sugar" placeholder="grams">
+              </td>
+            </tr>
+            <tr>
+              <td>Protein: </td>
+              <td>
+                <input type="text" size="4" name="protein" [(ngModel)]="form.nutrition.protein" placeholder="grams">
+              </td>
+            </tr>
+            <tr>
+              <td>Salt: </td>
+              <td>
+                <input type="text" size="4" name="salt" [(ngModel)]="form.nutrition.salt" placeholder="grams">
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="col-md-6">
+
+
+
+      </div>
+
+    </div>
+
+
+    <button type="button" class="btn btn-primary btn-lg btn-block" (click)="submit()">Submit</button>
+
+  </form>
+
+
+</div>

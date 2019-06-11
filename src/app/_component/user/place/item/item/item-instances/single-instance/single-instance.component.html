@@ -1,0 +1,66 @@
+<ng-container *ngIf="readyToDisplay">
+
+  <!--ADD-->
+  <td>
+    <span>
+      {{addedUser.name}} on {{_instance.addedOn != null ? _instance.addedOn.toString() : '--'}}
+    </span>
+  </td>
+
+
+  <!--EXPIRE-->
+  <td>
+    <span>
+      expires on {{_instance.expireOn != null ? _instance.expireOn.toString() : '--'}}
+    </span>
+  </td>
+
+  <!--CONTAINER-->
+  <td>
+    <span>
+      {{container.name}}
+    </span>
+  </td>
+
+
+  <!--COMMENT-->
+  <td>
+    <span>
+      <i class="fas fa-comment fa-sm" placement="right" [ngbTooltip]="_instance.comment"></i>
+    </span>
+  </td>
+
+
+  <!--OPTIONS-->
+  <td>
+    <div class="dropdown" style="float: right;">
+
+      <!--ICON-->
+      <i class="fas fa-ellipsis-v fa-sm" [attr.id]="_instance.id + '_instance_options'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+
+      <!--MENU-->
+      <div class="dropdown-menu" [attr.aria-labelledby]="_instance.id + '_instance_options'">
+
+        <!--DELETE-->
+        <a class="dropdown-item dropdown-cursor" *ngIf="_instance.deletedOn == null" (click)="deleteInstance()">DELETE</a>
+        <span class="dropdown-item" *ngIf="_instance.deletedOn != null"> deleted on {{_instance.deletedOn.toString()}} by {{deleteUser.name}}</span>
+
+
+        <!--OPEN-->
+        <a class="dropdown-item dropdown-cursor" *ngIf="_instance.openOn == null" (click)="openInstance()">OPEN</a>
+        <span class="dropdown-item" *ngIf="_instance.openOn != null"> opened on {{_instance.openOn.toString()}} by {{openUser.name}}</span>
+
+        <!--FROZE-->
+        <a class="dropdown-item dropdown-cursor">FROZE</a>
+
+      </div>
+
+    </div>
+  </td>
+
+</ng-container>
+
+<ng-container *ngIf="!readyToDisplay">
+  <img src="https://i.pinimg.com/originals/d9/93/3c/d9933c4e2c272f33b74ef18cdf11a7d5.gif"/>
+</ng-container>
+

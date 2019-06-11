@@ -1,0 +1,13 @@
+<ng-container *ngIf="_places != null">
+  <a class="dropdown-item" *ngFor="let place of _places.getAll()" (click)="clickOnPlace(place)">{{place.name}}</a>
+
+  <a class="dropdown-item" style="cursor: default; margin-bottom: 0; margin-left: 0; margin-right: 0; padding: 0">
+    <div class="input-group mb-3" style="margin-bottom: 0">
+      <input type="text" class="form-control" placeholder="Add new place" aria-label="Add new place" aria-describedby="basic-addon2" name="newPlaceName"  [(ngModel)]="form.name">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="addNewPlace()" type="button"><i class="fas fa-plus"></i></button>
+      </div>
+    </div>
+  </a>
+
+</ng-container>

@@ -1,0 +1,108 @@
+<ul class="nav nav-tabs" id="details-nav" role="tablist">
+
+  <li class="nav-item">
+    <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="allergens-tab" data-toggle="tab" href="#allergens" role="tab" aria-controls="allergens" aria-selected="false">Allergens</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="nutrition-tab" data-toggle="tab" href="#nutrition" role="tab" aria-controls="nutrition" aria-selected="false">Nutrition</a>
+  </li>
+
+</ul>
+
+<div class="tab-content" id="myTabContent">
+
+  <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+    <table class="table table-hover">
+      <tbody>
+        <tr>
+          <td><b>Producer:</b></td>
+          <td>{{item.producer.name}}</td>
+        </tr>
+        <tr>
+          <td><b>Net weight:</b></td>
+          <td>{{item.netWeight}}</td>
+        </tr>
+        <tr>
+          <td><b>Barcode:</b></td>
+          <td>{{item.barcode}}</td>
+        </tr>
+        <tr>
+          <td><b>Description:</b></td>
+          <td>{{item.description}}</td>
+        </tr>
+        <tr>
+          <td><b>Storage rules:</b></td>
+          <td>{{item.storage}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tab-pane fade" id="allergens" role="tabpanel" aria-labelledby="allergens-tab">
+    <div class="row">
+      <div class="col-sm-6">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Allergens</b></li>
+          <li *ngFor="let allergen of item.allergens" class="list-group-item">{{allergen.name}}</li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Ingredients</b></li>
+          <li *ngFor="let ingredient of item.ingredients" class="list-group-item">{{ingredient.name}}</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="tab-pane fade" id="nutrition" role="tabpanel" aria-labelledby="nutrition-tab">
+    <table class="table table-hover">
+
+      <thead>
+        <tr>
+          <th scope="col">Typical Values</th>
+          <th scope="col">Typical Values per 100g/ml</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Energy</td>
+          <td>{{item.nutrition.energy}} kcal</td>
+        </tr>
+        <tr>
+          <td>Fat</td>
+          <td>{{item.nutrition.fat}} g</td>
+        </tr>
+        <tr>
+          <td>of which Saturates</td>
+          <td>{{item.nutrition.saturatedFat}} g</td>
+        </tr>
+        <tr>
+          <td>Carbohydrate</td>
+          <td>{{item.nutrition.carbohydrate}} g</td>
+        </tr>
+        <tr>
+          <td>of which Sugars</td>
+          <td>{{item.nutrition.sugar}} g</td>
+        </tr>
+        <tr>
+          <td>Protein</td>
+          <td>{{item.nutrition.protein}} g</td>
+        </tr>
+        <tr>
+          <td>Salt</td>
+          <td>{{item.nutrition.salt}} g</td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+
+</div>

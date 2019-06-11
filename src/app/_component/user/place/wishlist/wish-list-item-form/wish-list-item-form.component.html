@@ -1,0 +1,54 @@
+<div class="container" *ngIf="_wishList != null">
+
+  <div class="row">
+    <button style="border-bottom: none; border-right: none; border-left: none;" class="btn btn-outline-info btn-lg btn-block" disabled>Add new itemId to wishlist</button>
+  </div>
+
+  <div class="row" style="padding: 13px">
+
+    <div class="col-4 ">
+      <div class="row">
+        <textarea name="comment" id="comment" style="border: none; resize: none" [(ngModel)]="form.comment" cols="30" placeholder="Type your comment here..." rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="col-8" style="poition: relative;">
+      <div class="row">
+
+        <!--IF CATEGORY IS-->
+        <button *ngIf="form.item === 0" type="button" class="btn btn-secondary btn-lg" disabled
+                style="min-width: 240px; position: absolute; top: 50%; left: 50%;  transform: translate(-50%, -50%);" >
+          {{activeElement.name}}
+        </button>
+
+        <!--IF ITEM IS-->
+        <app-item *ngIf="form.item !== 0" [item]="activeElement" [fullScreen]="false"></app-item>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <!--CATEGORIES-->
+    <div class="col-4" style="height: 380px; overflow:auto; -webkit-overflow-scrolling: touch;" >
+        <categories-menu (chosenCategory)="selectCategory($event)"></categories-menu>
+    </div>
+
+    <!--ITEM PICKER-->
+    <div class="col-8">
+      <app-item-picker [category]="chosenCategory"  [place]="_place" (selectedItem)="selectItem($event)"></app-item-picker>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <button class="btn btn-primary btn-lg btn-block" (click)="submit()">Add new item to WishList</button>
+  </div>
+
+</div>
+
+<div class="container" *ngIf="_wishList == null">
+  <img src="https://thumbs.gfycat.com/InnocentFlusteredAquaticleech-size_restricted.gif"/>
+</div>

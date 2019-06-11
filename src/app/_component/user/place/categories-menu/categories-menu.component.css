@@ -1,0 +1,43 @@
+.ctg-menu-btn-group .button {
+  background-color: white; /* Green */
+
+  border-top: 2px solid grey;
+  border-bottom: 2px solid grey;
+  border-left: none;
+  border-right: none;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  color: black;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  width: 200px;
+  white-space: nowrap;
+}
+
+.ctg-menu-btn-group .active {
+  color: #A9A9A9;
+  border-left: 10px solid black;
+  cursor: context-menu;
+}
+.ctg-menu-btn-group .active:hover {
+  background-color: white !important;
+}
+
+
+.ctg-menu-btn-group .button:first-child {
+  color: red;
+}
+
+.ctg-menu-btn-group .button:not(:last-child) {
+  border-bottom: none;
+}
+
+.ctg-menu-btn-group .button:hover {
+  background-color: grey;
+}
