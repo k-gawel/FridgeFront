@@ -24,9 +24,13 @@
     "@angular/router": "^8.0.0",
     "@ng-bootstrap/ng-bootstrap": "^3.2.2",
     "aws-amplify": "^1.1.28",
+    "braces": "^3.0.2",
     "core-js": "^2.5.4",
+    "jquery": "^3.3.1",
+    "jquery-slim": "^3.0.0",
     "ngx-cookie-service": "^1.0.10",
     "ngx-smart-popover": "^1.0.5",
+    "popper": "^1.0.1",
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.2.2",
     "zone.js": "~0.9.1"

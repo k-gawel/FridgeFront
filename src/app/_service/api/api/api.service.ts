@@ -1,8 +1,6 @@
-import { Injectable } from '@angular/core';
-import { TokenService } from '../../auth/tokenservice/token.service';
-import {HttpHeaders, HttpClient, HttpParams} from '@angular/common/http';
-import {a} from '@angular/core/src/render3';
-import {CookieDataService} from "../../auth/cookieDatas/cookie-datas.service";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {CookieDataService} from '../../auth/cookieDatas/cookie-datas.service';
 
 
 @Injectable({
@@ -10,7 +8,7 @@ import {CookieDataService} from "../../auth/cookieDatas/cookie-datas.service";
 })
 export class ApiService {
 
-  url = "http://localhost:8080/";
+  url = "http://localhost:8080/fridgeapi/";
   // url = "localhost:8080/";
 
   constructor(private cookieDatas: CookieDataService,

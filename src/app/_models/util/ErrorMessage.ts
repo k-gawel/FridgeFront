@@ -1,6 +1,4 @@
-import * as errormessages from '/src/assets/datas/errormessages.json';
-import {HttpErrorResponse} from "@angular/common/http";
-import {e} from "@angular/core/src/render3";
+import {HttpErrorResponse} from '@angular/common/http';
 
 export class ErrorMessage extends Error {
 
