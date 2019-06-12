@@ -1,5 +1,5 @@
-import {WishListItem} from "./WishListItem";
-import {KeyName} from "./KeyName";
+import {WishListItem} from './WishListItem';
+import {KeyName} from './KeyName';
 
 export class WishList extends KeyName {
 

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ErrorHandlerComponent } from './error-handler.component';
+import {ErrorHandlerComponent} from './error-handler.component';
 
 describe('ErrorHandlerComponent', () => {
   let component: ErrorHandlerComponent;

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { WishListItemFormComponent } from './wish-list-item-form.component';
+import {WishListItemFormComponent} from './wish-list-item-form.component';
 
 describe('WishListItemFormComponent', () => {
   let component: WishListItemFormComponent;

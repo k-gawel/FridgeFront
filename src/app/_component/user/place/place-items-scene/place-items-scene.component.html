@@ -1,4 +1,3 @@
-<script src="place-items-scene.component.ts"></script>
 <ng-container *ngIf="_place != null && _category != null && _containers != null">
 
   <div class="row">
@@ -71,7 +70,4 @@
 
 <ng-container *ngIf="!(_place != null && _category != null && _containers != null)">
   <img src="https://media1.tenor.com/images/c26a081912a71af8d0e57799c291ced5/tenor.gif?itemid=8524221"/>
-  PLACE: {{_place == null}} <br/>
-  CATEGORY: {{_category == null}} <br/>
-  CONTAINERS: {{_containers == null}} <br/>
 </ng-container>

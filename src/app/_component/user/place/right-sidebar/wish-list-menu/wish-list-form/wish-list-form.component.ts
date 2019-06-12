@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { WishListForm } from '../../../../../../_models/response/WishList';
-import { PlaceDetails } from '../../../../../../_models/request/PlaceDetails';
-import { WishList } from '../../../../../../_models/request/WishList';
-import { WishListService } from '../../../../../../_service/user/place/wishlist/wishlist/wish-list.service';
-import { ErrorMessage } from "../../../../../../_models/util/ErrorMessage";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {WishListForm} from '../../../../../../_models/response/WishList';
+import {PlaceDetails} from '../../../../../../_models/request/PlaceDetails';
+import {WishList} from '../../../../../../_models/request/WishList';
+import {WishListService} from '../../../../../../_service/user/place/wishlist/wishlist/wish-list.service';
+import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
 
 @Component({
   selector: 'app-wish-list-form',

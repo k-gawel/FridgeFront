@@ -13,8 +13,8 @@
 
     <div class="col-8" style="margin-left: 0; margin-right: 0">
 
-      <app-wish-list *ngIf="content == 'WISHLIST'" [wishList]="" ]="contentParams" (closeWishList)="setItems()"></app-wish-list>
-      <app-place-items-scene *ngIf="content === 'ITEMS'" [place]="_place" [category]="_chosenCategory" [containers]="_chosenContainers"></app-place-items-scene>
+      <app-wish-list *ngIf="content == 'WISHLIST'" [wishList]="contentParams" (closeWishList)="setItems()"></app-wish-list>
+      <app-place-items-scene *ngIf="content === 'ITEMS' && _chosenCategory != null" [category]="_chosenCategory" [place]="_place"  [containers]="_chosenContainers"></app-place-items-scene>
 
     </div>
 

@@ -1,20 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { WishListItem } from '../../../../../_models/request/WishListItem';
+import {Component, Input, OnInit} from '@angular/core';
+import {WishListItem} from '../../../../../_models/request/WishListItem';
 import {ItemService} from '../../../../../_service/user/item/item/item.service';
-import {_if} from 'rxjs-compat/observable/if';
 import {Item} from '../../../../../_models/request/item/Item';
 import {Category} from '../../../../../_models/request/Category';
 import {PlaceService} from '../../../../../_service/user/place/place/place.service';
 import {ContainersList} from '../../../../../_models/request/Container';
 import {WishList} from '../../../../../_models/request/WishList';
 import {InstanceService} from '../../../../../_service/user/instance/instance.service';
-import {KeyName} from '../../../../../_models/request/KeyName';
-import {IdSelector} from "../../../../../_service/utils/EntitySelector";
-import {ErrorMessage} from "../../../../../_models/util/ErrorMessage";
-import {Error} from "tslint/lib/error";
-import {ItemInstancesList} from "../../../../../_models/request/item/ItemInstancesLst";
-import {ItemInstance} from "../../../../../_models/request/item/ItemInstance";
-import {ErrorHandlerService} from "../../../../../_service/utils/errorhanler/error-handler.service";
+import {IdSelector} from '../../../../../_service/utils/EntitySelector';
+import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
+import {ItemInstancesList} from '../../../../../_models/request/item/ItemInstancesLst';
+import {ItemInstance} from '../../../../../_models/request/item/ItemInstance';
+import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
 
 @Component({
   selector: 'app-wish-list-item',

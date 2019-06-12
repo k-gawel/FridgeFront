@@ -1,5 +1,5 @@
-import {Validatable} from "../validator/validatable";
-import {ErrorMessage} from "../util/ErrorMessage";
+import {Validatable} from '../validator/validatable';
+import {ErrorMessage} from '../util/ErrorMessage';
 
 export class Form implements Validatable {
 

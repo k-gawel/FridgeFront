@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { ContainerApiService } from './container-api.service';
+import {ContainerApiService} from './container-api.service';
 
 describe('ContainerApiService', () => {
   beforeEach(() => {

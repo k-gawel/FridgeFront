@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { WishListMenuComponent } from './wish-list-menu.component';
+import {WishListMenuComponent} from './wish-list-menu.component';
 
 describe('WishListMenuComponent', () => {
   let component: WishListMenuComponent;

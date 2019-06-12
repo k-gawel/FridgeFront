@@ -5,8 +5,8 @@ import {WishList} from '../../../../../_models/request/WishList';
 import {WishListForm} from '../../../../../_models/response/WishList';
 import {Subject} from 'rxjs';
 import {Entity} from '../../../../../_models/request/Entity';
-import {ErrorMessage} from "../../../../../_models/util/ErrorMessage";
-import {HttpErrorResponse} from "@angular/common/http";
+import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'

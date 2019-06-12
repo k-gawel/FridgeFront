@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { PlaceApiService } from './place-api.service';
+import {PlaceApiService} from './place-api.service';
 
 describe('PlaceApiService', () => {
   beforeEach(() => {

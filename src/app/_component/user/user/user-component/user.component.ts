@@ -1,10 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {UserContent} from '../../../../_models/util/Content';
-import {AccountDatas} from "../../../../_models/request/AccountDatas";
-import {AuthorizationApiService} from "../../../../_service/api/account/authorization-api.service";
-import {KeyName} from "../../../../_models/request/KeyName";
-import {PlaceDetails} from "../../../../_models/request/PlaceDetails";
-import {CookieDataService} from "../../../../_service/auth/cookieDatas/cookie-datas.service";
+import {AccountDatas} from '../../../../_models/request/AccountDatas';
+import {KeyName} from '../../../../_models/request/KeyName';
+import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
+import {CookieDataService} from '../../../../_service/auth/cookieDatas/cookie-datas.service';
 
 @Component({
   selector: 'app-user',
@@ -24,9 +23,9 @@ export class UserComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(protected authService: AuthorizationApiService,
-              private cookieDatas: CookieDataService) {
+  constructor(private cookieDatas: CookieDataService) {
   }
+
 
   ngOnDestroy(): void {
   }

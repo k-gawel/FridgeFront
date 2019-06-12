@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ItemInstancesList} from "../../../../../../../_models/request/item/ItemInstancesLst";
-import {ItemInstance} from "../../../../../../../_models/request/item/ItemInstance";
+import {Component, Input, OnInit} from '@angular/core';
+import {ItemInstancesList} from '../../../../../../../_models/request/item/ItemInstancesLst';
 
 @Component({
   selector: 'app-item-instances',

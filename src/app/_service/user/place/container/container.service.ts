@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ContainerApiService} from '../../../api/place/container-api.service';
 import {ContainerForm} from '../../../../_models/response/ContainerForm';
 import {Container, ContainersList} from '../../../../_models/request/Container';
-import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
-import {HttpErrorResponse} from "@angular/common/http";
-import {KeyName, KeyNameList} from "../../../../_models/request/KeyName";
-import {IdSelector} from "../../../utils/EntitySelector";
-import {PlaceDetails} from "../../../../_models/request/PlaceDetails";
-import {ItemsList} from "../../../../_models/request/item/ItemsList";
+import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
+import {HttpErrorResponse} from '@angular/common/http';
+import {KeyName} from '../../../../_models/request/KeyName';
+import {IdSelector} from '../../../utils/EntitySelector';
+import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
 
 @Injectable({
   providedIn: 'root'

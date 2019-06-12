@@ -1,7 +1,7 @@
-import { KeyName, KeyNameList } from "./KeyName";
-import {PlaceUsersList} from "./place-user/PlaceUsersList";
-import {ContainersList} from "./Container";
-import {PlaceUser} from "./place-user/PlaceUser";
+import {KeyName, KeyNameList} from './KeyName';
+import {PlaceUsersList} from './place-user/PlaceUsersList';
+import {ContainersList} from './Container';
+import {PlaceUser} from './place-user/PlaceUser';
 
 export class PlaceDetails extends KeyName{
 

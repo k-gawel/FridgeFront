@@ -1,16 +1,13 @@
-import { Injectable } from '@angular/core';
-import { ItemApiService } from '../../../api/item/item-api.service';
-import { Item} from '../../../../_models/request/item/Item';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Category } from '../../../../_models/request/Category';
+import {Injectable} from '@angular/core';
+import {ItemApiService} from '../../../api/item/item-api.service';
+import {Item} from '../../../../_models/request/item/Item';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Category} from '../../../../_models/request/Category';
 import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
-import {platformBrowser} from '@angular/platform-browser';
-import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
-import {query} from "@angular/animations";
-import {ItemForm} from "../../../../_models/response/ItemForm";
-import {Entity} from "../../../../_models/request/Entity";
-import {IdSelector} from "../../../utils/EntitySelector";
-import {ItemsList} from "../../../../_models/request/item/ItemsList";
+import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
+import {ItemForm} from '../../../../_models/response/ItemForm';
+import {IdSelector} from '../../../utils/EntitySelector';
+import {ItemsList} from '../../../../_models/request/item/ItemsList';
 
 @Injectable({
   providedIn: 'root'

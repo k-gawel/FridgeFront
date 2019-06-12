@@ -1,15 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PlaceDetails} from "../../../../../_models/request/PlaceDetails";
-import {PlaceUsersList} from "../../../../../_models/request/place-user/PlaceUsersList";
-import {CookieDataService} from "../../../../../_service/auth/cookieDatas/cookie-datas.service";
-import {KeyName, KeyNameList} from "../../../../../_models/request/KeyName";
-import {PlaceService} from "../../../../../_service/user/place/place/place.service";
-import {ErrorHandlerService} from "../../../../../_service/utils/errorhanler/error-handler.service";
-import {ErrorMessage} from "../../../../../_models/util/ErrorMessage";
-import {UserService} from "../../../../../_service/user/user/user.service";
-import {PlaceUserStats, PlaceUserStatsList} from "../../../../../_models/request/place/place-user-stats";
-import {PlaceUserService} from "../../../../../_service/user/place/placeUser/place-user.service";
-import {PlaceUser} from "../../../../../_models/request/place-user/PlaceUser";
+import {PlaceDetails} from '../../../../../_models/request/PlaceDetails';
+import {PlaceUsersList} from '../../../../../_models/request/place-user/PlaceUsersList';
+import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {KeyName, KeyNameList} from '../../../../../_models/request/KeyName';
+import {PlaceService} from '../../../../../_service/user/place/place/place.service';
+import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
+import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
+import {UserService} from '../../../../../_service/user/user/user.service';
+import {PlaceUserStats, PlaceUserStatsList} from '../../../../../_models/request/place/place-user-stats';
+import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
+import {PlaceUser} from '../../../../../_models/request/place-user/PlaceUser';
 
 
 @Component({
@@ -32,6 +32,7 @@ export class UsersMenuComponent implements OnInit {
               private placeService: PlaceService,
               private errorHandler: ErrorHandlerService,
               private placeUserService: PlaceUserService) {
+    this.form.name = '';
   }
 
 

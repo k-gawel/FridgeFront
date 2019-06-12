@@ -2,8 +2,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {LoginForm} from '../../../_models/response/LoginForm';
 import {AuthService} from '../../../_service/auth/auth/auth.service';
 import {RoleContent} from '../../../_models/util/Content';
-import {AccountDatas} from "../../../_models/request/AccountDatas";
-import {ErrorMessage} from "../../../_models/util/ErrorMessage";
+import {AccountDatas} from '../../../_models/request/AccountDatas';
+import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 
 @Component({
   selector: 'app-login',

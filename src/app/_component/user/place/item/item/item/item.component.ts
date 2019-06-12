@@ -1,12 +1,12 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {ItemContent} from "../../../../../../_models/util/Content";
-import {KeyNameList} from "../../../../../../_models/request/KeyName";
-import {ContainersList} from "../../../../../../_models/request/Container";
-import {EntityList} from "../../../../../../_models/request/Entity";
-import {ItemInstancesList} from "../../../../../../_models/request/item/ItemInstancesLst";
-import {ItemInstance} from "../../../../../../_models/request/item/ItemInstance";
-import {Item} from "../../../../../../_models/request/item/Item";
-import {PlaceUsersList} from "../../../../../../_models/request/place-user/PlaceUsersList";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ItemContent} from '../../../../../../_models/util/Content';
+import {KeyNameList} from '../../../../../../_models/request/KeyName';
+import {ContainersList} from '../../../../../../_models/request/Container';
+import {EntityList} from '../../../../../../_models/request/Entity';
+import {ItemInstancesList} from '../../../../../../_models/request/item/ItemInstancesLst';
+import {ItemInstance} from '../../../../../../_models/request/item/ItemInstance';
+import {Item} from '../../../../../../_models/request/item/Item';
+import {PlaceUsersList} from '../../../../../../_models/request/place-user/PlaceUsersList';
 
 @Component({
   selector: 'app-item',

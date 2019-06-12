@@ -4,21 +4,18 @@ import {PlaceUsersList} from '../../../../_models/request/place-user/PlaceUsersL
 import {ContainersList} from '../../../../_models/request/Container';
 import {Category} from '../../../../_models/request/Category';
 import {Item} from '../../../../_models/request/item/Item';
-import {PlaceService} from '../../../../_service/user/place/place/place.service';
 import {Subscription} from 'rxjs';
 import {KeyNameList} from '../../../../_models/request/KeyName';
 import {ItemService} from '../../../../_service/user/item/item/item.service';
 import {InstanceService, ItemInstanceQuery} from '../../../../_service/user/instance/instance.service';
-import {Entity, EntityList} from '../../../../_models/request/Entity';
 import {InstanceChangeList} from '../../../../_models/request/InstanceChange';
 import {LoggerServiceService} from '../../../../_service/user/user/logger/logger-service.service';
-import {IdSelector} from "../../../../_service/utils/EntitySelector";
-import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
-import {ErrorHandlerService} from "../../../../_service/utils/errorhanler/error-handler.service";
-import {Error} from "tslint/lib/error";
-import {ItemsList} from "../../../../_models/request/item/ItemsList";
-import {ItemInstancesList} from "../../../../_models/request/item/ItemInstancesLst";
-import {ItemInstance} from "../../../../_models/request/item/ItemInstance";
+import {IdSelector} from '../../../../_service/utils/EntitySelector';
+import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
+import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
+import {ItemsList} from '../../../../_models/request/item/ItemsList';
+import {ItemInstancesList} from '../../../../_models/request/item/ItemInstancesLst';
+import {ItemInstance} from '../../../../_models/request/item/ItemInstance';
 
 @Component({
   selector: 'app-place-items-scene',
@@ -32,7 +29,6 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
               private loggerService: LoggerServiceService,
               private errorHandler: ErrorHandlerService) {
   }
-
 
 
   instancesLogs: InstanceChangeList = null;
@@ -100,6 +96,7 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
     this.visibleItems = this.visibleItems.getByIds(this.visibleInstances.getItemIds());
   }
 
+
   items: ItemsList = new ItemsList();
   visibleItems: ItemsList = new ItemsList();
   setInstances(instances: ItemInstancesList) {
@@ -120,6 +117,7 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
       })
   }
 
+
   setVisibleItems() {
     console.debug("PlaceItemsScene.setVisibleItems()");
     let visibleItemIds = this.visibleInstances.getItemIds();
@@ -138,6 +136,7 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
       this.deleteInstance(instance);
     })
   }
+
 
   ngOnDestroy() {
     this.deletedInstanceSubscription.unsubscribe();

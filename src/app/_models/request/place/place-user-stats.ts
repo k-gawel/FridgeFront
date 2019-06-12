@@ -1,4 +1,4 @@
-import {Entity, EntityList} from "../Entity";
+import {Entity, EntityList} from '../Entity';
 
 export class PlaceUserStats extends Entity {
 

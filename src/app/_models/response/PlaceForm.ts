@@ -1,6 +1,4 @@
-import {Validatable} from "../validator/validatable";
-import {ErrorMessage} from "../util/ErrorMessage";
-import {Form} from "./Form";
+import {Form} from './Form';
 
 export class PlaceForm extends Form {
 

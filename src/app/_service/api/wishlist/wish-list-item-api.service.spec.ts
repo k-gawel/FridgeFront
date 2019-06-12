@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { WishListItemApiService } from './wish-list-item-api.service';
+import {WishListItemApiService} from './wish-list-item-api.service';
 
 describe('WishListItemApiService', () => {
   beforeEach(() => {

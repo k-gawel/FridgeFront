@@ -1,6 +1,5 @@
-import { KeyName, KeyNameList } from "./KeyName";
-import { PlaceDetails, PlaceDetailsList } from "./PlaceDetails";
-import {Entity, EntityList} from "./Entity";
+import {KeyName, KeyNameList} from './KeyName';
+import {Entity, EntityList} from './Entity';
 
 export class Container extends KeyName{
 

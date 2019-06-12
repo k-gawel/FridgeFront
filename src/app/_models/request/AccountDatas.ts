@@ -1,4 +1,4 @@
-import {KeyName, KeyNameList} from "./KeyName";
+import {KeyName, KeyNameList} from './KeyName';
 
 export class AccountDatas extends KeyName {
 

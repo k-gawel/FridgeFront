@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Category} from "../../../../_models/request/Category";
-import {CategoryService} from "../../../../_service/user/category/category.service";
-import {ErrorHandlerService} from "../../../../_service/utils/errorhanler/error-handler.service";
-import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Category} from '../../../../_models/request/Category';
+import {CategoryService} from '../../../../_service/user/category/category.service';
+import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
+import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 
 @Component({
     selector: 'categories-menu',
@@ -19,7 +19,6 @@ export class CategoriesMenu implements OnInit {
     }
 
     ngOnInit() {
-      console.log("CategoriesMenuComponent.ngOnInit() this.rootCategory == null", this.rootCategory == null);
       if(this.rootCategory == null)
         this.getRootCategory();
       else
@@ -47,12 +46,10 @@ export class CategoriesMenu implements OnInit {
     getRootCategory() {
       this.categoryService.getRootCategory()
         .then((res: Category) => {
-          console.debug("CategoriesMenuComponent.getRootCategory() res", res);
           this.rootCategory = res;
           this.chosenCategory.emit(this.rootCategory);
         })
         .catch((e: ErrorMessage) => {
-          console.debug("CategoriesMenuComponent.getRootCategory() error", e);
           this.errorHanddler.sendErrors(e);
         })
     }

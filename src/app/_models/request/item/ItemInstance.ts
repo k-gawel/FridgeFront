@@ -1,5 +1,5 @@
-import {Entity} from "../Entity";
-import {LocalDate} from "../../../_util/date/JavaLocalDate";
+import {Entity} from '../Entity';
+import {LocalDate} from '../../../_util/date/JavaLocalDate';
 
 export class ItemInstance extends Entity {
 

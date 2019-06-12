@@ -16,14 +16,6 @@
           </div>
         </li>
 
-      </ul>
-
-      <form class="form-inline my-2 my-md-0">
-        <i class="fas fa-sign-out-alt fa-2x" role="button" (click)="logout()"></i>
-      </form>
-
-    </div>
-  </nav>
 
   <main role="main">
     <app-place *ngIf="_userContent === 'PLACE'" [place]="_contentParams" (leavedPlace)="removePlace($event)"></app-place>
@@ -31,3 +23,8 @@
   </main>
 
 </div>
+
+
+<mat-menu #placesMenu="matMenu" yPosition="below" style="width: 300px">
+  <app-place-menu [places]="_accountDatas.places" (chosenPlace)="setPlace($event)"></app-place-menu>
+</mat-menu>

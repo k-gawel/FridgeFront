@@ -1,6 +1,6 @@
-import {KeyNameList} from "../KeyName";
-import {Category} from "../Category";
-import {Item} from "./Item";
+import {KeyNameList} from '../KeyName';
+import {Category} from '../Category';
+import {Item} from './Item';
 
 export class ItemsList extends KeyNameList {
 

@@ -1,6 +1,5 @@
-import { KeyValue } from "@angular/common";
-import { KeyName } from "./KeyName";
-import {Entity} from "./Entity";
+import {KeyName} from './KeyName';
+import {Entity} from './Entity';
 
 export class Category extends Entity {
 

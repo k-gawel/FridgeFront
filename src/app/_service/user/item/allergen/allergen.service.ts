@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import {HttpErrorResponse} from "@angular/common/http";
-import {IngredientService} from "../ingredient/ingredient.service";
-import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
-import {AllergenApiService} from "../../../api/item/allergen-api.service";
-import {Allergen} from "../../../../_models/request/item/Item";
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
+import {AllergenApiService} from '../../../api/item/allergen-api.service';
+import {Allergen} from '../../../../_models/request/item/Item';
 
 @Injectable({
   providedIn: 'root'

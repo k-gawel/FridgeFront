@@ -1,9 +1,8 @@
 import {Entity, EntityList} from './Entity';
 import {Item} from './item/Item';
 import {KeyName, KeyNameList} from './KeyName';
-import {ItemsList} from "./item/ItemsList";
-import {ItemInstancesList} from "./item/ItemInstancesLst";
-import {ItemInstance} from "./item/ItemInstance";
+import {ItemsList} from './item/ItemsList';
+import {ItemInstance} from './item/ItemInstance';
 
 export class InstanceChange extends Entity {
 

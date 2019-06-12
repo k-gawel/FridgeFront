@@ -1,10 +1,9 @@
-import { Entity } from "./Entity";
-import { WishList } from "./WishList";
-import { UserDetails } from "./UserDetails";
-import { Item } from "./item/Item";
-import { Category } from "./Category";
-import { KeyName } from "./KeyName";
-import {ItemInstance} from "./item/ItemInstance";
+import {Entity} from './Entity';
+import {WishList} from './WishList';
+import {Item} from './item/Item';
+import {Category} from './Category';
+import {KeyName} from './KeyName';
+import {ItemInstance} from './item/ItemInstance';
 
 export class WishListItem extends Entity {
 

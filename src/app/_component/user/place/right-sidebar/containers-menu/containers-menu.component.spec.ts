@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ContainersMenuComponent } from './containers-menu.component';
+import {ContainersMenuComponent} from './containers-menu.component';
 
 describe('ContainersMenuComponent', () => {
   let component: ContainersMenuComponent;

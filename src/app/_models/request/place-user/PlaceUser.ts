@@ -1,5 +1,5 @@
-import {KeyName} from "../KeyName";
-import {PlaceUsersList} from "./PlaceUsersList";
+import {KeyName} from '../KeyName';
+import {PlaceUsersList} from './PlaceUsersList';
 
 export class PlaceUser extends KeyName {
 

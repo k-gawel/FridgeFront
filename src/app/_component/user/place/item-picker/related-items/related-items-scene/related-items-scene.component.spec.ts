@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RelatedItemsSceneComponent } from './related-items-scene.component';
+import {RelatedItemsSceneComponent} from './related-items-scene.component';
 
 describe('RelatedItemsSceneComponent', () => {
   let component: RelatedItemsSceneComponent;

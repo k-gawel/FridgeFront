@@ -1,7 +1,4 @@
-import {Validatable} from "../validator/validatable";
-import {ErrorMessage} from "../util/ErrorMessage";
-import {validate} from "codelyzer/walkerFactory/walkerFn";
-import {Form} from "./Form";
+import {Form} from './Form';
 
 export class ContainerForm extends Form {
 

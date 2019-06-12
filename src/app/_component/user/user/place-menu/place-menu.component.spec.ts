@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PlaceMenuComponent } from './place-menu.component';
+import {PlaceMenuComponent} from './place-menu.component';
 
 describe('PlaceMenuComponent', () => {
   let component: PlaceMenuComponent;

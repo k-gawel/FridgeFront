@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
-import {IdSelector} from "../../../utils/EntitySelector";
-import {ContainerService} from "../container/container.service";
-import {ContainerApiService} from "../../../api/place/container-api.service";
-import {PlaceUserStats, PlaceUserStatsList} from "../../../../_models/request/place/place-user-stats";
-import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
-import {HttpErrorResponse} from "@angular/common/http";
+import {IdSelector} from '../../../utils/EntitySelector';
+import {ContainerApiService} from '../../../api/place/container-api.service';
+import {PlaceUserStatsList} from '../../../../_models/request/place/place-user-stats';
+import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'

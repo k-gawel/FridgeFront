@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {ErrorHandlerService} from "../../../_service/utils/errorhanler/error-handler.service";
-import {Subscriber} from "rxjs/Subscriber";
-import {Subscription} from "rxjs/Subscription";
-import {mixinErrorState} from "@angular/material";
+import {Component, OnInit} from '@angular/core';
+import {ErrorHandlerService} from '../../../_service/utils/errorhanler/error-handler.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-error-handler',

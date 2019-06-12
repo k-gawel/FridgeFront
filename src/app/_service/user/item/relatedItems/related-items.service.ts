@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { RelatedItemsApiService } from '../../../api/item/related-items-api.service';
-import { PlaceDetails } from '../../../../_models/request/PlaceDetails';
-import { Category } from '../../../../_models/request/Category';
-import { ItemsList } from '../../../../_models/request/item/ItemsList';
-import {HttpErrorResponse} from "@angular/common/http";
-import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
+import {Injectable} from '@angular/core';
+import {RelatedItemsApiService} from '../../../api/item/related-items-api.service';
+import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
+import {Category} from '../../../../_models/request/Category';
+import {ItemsList} from '../../../../_models/request/item/ItemsList';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 
 @Injectable({
   providedIn: 'root'

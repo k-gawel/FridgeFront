@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {KeyName, KeyNameList} from "../../../../_models/request/KeyName";
-import {PlaceForm} from "../../../../_models/response/PlaceForm";
-import {ErrorHandlerService} from "../../../../_service/utils/errorhanler/error-handler.service";
-import {PlaceService} from "../../../../_service/user/place/place/place.service";
-import {PlaceDetails} from "../../../../_models/request/PlaceDetails";
-import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
+import {KeyName, KeyNameList} from '../../../../_models/request/KeyName';
+import {PlaceForm} from '../../../../_models/response/PlaceForm';
+import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
+import {PlaceService} from '../../../../_service/user/place/place/place.service';
+import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
+import {ErrorStateMatcher} from '@angular/material';
+import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-place-menu',
@@ -13,48 +14,57 @@ import {ErrorMessage} from "../../../../_models/util/ErrorMessage";
 })
 export class PlaceMenuComponent implements OnInit {
 
-  @Input()
-  set places(value: KeyNameList) {
-    this._places = value;
-  }
-
   @Output() chosenPlace = new EventEmitter<KeyName>();
+  @Input()  places: KeyNameList;
 
-  _places: KeyNameList;
   form: PlaceForm = new PlaceForm();
+  errorMatcher: PlaceFormErrorStateMatcher;
 
   constructor(private errorHandler: ErrorHandlerService,
-              private placeService: PlaceService) { }
+              private placeService: PlaceService) {
+    this.errorMatcher = new PlaceFormErrorStateMatcher(this.form);
+  }
 
   ngOnInit() {
   }
 
+
+
   addNewPlace() {
-
-    if(!this.form.validate()) {
+    if(!this.form.validate())
       this.errorHandler.sendErrors(this.form.errors);
-      return;
+    else {
+      this.placeService.newPlace(this.form)
+        .then(p => {
+          this.places.push(p);
+          this.setPlace(p);
+        })
+        .catch(e => this.form.errors = e);
     }
-
-    this.placeService.newPlace(this.form)
-      .then((res: KeyName) => {
-        this._places.push(res);
-        this.clickOnPlace(res);
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      })
-
-
   }
+
 
   @Input() set removedPlace(place: PlaceDetails) {
     if(place != null)
-      this._places.remove(place);
+      this.places.remove(place)
   }
 
-  clickOnPlace(place: KeyName) {
+
+  setPlace(place: KeyName) {
       this.chosenPlace.emit(place);
+  }
+
+
+}
+
+
+export class PlaceFormErrorStateMatcher implements ErrorStateMatcher {
+
+  constructor(private form: PlaceForm) {
+  }
+
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return this.form.errors != null;
   }
 
 }

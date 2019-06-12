@@ -1,23 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { UserDetails } from '../../../_models/request/UserDetails';
-import { PlaceDetailsList, PlaceDetails } from '../../../_models/request/PlaceDetails';
-import { UserContent } from '../../../_models/util/Content';
-import { PlaceService } from '../place/place/place.service';
-import { Category } from '../../../_models/request/Category';
-import { CategoryApiService } from '../../api/utils/category-api.service';
-import { Item } from '../../../_models/request/item/Item';
-import { ItemService } from '../item/item/item.service';
-import { PlaceApiService } from '../../api/place/place-api.service';
-import { InstanceService } from '../instance/instance.service';
-import {AccountApiService} from "../../api/account/account-api.service";
-import {ItemsList} from "../../../_models/request/item/ItemsList";
-import {IdSelector} from "../../utils/EntitySelector";
-import {PlaceUsersList} from "../../../_models/request/place-user/PlaceUsersList";
-import {KeyName, KeyNameList} from "../../../_models/request/KeyName";
-import {ErrorMessage} from "../../../_models/util/ErrorMessage";
-import {HttpErrorResponse} from "@angular/common/http";
-import {PlaceUser} from "../../../_models/request/place-user/PlaceUser";
+import {Injectable} from '@angular/core';
+import {AccountApiService} from '../../api/account/account-api.service';
+import {PlaceUsersList} from '../../../_models/request/place-user/PlaceUsersList';
+import {KeyName, KeyNameList} from '../../../_models/request/KeyName';
+import {ErrorMessage} from '../../../_models/util/ErrorMessage';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'

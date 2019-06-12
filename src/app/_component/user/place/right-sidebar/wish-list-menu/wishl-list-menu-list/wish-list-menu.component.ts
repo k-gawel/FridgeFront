@@ -7,9 +7,9 @@ import {WishListFormComponent} from '../wish-list-form/wish-list-form.component'
 import {WishList} from '../../../../../../_models/request/WishList';
 import {PlaceService} from '../../../../../../_service/user/place/place/place.service';
 import {Entity} from '../../../../../../_models/request/Entity';
-import {CookieDataService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
-import {ErrorMessage} from "../../../../../../_models/util/ErrorMessage";
-import {ErrorHandlerService} from "../../../../../../_service/utils/errorhanler/error-handler.service";
+import {CookieDataService} from '../../../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
+import {ErrorHandlerService} from '../../../../../../_service/utils/errorhanler/error-handler.service';
 
 @Component({
   selector: 'app-wish-list-menu',

@@ -1,13 +1,13 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {ItemService} from "../../../../../_service/user/item/item/item.service";
-import {RelatedItemsService} from "../../../../../_service/user/item/relatedItems/related-items.service";
-import {ErrorMessage} from "../../../../../_models/util/ErrorMessage";
-import {Category} from "../../../../../_models/request/Category";
-import {PlaceDetails} from "../../../../../_models/request/PlaceDetails";
-import {ItemsList} from "../../../../../_models/request/item/ItemsList";
-import {Item} from "../../../../../_models/request/item/Item";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {NewItemComponent} from "../new_item/new_item.component";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ItemService} from '../../../../../_service/user/item/item/item.service';
+import {RelatedItemsService} from '../../../../../_service/user/item/relatedItems/related-items.service';
+import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
+import {Category} from '../../../../../_models/request/Category';
+import {PlaceDetails} from '../../../../../_models/request/PlaceDetails';
+import {ItemsList} from '../../../../../_models/request/item/ItemsList';
+import {Item} from '../../../../../_models/request/item/Item';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NewItemComponent} from '../new_item/new_item.component';
 
 
 @Component({
@@ -71,12 +71,8 @@ export class ItemPickerComponent implements OnInit {
 
   searchByName(name: string) {
     this.itemService.searchItemByName(name, this._place, this._category)
-      .then((items: ItemsList) => {
-        this.items = items;
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorMessage = e;
-      });
+      .then(items => this.items = items )
+      .catch(e => this.errorMessage = e );
   }
 
 
@@ -123,6 +119,7 @@ export class ItemPickerComponent implements OnInit {
     if(this.textSearch != null && typeof this.textSearch == 'string')
       modalRef.componentInstance.name = this.textSearch;
   }
+
 
   closeErrors() {
     this.errorMessage = null;

@@ -3,16 +3,16 @@
   <div class="card container" style="padding-left: 0; padding-right: 0">
 
     <div class="row input-group" style="margin: 0">
-        <input type="text" class="form-control" placeholder="Search by name or barcode"
-               name="name" [(ngModel)]="textSearch" (keyup)="onTextSearchChange()">
+      <input type="text" class="form-control" placeholder="Search by name or barcode"
+             name="name" [(ngModel)]="textSearch" (keyup)="onTextSearchChange()">
 
-        <button type="button" class="btn btn-primary"
-                [disabled]="_category.isFinal() ? 0 : 1"
-                (click)="createNewItem()">
-          Create new item
-        </button>
+      <button type="button" class="btn btn-primary"
+              [disabled]="_category.isFinal() ? 0 : 1"
+              (click)="createNewItem()">
+        Create new item
+      </button>
 
-      </div>
+    </div>
 
     <div class="row" style="margin: 0; height: 350px; overflow: auto; -webkit-overflow-scrolling: touch;"> <!-- SEARCH RESULTS -->
 
@@ -29,16 +29,15 @@
       <app-related-items-scene *ngIf = "showRelatedItems"
                                [items]="relatedItems"
                                (chosen)="selectedItem.emit($event)"
-                               style="max-width: 100%; margin-top: 2px"
-      >
+                               style="max-width: 100%; margin-top: 2px">
       </app-related-items-scene>
 
       <ng-container *ngIf="errorMessage != null" (click)="errorMessage = null">
-        <span class="border border-danger">
-          <p *ngFor="let e of errorMessage.messages">
+        <p class="border border-danger">
+          <span *ngFor="let e of errorMessage.messages">
             {{e}}
-          </p>
-        </span>
+          </span>
+        </p>
       </ng-container>
 
     </div>

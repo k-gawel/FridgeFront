@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {ItemsList} from "../../../../../../_models/request/item/ItemsList";
-import {Item} from "../../../../../../_models/request/item/Item";
-
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ItemsList} from '../../../../../../_models/request/item/ItemsList';
+import {Item} from '../../../../../../_models/request/item/Item';
 
 
 @Component({

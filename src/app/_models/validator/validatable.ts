@@ -1,4 +1,4 @@
-import {ErrorMessage} from "../util/ErrorMessage";
+import {ErrorMessage} from '../util/ErrorMessage';
 
 export interface Validatable {
 

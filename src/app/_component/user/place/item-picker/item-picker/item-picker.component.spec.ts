@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ItemPickerComponent } from './item-picker.component';
+import {ItemPickerComponent} from './item-picker.component';
 
 describe('ItemPickerComponent', () => {
   let component: ItemPickerComponent;

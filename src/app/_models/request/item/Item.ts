@@ -1,8 +1,7 @@
 import {KeyName} from '../KeyName';
 import {Category} from '../Category';
-import {ItemInstancesList} from "./ItemInstancesLst";
-import {Producer} from "./Producer";
-import {Entity} from "../Entity";
+import {Producer} from './Producer';
+import {Entity} from '../Entity';
 
 
 export class Item extends KeyName {

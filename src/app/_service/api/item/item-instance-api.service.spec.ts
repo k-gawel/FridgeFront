@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { ItemInstanceApiService } from './item-instance-api.service';
+import {ItemInstanceApiService} from './item-instance-api.service';
 
 describe('ItemInstanceApiService', () => {
   beforeEach(() => {

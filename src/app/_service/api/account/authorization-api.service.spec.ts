@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { AuthorizationApiService } from './authorization-api.service';
+import {AuthorizationApiService} from './authorization-api.service';
 
 describe('AuthorizationApiService', () => {
   beforeEach(() => {

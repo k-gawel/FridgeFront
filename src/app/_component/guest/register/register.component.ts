@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../../_service/auth/auth/auth.service';
 import {RoleContent} from '../../../_models/util/Content';
-import {AccountForm} from "../../../_models/response/AccountForm";
-import {ErrorMessage} from "../../../_models/util/ErrorMessage";
+import {AccountForm} from '../../../_models/response/AccountForm';
+import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 
 @Component({
   selector: 'app-register',

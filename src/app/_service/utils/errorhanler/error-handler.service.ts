@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import {ErrorMessage} from "../../../_models/util/ErrorMessage";
-import {Subject} from "rxjs/Subject";
+import {Injectable} from '@angular/core';
+import {ErrorMessage} from '../../../_models/util/ErrorMessage';
+import {Subject} from 'rxjs/Subject';
 
 @Injectable({
   providedIn: 'root'

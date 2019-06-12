@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { ApiService } from '../api/api.service';
-import { WishListItemForm } from '../../../_models/response/WishListItemForm';
-import { ItemInstanceForm } from '../../../_models/response/ItemInstanceForm';
-import {ItemInstance} from "../../../_models/request/item/ItemInstance";
-import {HttpParams} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {ApiService} from '../api/api.service';
+import {WishListItemForm} from '../../../_models/response/WishListItemForm';
+import {ItemInstanceForm} from '../../../_models/response/ItemInstanceForm';
+import {HttpParams} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'

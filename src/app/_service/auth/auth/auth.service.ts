@@ -3,13 +3,13 @@ import {BehaviorSubject} from 'rxjs';
 import {RoleContent} from '../../../_models/util/Content';
 import {AuthorizationApiService} from '../../api/account/authorization-api.service';
 import {LoginForm} from '../../../_models/response/LoginForm';
-import {AccountForm} from "../../../_models/response/AccountForm";
-import {AccountApiService} from "../../api/account/account-api.service";
-import {ErrorMessage} from "../../../_models/util/ErrorMessage";
-import {AccountDatas} from "../../../_models/request/AccountDatas";
-import {HttpErrorResponse} from "@angular/common/http";
-import {CookieDataService} from "../cookieDatas/cookie-datas.service";
-import {CategoriesServiceService} from "../../utils/categories-service.service";
+import {AccountForm} from '../../../_models/response/AccountForm';
+import {AccountApiService} from '../../api/account/account-api.service';
+import {ErrorMessage} from '../../../_models/util/ErrorMessage';
+import {AccountDatas} from '../../../_models/request/AccountDatas';
+import {HttpErrorResponse} from '@angular/common/http';
+import {CookieDataService} from '../cookieDatas/cookie-datas.service';
+import {CategoriesServiceService} from '../../utils/categories-service.service';
 
 @Injectable({
   providedIn: 'root'

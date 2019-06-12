@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {LoggerApiService} from '../../../api/utils/logger-api.service';
 import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
 import {InstanceChangeList} from '../../../../_models/request/InstanceChange';
