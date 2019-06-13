@@ -5,6 +5,15 @@ export class PlaceUser extends KeyName {
 
   status: boolean;
 
+  static clone(kn: KeyName | PlaceUser, status?: boolean) {
+    let result = <PlaceUser> super.clone(kn);
+    if(kn instanceof PlaceUser)
+      result.status = kn.status;
+    else
+      result.status = status != null ? status : true;
+    return result;
+  }
+
   constructor(json?: JSON) {
     super();
 

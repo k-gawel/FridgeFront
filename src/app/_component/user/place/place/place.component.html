@@ -7,24 +7,25 @@
 
   <div class="row" style="margin-left: 0; margin-right: 0">
 
-    <div class="col-2" style="margin-left: 0; margin-right: 0; padding-right: 15px;">
-      <categories-menu (chosenCategory)="setChosenCategory($event)"></categories-menu>
-    </div>
-
-    <div class="col-8" style="margin-left: 0; margin-right: 0">
-
-      <app-wish-list *ngIf="content == 'WISHLIST'" [wishList]="contentParams" (closeWishList)="setItems()"></app-wish-list>
-      <app-place-items-scene *ngIf="content === 'ITEMS' && _chosenCategory != null" [category]="_chosenCategory" [place]="_place"  [containers]="_chosenContainers"></app-place-items-scene>
-
-    </div>
-
-    <div class="col-2" style="margin-left: 0; margin-right: 0; padding-left: 15px;">
+    <div id="place-details" class="col-sm-12 col-md-6 col-lg-2 order-lg-12" style="margin-left: 0; margin-right: 0; padding: 15px;">
 
       <app-users-menu [place]="_place"></app-users-menu>
       <app-containers-menu [place]="_place" (chosenContainers)="setChosenContainers($event)"></app-containers-menu>
       <app-wish-list-menu [place]="_place" (selectedWishList)="setWishList($event)"></app-wish-list-menu>
 
     </div>
+
+
+    <div id="categories" class="col-sm-12 col-md-6 col-lg-2 order-lg-1" style="margin-left: 0; margin-right: 0; padding: 15px;">
+      <categories-menu (chosenCategory)="setChosenCategory($event)"></categories-menu>
+    </div>
+
+
+    <div id="place-items" class="col-sm-12 col-md-12 col-lg-8 order-lg-2" style="margin-left: 0; margin-right: 0; padding: 15px">
+        <app-wish-list *ngIf="content == 'WISHLIST'" [wishList]="contentParams" (closeWishList)="setItems()"></app-wish-list>
+        <app-place-items-scene *ngIf="content === 'ITEMS' && _chosenCategory != null" [category]="_chosenCategory" [place]="_place"  [containers]="_chosenContainers"></app-place-items-scene>
+    </div>
+
 
   </div>
 

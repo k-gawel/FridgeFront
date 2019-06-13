@@ -8,6 +8,7 @@ import {ItemsList} from '../../../../../_models/request/item/ItemsList';
 import {Item} from '../../../../../_models/request/item/Item';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NewItemComponent} from '../new_item/new_item.component';
+import {Size, WindowServiceService} from '../../../../../_service/utils/window-service.service';
 
 
 @Component({
@@ -17,9 +18,12 @@ import {NewItemComponent} from '../new_item/new_item.component';
 })
 export class ItemPickerComponent implements OnInit {
 
+  isCollapsed: boolean;
   constructor(private itemService: ItemService,
               private relatedItemsService: RelatedItemsService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private windowService: WindowServiceService) {
+    windowService.$resize.subscribe(s => this.isCollapsed = s <= Size.SM);
   }
 
   errorMessage: ErrorMessage;
@@ -46,6 +50,12 @@ export class ItemPickerComponent implements OnInit {
   ngOnInit(): void {
     this.getRelatedItems();
   }
+
+
+  focused(value: boolean) {
+    this.isCollapsed = this.windowService.$resize.value > Size.SM ? false : !value && this.items == null;
+  }
+
 
   textSearch: string | number = '';
 

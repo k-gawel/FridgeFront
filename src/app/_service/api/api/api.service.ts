@@ -8,7 +8,7 @@ import {CookieDataService} from '../../auth/cookieDatas/cookie-datas.service';
 })
 export class ApiService {
 
-  url = "http://localhost:8080/fridgeapi/";
+  url = "http://91.134.142.39:8080/fridgeapi/";
   // url = "localhost:8080/";
 
   constructor(private cookieDatas: CookieDataService,

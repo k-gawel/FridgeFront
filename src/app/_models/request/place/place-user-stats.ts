@@ -6,6 +6,15 @@ export class PlaceUserStats extends Entity {
   private _instancesOpened: number;
   private _instancesDeleted: number;
 
+  static create(id: number, added?: number, open?: number, deleted?: number) {
+    let result = new PlaceUserStats();
+    result.id = id;
+    result._instancesAdded = added != null ? added : 0;
+    result._instancesOpened = open != null ? open : 0;
+    result._instancesDeleted = deleted != null ? deleted : 0;
+    return result;
+  }
+
   constructor(json?: JSON) {
     super();
     if(json == undefined)

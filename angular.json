@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/fridge-prototype",
+            "outputPath": "../FridgeApi/src/main/resources/static",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -23,11 +23,14 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles/styles.css",
+//              "src/styles/bootstrap.min.css"
             ],
             "scripts": [
-              "node_modules/jquery/jquery-3.3.1.slim.min.js",
-              "node_modules/popper/popper.min.js"
+//              "src/scripts/jquery-3.3.1.slim.min.js",
+//              "src/scripts/popper.min.js",
+//              "src/scripts/bootstrap.min.js",
+              //              "src/scripts/jquery-3.3.1.min.js",
             ]
           },
           "configurations": {

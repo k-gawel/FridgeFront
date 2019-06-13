@@ -17,6 +17,9 @@ export class UserComponent implements OnInit, OnDestroy {
     this._accountDatas = value;
   }
 
+  isCollapsed: boolean = false;
+
+
   _userContent: UserContent;
   _contentParams: any;
   _accountDatas: AccountDatas;

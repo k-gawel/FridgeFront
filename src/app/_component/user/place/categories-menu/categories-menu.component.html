@@ -1,15 +1,22 @@
 <div class="ctg-menu-btn-group" *ngIf="rootCategory != null">
 
-  <button class="button"
-          (click)="chooseCategory(rootCategory.isFinal() ? rootCategory.parent : rootCategory)">
-    {{rootCategory.isFinal() ? rootCategory.parent.name : rootCategory.name}}
-  </button>
+  <div>
+    <button class="button"
+            (click)="chooseCategory(rootCategory.isFinal() ? rootCategory.parent : rootCategory)">
+      {{rootCategory.isFinal() ? rootCategory.parent.name : rootCategory.name}}
+    </button>
+    <button class="button" (click)="isCollapsed = !isCollapsed">
+      <i [ngClass]="'fas fa-angle-' + (isCollapsed ? 'down' : 'up')"></i>
+    </button>
+  </div>
 
-  <button *ngFor="let category of rootCategory.isFinal() ? rootCategory.parent.children : rootCategory.children"
-          [ngClass]="'button' + (rootCategory.isFinal() && rootCategory.equals(category) ? ' active' : '')"
-          (click)="chooseCategory(category)">
-    {{category.name}}
-  </button>
+  <div [ngbCollapse]="isCollapsed">
+    <button *ngFor="let category of rootCategory.isFinal() ? rootCategory.parent.children : rootCategory.children"
+            [ngClass]="'button' + (rootCategory.isFinal() && rootCategory.equals(category) ? ' active' : '')"
+            (click)="chooseCategory(category)" >
+      {{category.name}}
+    </button>
+  </div>
 
 </div>
 

@@ -13,6 +13,13 @@ export class KeyName extends Entity {
 
     }
 
+    static clone(keyName: KeyName): KeyName {
+      let result = new KeyName();
+      result.id   = keyName.id;
+      result.name = keyName.name;
+      return result;
+    }
+
     public fromJSON(json: JSON): KeyName {
       this.id = json['id'];
       this.name = json['name'];

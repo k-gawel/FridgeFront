@@ -4,43 +4,53 @@
   <!--USERS-->
   <ul class="list-group" style="cursor: default; margin-bottom: 15px;">
 
-    <li class="list-group-item list-group-item-dark">Users {{_users.size()}}</li>
+    <li class="list-group-item list-group-item-dark" data-toggle="collapse" (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="isCollapsed" aria-controls="usersMenu">Users</li>
+
+    <div id="usersMenu" [ngbCollapse]="isCollapsed">
+
+      <!--USER LIST ITEM-->
+      <a class="list-group-item list-group-item-action d-flex justify-content-between"
+         *ngFor="let user of _users.getByStatus(true).list"
+         [popoverTitle]="'User stats'" [ngbPopover]="statsPopoverContent" placement="left">
 
 
-    <a class="list-group-item list-group-item-action d-flex justify-content-between"
-       *ngFor="let user of _users.getByStatus(true).list"
-       [popoverTitle]="'User stats'" [ngbPopover]="statsPopoverContent" placement="left"
-    >
+        <!-- STATS POPOVER -->
+        <ng-template #statsPopoverContent>
+          <ul class="list-group list-group-flush" *ngIf="usersStats != null">
+            <li class="list-group-item"> Added:   <b>{{usersStats.getById(user.id).instancesAdded}}</b> </li>
+            <li class="list-group-item"> Opened:  <b>{{usersStats.getById(user.id).instancesOpened}}</b> </li>
+            <li class="list-group-item"> Deleted: <b>{{usersStats.getById(user.id).instancesDeleted}}</b> </li>
+          </ul>
+        </ng-template>
 
-      <ng-template #statsPopoverContent>
-        <ul class="list-group list-group-flush" *ngIf="usersStats != null">
-          <li class="list-group-item"> Added: <b>{{usersStats.getById(user.id).instancesAdded}}</b> </li>
-          <li class="list-group-item"> Opened: <b>{{usersStats.getById(user.id).instancesOpened}}</b> </li>
-          <li class="list-group-item"> Deleted: <b>{{usersStats.getById(user.id).instancesDeleted}}</b> </li>
-        </ul>
-      </ng-template>
+        {{user.name}}
 
-      {{user.name}}
+        <!-- ACTION ICONS -->
+        <ng-container *ngIf="isAdmin() && !isAdmin(user)">
+          <i class="fas fa-user-tie" style="cursor: grab;" (click)="promoteUser(user)" ></i>
+          <i class="fas fa-user-times" style="cursor: grab;" (click)="removeUser(user)"></i>
+        </ng-container>
 
-      <ng-container *ngIf="isAdmin() && !isAdmin(user)">
-        <i class="fas fa-user-tie" style="cursor: grab;" (click)="promoteUser(user)" ></i>
-        <i class="fas fa-user-times" style="cursor: grab;" (click)="removeUser(user)"></i>
-      </ng-container>
+      </a>
 
-    </a>
 
-    <li class="list-group-item" *ngIf="isAdmin()" style="padding: 0; height: 50px"> <!--NEW CONTAINER FORM-->
 
-      <input autocomplete="off" type="text" class="dropdown-toggle" data-toggle="dropdown" [(ngModel)]="form.name" (keyup)="onFormNameChange()" name="name"
-             placeholder="add new user" style="width: 80%; height: 50px; border: none; padding-left: 10%;"/>
+      <!--NEW USER FORM-->
+      <li class="list-group-item" ngbDropdown *ngIf="isAdmin()" style="padding: 0; height: 50px">
 
-      <button style="width: 20%; height: 50px;" type="submit" [disabled]="form.id == null" (click)="addUser()">+</button>
+          <input autocomplete="off" type="text" class="dropdown-toggle" data-toggle="dropdown" [(ngModel)]="form.name" (keyup)="onFormNameChange()" name="name"
+                 placeholder="Add new user" style="width: 80%; height: 50px; border: none; padding-left: 10%;" ngbDropdownToggle aria-expanded="false" id="addNewUser"/>
 
-      <div class="dropdown-menu" *ngIf="usersList != null" style="width: 100%; max-height: 350px; overflow: scroll">
-        <a class="dropdown-item" *ngFor="let user of usersList.list" (click)="selectUserToAdd(user)">{{user.name}}</a>
-      </div>
+          <button style="width: 20%; height: 50px;" [disabled]="this.form.id == null" type="submit" (click)="addUser()">+</button>
 
-    </li>
+        <div ngbDropdownMenu aria-labelledby="addNewUser" style="width: 100%">
+          <button class="dropdown-item" *ngFor="let user of usersList.list" (click)="selectUserToAdd(user)">{{user.name}}</button>
+        </div>
+
+      </li>
+
+    </div>
 
   </ul>
 

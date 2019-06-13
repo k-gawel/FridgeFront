@@ -1,13 +1,6 @@
-<button mat-menu-item *ngFor="let p of places.list" (click)="setPlace(p)">{{p.name}}</button>
-
-<mat-form-field (click)="$event.stopPropagation()" style="margin: 6px">
-
-  <input type="text" matInput placeholder="New place name"
-         (click)="$event.stopPropagation()" (keyup.ENTER)="addNewPlace()"
-         [(ngModel)]="form.name" [errorStateMatcher]="errorMatcher">
-
-  <mat-icon matSuffix (click)="addNewPlace()">mode_edit</mat-icon>
-
-  <mat-error *ngIf="form.errors != null">{{form.errors}}</mat-error>
-
-</mat-form-field>
+<a class="dropdown-item" *ngFor="let p of places.list" (click)="setPlace(p)">{{p.name}}</a>
+<div class="dropdown-divider"></div>
+<div class="input-group" (click)="$event.stopPropagation()">
+  <input type="text" class="form-control" name="placename" [(ngModel)]="form.name" placeholder="New place name" (keyup.ENTER)="addNewPlace()">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+</div>

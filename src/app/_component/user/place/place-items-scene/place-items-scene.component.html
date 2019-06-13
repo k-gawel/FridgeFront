@@ -2,7 +2,7 @@
 
   <div class="row">
 
-    <div class="col" style="margin-right: 0; margin-left: 0; padding-left: 0; padding-right: 7px; max-width: 50%"> <!-- ITEM PICKER -->
+    <div class="col-lg-6" style="margin-right: 0; margin-left: 0;"> <!-- ITEM PICKER -->
       <app-item-picker [category]="_category"
                        [place]="_place"
                        (selectedItem)="setSelectedItem($event)">
@@ -10,7 +10,7 @@
     </div>
 
 
-    <div class="col" style="margin-right: 0; margin-left: 0; padding-right: 0; padding-left: 7px;"> <!-- COMPONENT OF ITEM CHOSEM FROM ITEM-PICKER OR RELATED ITEMS -->
+    <div class="col-lg-6" style="margin-right: 0; margin-left: 0;"> <!-- COMPONENT OF ITEM CHOSEM FROM ITEM-PICKER OR RELATED ITEMS -->
       <app-item *ngIf="selectedItem != null"
                 [chosenContainers]="_containers"
                 [item]="selectedItem"
@@ -33,8 +33,8 @@
    <!-- ALL OF ITEMS WITH (defaultly) UNDELETED INSTANCES -->
   <div class="row" style="margin-top: 30px;">
 
-    <div class="col" style="margin: 0; padding-left: 0; padding-right: 7px;">
-      <div class="row" style="margin-right: 0; margin-left: 0; margin-top:5px;"
+    <div class="col" style="">
+      <div class="row" style="margin-right: 0; margin-left: 0;"
            *ngFor="let item of visibleItems.list; let i = index" >
         <app-item *ngIf="i%2 == 0"
                   [item]="item"
@@ -48,12 +48,16 @@
       </div>
     </div>
 
-    <div class="col" style="margin: 0; padding-right: 0; padding-left: 7px;">
-      <div class="row" style="margin-right: 0; margin-left: 0; margin-top:5px;"
+    <div class="col" style="">
+      <div class="row" style="margin-right: 0; margin-left: 0;"
           *ngFor="let item of visibleItems.list; let i = index">
+
+      </div>
+
+      <div  class="row" style="margin-right: 0; margin-left: 0" *ngFor="let item of visibleItems.list; let i = index">
         <app-item *ngIf="i%2 == 1"
                   [item]="item"
-                  [instances]="instances.getByItem(item)"
+                  [instances]="visibleInstances.getByItem(item)"
                   [chosenContainers]="_containers"
                   [fullScreen]="true"
                   (visible)="$event ? items.push(item): items.remove(item)"
@@ -71,3 +75,18 @@
 <ng-container *ngIf="!(_place != null && _category != null && _containers != null)">
   <img src="https://media1.tenor.com/images/c26a081912a71af8d0e57799c291ced5/tenor.gif?itemid=8524221"/>
 </ng-container>
+
+
+<ng-template #itemOnList let-item let-index let-position>
+
+  <app-item *ngIf="index%2 == position"
+            [item]="item"
+            [instances]="instances.getByItem(item)"
+            [chosenContainers]="_containers"
+            [fullScreen]="true"
+            (visible)="$event ? items.push(item): items.remove(item)"
+            (newItemInstance)="newInstance($event)"
+  >
+  </app-item>
+
+</ng-template>

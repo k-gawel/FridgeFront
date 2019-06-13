@@ -1,3 +1,7 @@
+:host {
+  width: 100%;
+}
+
 /* Style the ALL */
 ul.cat-breadcrumb {
   list-style: none;

@@ -10,6 +10,7 @@ import {Entity} from '../../../../../../_models/request/Entity';
 import {CookieDataService} from '../../../../../../_service/auth/cookieDatas/cookie-datas.service';
 import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
 import {ErrorHandlerService} from '../../../../../../_service/utils/errorhanler/error-handler.service';
+import {Size, WindowServiceService} from '../../../../../../_service/utils/window-service.service';
 
 @Component({
   selector: 'app-wish-list-menu',
@@ -18,11 +19,16 @@ import {ErrorHandlerService} from '../../../../../../_service/utils/errorhanler/
 })
 export class WishListMenuComponent implements OnInit {
 
+  isCollapsed: boolean;
   constructor(private wishListService: WishListService,
               private modalService: NgbModal,
               private placeService: PlaceService,
               private cookiesData: CookieDataService,
-              private errorHandler: ErrorHandlerService) { }
+              private errorHandler: ErrorHandlerService,
+              windowService: WindowServiceService
+              ) {
+    windowService.$resize.subscribe(s => this.isCollapsed = s <= Size.SM);
+  }
 
 
   list: WishList[] = [];

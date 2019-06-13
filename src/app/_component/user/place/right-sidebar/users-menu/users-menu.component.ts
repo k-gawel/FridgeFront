@@ -10,6 +10,7 @@ import {UserService} from '../../../../../_service/user/user/user.service';
 import {PlaceUserStats, PlaceUserStatsList} from '../../../../../_models/request/place/place-user-stats';
 import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
 import {PlaceUser} from '../../../../../_models/request/place-user/PlaceUser';
+import {Size, WindowServiceService} from '../../../../../_service/utils/window-service.service';
 
 
 @Component({
@@ -26,14 +27,23 @@ export class UsersMenuComponent implements OnInit {
   usersList: KeyNameList = new KeyNameList();
   usersStats: PlaceUserStatsList;
 
+  isCollapsed: boolean;
 
   constructor(private userService: UserService,
               private cookieDatas: CookieDataService,
               private placeService: PlaceService,
               private errorHandler: ErrorHandlerService,
-              private placeUserService: PlaceUserService) {
+              private placeUserService: PlaceUserService,
+              private windowService: WindowServiceService) {
     this.form.name = '';
+    windowService.$resize.subscribe(s => {
+      console.log("RESIZED ", s);
+      this.isCollapsed = s <= Size.SM;
+    })
   }
+
+
+  ngOnInit() {}
 
 
   @Input() set place(value: PlaceDetails) {
@@ -54,24 +64,16 @@ export class UsersMenuComponent implements OnInit {
     if(this.form.name.length < 4)
       return;
 
-
     this.form.id = null;
     this.userService.searchByName(this.form.name)
-      .then((res: KeyNameList) => {
-        this.usersList = res;
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      })
+      .then(res=> this.usersList = res )
+      .catch(e => this.errorHandler.sendErrors(e) );
   }
 
 
   selectUserToAdd(user: KeyName) {
     this.form = user;
   }
-
-
-  ngOnInit() {}
 
 
   isAdmin(user?: KeyName): boolean {
@@ -83,37 +85,25 @@ export class UsersMenuComponent implements OnInit {
 
 
   addUser() {
-    if(this.form.id == null)
-      return;
-
     this.placeService.addUser(this._place, this.form)
       .then((res: boolean) => {
-        if(!res) {
-          this.errorHandler.sendErrors(["Couldn't add this user to placeId"]);
-        } else {
-          let user = new PlaceUser();
-          user.id = this.form.id;
-          user.name = this.form.name;
-          user.status = true;
-          this._users.push(user);
-          if(this.usersStats.getById(user.id) != null)
-            return;
-          let placeUserStats = new PlaceUserStats();
-            placeUserStats.id = user.id;
-            placeUserStats.instancesDeleted = 0;
-            placeUserStats.instancesOpened = 0;
-            placeUserStats.instancesAdded = 0;
-          this.usersStats.push(placeUserStats);
-        }
+        if (res)
+          this.pushUser(this.form);
+        else
+          this.errorHandler.sendErrors(['Couldn\'t add this user to placeId']);
       })
-      .catch((e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      })
-      .then( () => {
-        this.form = new KeyName();
-      });
+      .catch( e => this.errorHandler.sendErrors(e) )
+      .then( () => this.form = new KeyName() );
   }
 
+
+  private pushUser(u: KeyName) {
+    let user = PlaceUser.clone(u);
+    this._users.push(user);
+
+    if(this.usersStats.getById(user.id) == null)
+      this.usersStats.push(PlaceUserStats.create(user.id));
+  }
 
   removeUser(user: PlaceUser) {
 

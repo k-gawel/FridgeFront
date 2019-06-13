@@ -10,8 +10,11 @@ import {HttpErrorResponse} from '@angular/common/http';
 })
 export class UserService {
 
+
   constructor(private api: AccountApiService) {
   }
+
+
 
   public getUser(id: number, refresh?: boolean): Promise<KeyName> {
 
@@ -38,5 +41,6 @@ export class UserService {
       })
 
   }
+
 
 }

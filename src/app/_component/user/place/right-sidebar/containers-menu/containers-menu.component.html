@@ -2,8 +2,9 @@
 
   <ul class="list-group" style="margin-bottom: 15px;"> <!--CONTAINERS MENU-->
 
-      <li class="list-group-item list-group-item-dark">Containers</li>
+      <li class="list-group-item list-group-item-dark" (click)="isCollapsed = !isCollapsed">Containers</li>
 
+      <div [ngbCollapse]="isCollapsed">
         <li style="cursor: default" [ngClass]="'list-group-item list-group-item-action' + (_chosenContainers.contains(container) ? '' : ' list-group-item-light')"
             *ngFor="let container of _containers.list" (click)="clickOnContainer(container)">
             {{container.name}}
@@ -18,8 +19,9 @@
           <!--BUTTON-->
           <button style="width: 20%; height: 50px;" type="submit" (click)="addContainer()">+</button>
 
-
         </li>
+      </div>
+
   </ul>
 
 </ng-container>
