@@ -6,7 +6,7 @@ import {BehaviorSubject, fromEvent} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class WindowServiceService {
+export class WindowService {
 
   constructor() {
   }

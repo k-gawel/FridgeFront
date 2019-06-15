@@ -3,7 +3,7 @@ import {Category} from '../../../../_models/request/Category';
 import {CategoryService} from '../../../../_service/user/category/category.service';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
-import {Size, WindowServiceService} from '../../../../_service/utils/window-service.service';
+import {Size, WindowService} from '../../../../_service/utils/window.service';
 
 @Component({
     selector: 'categories-menu',
@@ -18,7 +18,7 @@ export class CategoriesMenu implements OnInit {
     isCollapsed: boolean;
     constructor(private categoryService: CategoryService,
                 private errorHanddler: ErrorHandlerService,
-                windowService: WindowServiceService) {
+                windowService: WindowService) {
       windowService.$resize.subscribe(s => this.isCollapsed = s <= Size.SM);
     }
 

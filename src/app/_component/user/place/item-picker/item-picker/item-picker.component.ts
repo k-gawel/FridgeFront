@@ -8,7 +8,7 @@ import {ItemsList} from '../../../../../_models/request/item/ItemsList';
 import {Item} from '../../../../../_models/request/item/Item';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NewItemComponent} from '../new_item/new_item.component';
-import {Size, WindowServiceService} from '../../../../../_service/utils/window-service.service';
+import {Size, WindowService} from '../../../../../_service/utils/window.service';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class ItemPickerComponent implements OnInit {
   constructor(private itemService: ItemService,
               private relatedItemsService: RelatedItemsService,
               private modalService: NgbModal,
-              private windowService: WindowServiceService) {
+              private windowService: WindowService) {
     windowService.$resize.subscribe(s => this.isCollapsed = s <= Size.SM);
   }
 

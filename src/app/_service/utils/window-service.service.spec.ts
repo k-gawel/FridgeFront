@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WindowServiceService } from './window-service.service';
+import { WindowService } from './window.service';
 
-describe('WindowServiceService', () => {
+describe('WindowService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: WindowServiceService = TestBed.get(WindowServiceService);
+    const service: WindowService = TestBed.get(WindowService);
     expect(service).toBeTruthy();
   });
 });

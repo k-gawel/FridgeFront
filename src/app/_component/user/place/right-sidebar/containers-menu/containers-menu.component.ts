@@ -5,7 +5,7 @@ import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie
 import {ContainerService} from '../../../../../_service/user/place/container/container.service';
 import {ContainerForm} from '../../../../../_models/response/ContainerForm';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
-import {Size, WindowServiceService} from '../../../../../_service/utils/window-service.service';
+import {Size, WindowService} from '../../../../../_service/utils/window.service';
 
 @Component({
   selector: 'app-containers-menu',
@@ -13,6 +13,8 @@ import {Size, WindowServiceService} from '../../../../../_service/utils/window-s
   styleUrls: ['./containers-menu.component.css']
 })
 export class ContainersMenuComponent implements OnInit {
+
+
 
 
   _containers: ContainersList;
@@ -31,13 +33,8 @@ export class ContainersMenuComponent implements OnInit {
 
   @Output() chosenContainers = new EventEmitter<ContainersList>();
 
-  isCollapsed: boolean;
   constructor(private containersService: ContainerService,
-              private cookiesData: CookieDataService,
-              private windowService: WindowServiceService) {
-    this.windowService.$resize.subscribe(s => {
-      this.isCollapsed = s <= Size.SM;
-    });
+              private cookiesData: CookieDataService) {
     this.containerForm = new ContainerForm();
   }
 

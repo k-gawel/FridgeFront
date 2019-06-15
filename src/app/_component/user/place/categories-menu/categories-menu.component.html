@@ -1,22 +1,17 @@
 <div class="ctg-menu-btn-group" *ngIf="rootCategory != null">
 
-  <div>
-    <button class="button"
-            (click)="chooseCategory(rootCategory.isFinal() ? rootCategory.parent : rootCategory)">
-      {{rootCategory.isFinal() ? rootCategory.parent.name : rootCategory.name}}
-    </button>
-    <button class="button" (click)="isCollapsed = !isCollapsed">
-      <i [ngClass]="'fas fa-angle-' + (isCollapsed ? 'down' : 'up')"></i>
-    </button>
-  </div>
+  <li class="list-group-item list-group-item-secondary" appCollapsableListHeader
+          [title]="rootCategory.isFinal() ? rootCategory.parent.name : rootCategory.name"
+          collapseName="categoriesMenu"
+          (click)="chooseCategory(rootCategory.isFinal() ? rootCategory.parent : rootCategory)">
+  </li>
 
-  <div [ngbCollapse]="isCollapsed">
-    <button *ngFor="let category of rootCategory.isFinal() ? rootCategory.parent.children : rootCategory.children"
-            [ngClass]="'button' + (rootCategory.isFinal() && rootCategory.equals(category) ? ' active' : '')"
-            (click)="chooseCategory(category)" >
-      {{category.name}}
-    </button>
-  </div>
+
+  <button *ngFor="let category of rootCategory.isFinal() ? rootCategory.parent.children : rootCategory.children"
+          [ngClass]="'button' + (rootCategory.isFinal() && rootCategory.equals(category) ? ' active' : '')"
+          (click)="chooseCategory(category)" name="categoriesMenu">
+    {{category.name}}
+  </button>
 
 </div>
 

@@ -10,7 +10,7 @@ import {UserService} from '../../../../../_service/user/user/user.service';
 import {PlaceUserStats, PlaceUserStatsList} from '../../../../../_models/request/place/place-user-stats';
 import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
 import {PlaceUser} from '../../../../../_models/request/place-user/PlaceUser';
-import {Size, WindowServiceService} from '../../../../../_service/utils/window-service.service';
+import {Size, WindowService} from '../../../../../_service/utils/window.service';
 
 
 @Component({
@@ -33,13 +33,8 @@ export class UsersMenuComponent implements OnInit {
               private cookieDatas: CookieDataService,
               private placeService: PlaceService,
               private errorHandler: ErrorHandlerService,
-              private placeUserService: PlaceUserService,
-              private windowService: WindowServiceService) {
+              private placeUserService: PlaceUserService) {
     this.form.name = '';
-    windowService.$resize.subscribe(s => {
-      console.log("RESIZED ", s);
-      this.isCollapsed = s <= Size.SM;
-    })
   }
 
 
