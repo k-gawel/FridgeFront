@@ -38,7 +38,7 @@ export class PlaceApiService {
     params = params.append("userId", userId.toString());
     let header = this.api.getHeaderWithToken();
 
-    return this.api.put(url, params, null, header);
+    return this.api.put<boolean>(url, params, null, header);
   }
 
 
@@ -49,7 +49,7 @@ export class PlaceApiService {
     params = params.append("new_admin_id", newAdminId.toString());
     let header = this.api.getHeaderWithToken();
 
-    return this.api.put(url, params, null, header);
+    return this.api.put<boolean>(url, params, null, header);
   }
 
 
@@ -60,7 +60,7 @@ export class PlaceApiService {
     params = params.append("userId", userId.toString());
     let header = this.api.getHeaderWithToken();
 
-    return this.api.delete(url, header, params);
+    return this.api.delete<boolean>(url, header, params);
   }
 
 

@@ -21,10 +21,10 @@ export class PlaceComponent implements OnInit, OnDestroy {
   @Input()
   set place(value: KeyName) {
     this.placeService.getById(new IdSelector(value))
-      .then( (result: PlaceDetails) => {
+      .then((result: PlaceDetails) => {
         this._place = result;
-      } )
-      .catch( (e: ErrorMessage) => {
+      })
+      .catch((e: ErrorMessage) => {
         this.errorHandler.sendErrors(e);
       })
   }
@@ -79,8 +79,14 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
 
   @Output() leavedPlace = new EventEmitter<PlaceDetails>();
+
+  canLeavePlace(): boolean {
+    return !this.isAdmin() || this._place.users.size() === 1
+  }
+
+
   leavePlace() {
-    if(this.isAdmin() && this._place.users.size() > 1) {
+    if (!this.canLeavePlace()) {
       this.errorHandler.sendErrors(["You can't leave this placeId without an admin. Try to promote someone."]);
       return;
     }
@@ -89,13 +95,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
     keyName.id = this.cookieData.getUserId();
     this.placeService.removeUser(this._place, keyName)
       .then((res: boolean) => {
-        if(!res)
+        if (!res)
           this.errorHandler.sendErrors(["Couldn't remove you from this placeId..."]);
         else
           this.leavedPlace.emit(this._place);
       })
       .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e));
   }
-
 
 }

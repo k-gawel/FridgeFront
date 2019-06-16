@@ -1,0 +1,13 @@
+@media screen and (max-width: var(--breakpoint-sm)) {
+  .sidebar {
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: var(--breakpoint-sm)) {
+  .sidebar {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 15px;
+  }
+}

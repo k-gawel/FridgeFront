@@ -24,7 +24,6 @@ export class WishListMenuComponent implements OnInit {
               private placeService: PlaceService,
               private cookiesData: CookieDataService,
               private errorHandler: ErrorHandlerService) {
-
   }
 
 
@@ -90,5 +89,6 @@ export class WishListMenuComponent implements OnInit {
       element = list;
 
   }
+
 
 }

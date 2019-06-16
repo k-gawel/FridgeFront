@@ -43,7 +43,8 @@ import {
   MatMenuModule,
   MatToolbarModule
 } from '@angular/material';
-import { CollapsableListDirective } from './_component/user/place/right-sidebar/collapsable-list-dir/collapsable-list.directive';
+import { CollapsableListDirective } from './_component/user/place/right-sidebar/right-side-bar/collapsable-list.directive';
+import { RightSideBarComponent } from './_component/user/place/right-sidebar/right-side-bar/right-side-bar.component';
 
 
 const appRoutes: Routes = [];
@@ -76,7 +77,8 @@ const appRoutes: Routes = [];
     ItemDescriptionComponent,
     AccountManagmentComponent,
     UsersMenuComponent,
-    CollapsableListDirective
+    CollapsableListDirective,
+    RightSideBarComponent
   ],
   entryComponents: [
     NewInstanceFormComponent,

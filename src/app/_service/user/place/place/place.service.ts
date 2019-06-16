@@ -59,9 +59,7 @@ export class PlaceService {
   public addUser(place: PlaceDetails, user: KeyName): Promise<boolean> {
 
     return this.placeApi.addUser(place.id, user.id)
-      .then((res: boolean) => {
-        return res;
-      })
+      .then(res => res)
       .catch((e: HttpErrorResponse) => {
         throw new ErrorMessage(e.message);
       })
@@ -72,15 +70,11 @@ export class PlaceService {
   public changeAdmin(place: PlaceDetails, user: KeyName): Promise<boolean> {
 
     return this.placeApi.changeAdmin(place.id, user.id)
-      .then((res: boolean) => {
-        if(res) {
-          place.adminId = user.id;
-        }
+      .then(res => {
+        place.adminId = res ? user.id : place.adminId;
         return res;
       })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e.message);
-      })
+      .catch(e => new ErrorMessage(e.message));
 
   }
 
@@ -88,12 +82,8 @@ export class PlaceService {
   public removeUser(place: PlaceDetails, user: KeyName): Promise<boolean> {
 
     return this.placeApi.removeUser(place.id, user.id)
-      .then((res: boolean) => {
-        return res;
-      })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e.message);
-      })
+      .then(res => res)
+      .catch(e => new ErrorMessage(e.message));
 
   }
 

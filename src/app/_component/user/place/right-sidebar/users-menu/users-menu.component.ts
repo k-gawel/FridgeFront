@@ -27,7 +27,6 @@ export class UsersMenuComponent implements OnInit {
   usersList: KeyNameList = new KeyNameList();
   usersStats: PlaceUserStatsList;
 
-  isCollapsed: boolean;
 
   constructor(private userService: UserService,
               private cookieDatas: CookieDataService,
@@ -126,19 +125,16 @@ export class UsersMenuComponent implements OnInit {
 
 
   promoteUser(user: PlaceUser) {
-    if (this.isAdmin(user) || !this.isAdmin()) {
+    if (this.isAdmin(user) || !this.isAdmin())
       this.errorHandler.sendErrors(["You can't promote this user!"]);
-      return;
-    }
-
-    this.placeService.changeAdmin(this._place, user)
-      .then((res: boolean) =>{
-        if(!res)
-          this.errorHandler.sendErrors(["Couldn't promote this user"]);
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      })
+    else
+      this.placeService.changeAdmin(this._place, user)
+        .then((res: boolean) =>{
+          if(!res) this.errorHandler.sendErrors(["Couldn't promote this user"]);
+        })
+        .catch((e: ErrorMessage) => {
+          this.errorHandler.sendErrors(e);
+        })
   }
 
 

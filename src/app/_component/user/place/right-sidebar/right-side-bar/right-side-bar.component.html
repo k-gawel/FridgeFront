@@ -1,0 +1,20 @@
+<ul class="list-group" style="cursor: default; margin-bottom: 15px;">
+
+  <li class="list-group-item list-group-item-dark" appCollapsableListHeader title="USERS" collapseName="usersList"></li>
+  <app-users-menu name="usersList" [place]="_place"></app-users-menu>
+
+</ul>
+
+<ul class="list-group" style="cursor: default; margin-bottom: 15px;">
+
+  <li class="list-group-item list-group-item-dark" appCollapsableListHeader title="CONTAINERS" collapseName="containersList"></li>
+  <app-containers-menu name="containersList" (chosenContainers)="chosenContainers.emit($event)" [place]="_place"></app-containers-menu>
+
+</ul>
+
+<ul class="list-group" style="cursor: default; margin-bottom: 15px;">
+
+  <li class="list-group-item list-group-item-dark" appCollapsableListHeader title="WISHLSIT" collapseName="wishListList"></li>
+  <app-wish-list-menu name="wishListList" (selectedWishList)="selectedWishList.emit($event)" [place]="_place"></app-wish-list-menu>
+
+</ul>

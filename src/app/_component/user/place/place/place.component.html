@@ -1,27 +1,31 @@
 <ng-container *ngIf="_place != null">
 
-  <div class="row" style="display: flex; justify-content: space-between; margin-left: 0; margin-right: 0; padding-left: 15px; padding-right: 15px;">
-    <h1>{{_place.name}} {{_place.id}}</h1>
-    <h1 *ngIf="!isAdmin() || _place.users.size() === 1" (click)="leavePlace()">LEAVE PLACE</h1>
+  <div id="place-header" class="row">
+    <h1 class="col-6">
+      {{_place.name}}
+    </h1>
+    <button class="col-6"
+      *ngIf="canLeavePlace()" (click)="leavePlace()">
+      LEAVE PLACE
+    </button>
   </div>
 
-  <div class="row" style="margin-left: 0; margin-right: 0">
+  <div id="place-body" class="row" style="margin-left: 0; margin-right: 0">
 
-    <div id="place-details" class="col-sm-12 col-md-6 col-lg-2 order-lg-12" style="margin-left: 0; margin-right: 0; padding: 15px;">
-
-      <app-users-menu [place]="_place"></app-users-menu>
-      <app-containers-menu [place]="_place" (chosenContainers)="setChosenContainers($event)"></app-containers-menu>
-      <app-wish-list-menu [place]="_place" (selectedWishList)="setWishList($event)"></app-wish-list-menu>
-
+    <div id="place-details" class="col-sm-12 col-md-6 col-lg-2 order-lg-12">
+      <app-right-side-bar [place]="_place" class="sidebar"
+        (chosenContainers)="setChosenContainers($event)"
+        (selectedWishList)="setWishList($event)">
+      </app-right-side-bar>
     </div>
 
 
-    <div id="categories" class="col-sm-12 col-md-6 col-lg-2 order-lg-1" style="margin-left: 0; margin-right: 0; padding: 15px;">
-      <categories-menu (chosenCategory)="setChosenCategory($event)"></categories-menu>
+    <div id="categories" class="col-sm-12 col-md-6 col-lg-2 order-lg-1" >
+      <categories-menu (chosenCategory)="setChosenCategory($event)" class="sidebar"></categories-menu>
     </div>
 
 
-    <div id="place-items" class="col-sm-12 col-md-12 col-lg-8 order-lg-2" style="margin-left: 0; margin-right: 0; padding: 15px">
+    <div id="place-main" class="col-sm-12 col-md-12 col-lg-8 order-lg-2">
         <app-wish-list *ngIf="content == 'WISHLIST'" [wishList]="contentParams" (closeWishList)="setItems()"></app-wish-list>
         <app-place-items-scene *ngIf="content === 'ITEMS' && _chosenCategory != null" [category]="_chosenCategory" [place]="_place"  [containers]="_chosenContainers"></app-place-items-scene>
     </div>

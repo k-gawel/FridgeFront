@@ -1,26 +1,20 @@
 <ng-container *ngIf="_containers != null">
 
-  <ul class="list-group" style="margin-bottom: 15px;"> <!--CONTAINERS MENU-->
+   <li style="cursor: default" [ngClass]="'list-group-item list-group-item-action' + (_chosenContainers.contains(container) ? '' : ' list-group-item-light')"
+       *ngFor="let container of _containers.list" (click)="clickOnContainer(container)">
+      {{container.name}}
+   </li>
 
-      <li class="list-group-item list-group-item-secondary" collapseName="containersList" title="CONTAINERS" appCollapsableListHeader></li>
+   <li class="list-group-item" style="padding: 0" *ngIf="isAdmin()"> <!--NEW CONTAINER FORM-->
 
+      <!--INPUT-->
+      <input autocomplete="off" type="text" class="dropdown-toggle" data-toggle="dropdown" [(ngModel)]="containerForm.name" name="name"
+             placeholder="add new container" style="width: 80%; height: 50px; border: none; padding-left: 10%;"/>
 
-      <li style="cursor: default" [ngClass]="'list-group-item list-group-item-action' + (_chosenContainers.contains(container) ? '' : ' list-group-item-light')"
-          name="containersList" *ngFor="let container of _containers.list" (click)="clickOnContainer(container)">
-          {{container.name}}
-      </li>
+      <!--BUTTON-->
+      <button style="width: 20%; height: 50px;" type="submit" (click)="addContainer()">+</button>
 
-      <li name="containersList" class="list-group-item" style="padding: 0" *ngIf="isAdmin()"> <!--NEW CONTAINER FORM-->
+    </li>
 
-        <!--INPUT-->
-        <input autocomplete="off" type="text" class="dropdown-toggle" data-toggle="dropdown" [(ngModel)]="containerForm.name" name="name"
-               placeholder="add new container" style="width: 80%; height: 50px; border: none; padding-left: 10%;"/>
-
-        <!--BUTTON-->
-        <button style="width: 20%; height: 50px;" type="submit" (click)="addContainer()">+</button>
-
-      </li>
-
-  </ul>
 
 </ng-container>

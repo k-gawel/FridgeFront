@@ -10,7 +10,11 @@ export class CollapsableListDirective implements OnInit {
   readonly angleDownClass = "fa fa-2x fa-angle-down";
 
   @Input() collapseName: string;
-  @Input() title: string;
+  @Input() set title(value: string) {
+    console.log("TITLE NODE INIT", value);
+    this.titleNode = this.getTitleNode(value);
+    console.log("TITLE NODE ON INPIUT", this.titleNode);
+  }
 
   titleNode;
 
@@ -26,7 +30,7 @@ export class CollapsableListDirective implements OnInit {
 
   ngOnInit() {
     this.nL.style.display = "flex";
-    this.titleNode = this.getTitleNode();
+    console.debug("TITLE NODE ON INIT", this.titleNode);
     this.nL.appendChild(this.titleNode);
     this.nL.appendChild(this.iconNodeNone);
 
@@ -59,16 +63,21 @@ export class CollapsableListDirective implements OnInit {
     document.getElementsByName(this.collapseName).forEach(e => e.style.display = value);
   }
 
-  getTitle() {
+  getTitle(title: string) {
     let textNode = document.createElement("H6");
-    textNode.appendChild(document.createTextNode(this.title));
+    textNode.appendChild(document.createTextNode(title));
     return textNode;
   }
 
-  getTitleNode() {
+  getTitleNode(title: string) {
     let titleNode = document.createElement("SPAN");
     titleNode.style.width = "80%";
-    titleNode.appendChild(this.getTitle());
+    titleNode.style.textAlign = "center";
+    try {
+      titleNode.replaceChild(this.getTitle(title), titleNode.firstChild);
+    } catch (e) {
+      titleNode.appendChild(this.getTitle(title));
+    }
     return titleNode;
   }
 
