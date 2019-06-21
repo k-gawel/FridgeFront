@@ -1,62 +1,37 @@
-import {Form} from './Form';
+import {WishListItem} from './WishListItem';
+import {KeyName} from './KeyName';
 
-export class WishListForm extends Form {
+export class WishList extends KeyName {
 
-    name: string;
-    place: number;
-    description: string;
+    public status: boolean;
 
-    validate(): boolean {
-      super.validate();
-      return this.validateName() && this.validatePlace() && this.validateDescription();
-    }
+    public description: string;
+    public placeId: number;
 
-    validateName(): boolean {
+    public wishListItems: WishListItem[];
 
-      if(this.name == null || this.name == '') {
-        this.sendMessage("name.null");
-        return false;
-      }
+    public constructor(json?: JSON | JSON[]) {
+      super();
 
-      if(this.name.length < 5) {
-        this.sendMessage("name.short");
-        return false;
-      }
+      if (json == undefined)
+        return;
 
-      if(this.name.length > 30) {
-        this.sendMessage("name.long");
-        return false;
-      }
+      json = json instanceof Array ? json[0] : json;
 
-      return true;
+      this.id = json['id'];
+      this.placeId = json['placeId'];
+      this.status = json['status'];
+
+      this.name = json['name'];
+      this.description = json['description'];
+
+      this.wishListItems = json['items'].map(WishListItem);
 
     }
 
-    validatePlace(): boolean {
-
-      if(this.place == null) {
-        this.sendMessage("place.null");
-        return false;
-      }
-
-      if(typeof this.place !== 'number') {
-        this.sendMessage("place.notnumber");
-        return false;
-      }
-
-      return true;
-
-    }
-
-    validateDescription(): boolean {
-
-      if(this.description.length > 10000) {
-        this.sendMessage("description.long");
-        return false;
-      }
-
-      return true;
-
+    public pushNewItem(listItem: WishListItem) {
+        this.wishListItems.push(listItem);
     }
 
 }
+

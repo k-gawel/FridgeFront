@@ -64,7 +64,6 @@ export class KeyNameList extends EntityList {
 
     }
 
-
     public static fromJSON(json: JSON[]): KeyNameList {
 
     let result = new KeyNameList();

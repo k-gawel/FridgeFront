@@ -19,6 +19,9 @@ export class ProducersList extends KeyNameList {
   public list: Producer[] = [];
   public static ALL: ProducersList = new ProducersList();
 
+  public constructor(json?: JSON) {
+    super()
+  }
 
   public getById(id: number): Producer {
     return <Producer> super.getById(id);

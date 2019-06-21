@@ -14,7 +14,7 @@ export class Item extends KeyName {
 
     description: string;
     storage: string;
-    netWeight: number;
+    capacity: string;
 
     allergens: Allergen[];
     ingredients: Ingredient[];
@@ -37,7 +37,7 @@ export class Item extends KeyName {
 
         this.description = json['description'];
         this.storage = json['storage'];
-        this.netWeight = json['netWeight'];
+        this.capacity = json['capacity'];
 
         this.allergens = json['allergens'].map(a => new Allergen(a));
         this.ingredients = json['ingredients'].map(i => new Ingredient(i));
