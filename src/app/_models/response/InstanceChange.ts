@@ -11,51 +11,34 @@ export class InstanceChange extends Entity {
   changeDate: Date;
   changeType: string;
 
-  constructor() {
-    super();
+  constructor(json?: JSON) {
+    super(json);
+    
+    if(json == undefined) return;
+
+    this.id = json['id'];
+    this.accountId = json['accountId'];
+    this.instance = new ItemInstance(json['instance']);
+    this.changeDate = new Date(InstanceChangeType[json['changeDate']]);
+    this.changeType = InstanceChangeType[Number(json['changeType'])];
   }
-
-  public static fromJSON(json: JSON): InstanceChange {
-    let result = new InstanceChange();
-
-    result.id = json['id'];
-    result.accountId = json['accountId'];
-    result.instance = new ItemInstance(json['instance']);
-    result.changeDate = new Date(InstanceChangeType[json['changeDate']]);
-    result.changeType = InstanceChangeType[Number(json['changeType'])];
-
-    return result;
-  }
-
+  
 }
 
 export class InstanceChangeList extends EntityList {
 
-
+  list: InstanceChange[] = [];
   items: ItemsList;
   users: KeyNameList;
   containers: KeyNameList;
 
-  constructor() {
+  constructor(json?: JSON[]) {
     super();
-  }
 
-  public static fromJSON(json: JSON): InstanceChangeList {
-
-    let result = new InstanceChangeList();
-
-    result.users = KeyNameList.fromJSON(json['users']);
-    result.containers = KeyNameList.fromJSON(json['_containers']);
-    result.items = new ItemsList(json['items']);
-
-    (<JSON[]> json['changes']).forEach( (e: JSON) => {
-      result.list.push(InstanceChange.fromJSON(e))
-    } );
-
-    console.log("RESULT CHANGES LIST")
-    console.log(result);
-
-    return result;
+    this.users = new KeyNameList(json['users']);
+    this.containers = new KeyNameList(json['_containers']);
+    this.items = new ItemsList(json['items']);
+    this.list = (<JSON[]> json['changes']).map(j => new InstanceChange(j));
   }
 
   public toString(id: number): string {
@@ -80,5 +63,4 @@ export enum InstanceChangeType {
   'opened',
   'frozed',
   'unfrozed'
-
 }
