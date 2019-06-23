@@ -8,20 +8,14 @@ export class PlaceUsersList extends KeyNameList {
 
     constructor(json?: JSON[]) {
         super();
-        this.list = [];
 
-        if(json == undefined)
-          return;
-
-        json.forEach( (element: JSON) => {
-          this.list.push(new PlaceUser(element));
-        })
+        this.list = json != undefined ?
+          (<JSON[]> json).map(j => new PlaceUser(j)) : []
 
     }
 
 
     public push(user: PlaceUser): PlaceUsersList {
-
       let existing: PlaceUser = this.getById(user.id);
 
       if(existing == null)
@@ -46,13 +40,8 @@ export class PlaceUsersList extends KeyNameList {
 
 
     public getByStatus(status: boolean): PlaceUsersList {
-        let result: PlaceUsersList = new PlaceUsersList;
-
-        for(let user of this.list) {
-            if(user.status === status)
-                result.push(user);
-        }
-
+        let result: PlaceUsersList = new PlaceUsersList();
+        result.list = this.list.filter(p => p.status === status);
         return result;
     }
 
