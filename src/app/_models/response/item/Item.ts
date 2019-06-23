@@ -2,6 +2,7 @@ import {KeyName} from '../KeyName';
 import {Category} from '../Category';
 import {Producer} from './Producer';
 import {Entity} from '../Entity';
+import {ItemsList} from './ItemsList';
 
 
 export class Item extends KeyName {
@@ -43,6 +44,7 @@ export class Item extends KeyName {
         this.ingredients = json['ingredients'].map(i => new Ingredient(i));
         this.nutrition = new Nutrition(json['nutrition']);
 
+        ItemsList.ALL.push(this);
     }
 
 }
@@ -80,13 +82,14 @@ export class Ingredient extends KeyName {
 
 export class Nutrition extends Entity {
 
-    energy: number;
-    fat: number;
-    saturatedFat: number;
-    carbohydrate: number;
-    sugar: number;
-    protein: number;
-    salt: number;
+  energy_KCAL: number;
+  energy_KJ: number;
+  fat: number;
+  saturatedFat: number;
+  carbohydrate: number;
+  sugar: number;
+  protein: number;
+  salt: number;
 
 
     constructor(json?: JSON) {
@@ -95,7 +98,8 @@ export class Nutrition extends Entity {
       if(json == null)
         return;
 
-      this.energy = json['energy'];
+      this.energy_KJ = json['energyKj'];
+      this.energy_KCAL = json['energyKcal']
       this.fat = json['fat'];
       this.saturatedFat = json['saturatedFat'];
       this.carbohydrate = json['carbohydrate'];

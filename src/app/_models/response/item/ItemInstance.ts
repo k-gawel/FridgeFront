@@ -1,5 +1,6 @@
 import {Entity} from '../Entity';
 import {LocalDate} from '../../../_util/date/JavaLocalDate';
+import {ItemInstancesList} from './ItemInstancesList';
 
 export class ItemInstance extends Entity {
 
@@ -52,13 +53,13 @@ export class ItemInstance extends Entity {
       this.deletedById = json['deletedById'];
       if(json['deletedOn'])
         this.deletedOn = new LocalDate(json['deletedOn']);
-    }
 
+      ItemInstancesList.ALL.push(this);
+    }
 
     public isOpen(): boolean {
       return this.openOn != null;
     }
-
 
     public isDeleted(): boolean {
       return this.deletedOn != null;

@@ -20,7 +20,7 @@ export class ItemsList extends KeyNameList {
   public getById(id: number): Item {
     return <Item> super.getById(id);
   }
-  
+
   public getByIds(ids: number[]): ItemsList {
     return <ItemsList> super.getByIds(ids);
   }
