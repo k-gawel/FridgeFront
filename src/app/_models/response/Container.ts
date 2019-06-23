@@ -1,9 +1,11 @@
 import {KeyName, KeyNameList} from './KeyName';
 import {Entity, EntityList} from './Entity';
+import {ItemInstancesList} from './item/ItemInstancesList';
+import {IdSelector} from '../../_service/utils/EntitySelector';
 
-export class Container extends KeyName{
-
+export class Container extends KeyName {
     place: number;
+    instances: ItemInstancesList;
 
     constructor(json?: JSON) {
       super();
@@ -13,13 +15,14 @@ export class Container extends KeyName{
 
       this.id = json['id'];
       this.name = json['name'];
-      this.place = json['placeId'];
+      this.place = json['place_id'];
+      this.instances = new ItemInstancesList(json['instances']);
+
       ContainersList.ALL.push(this);
     }
-
 }
 
-export class ContainersList extends KeyNameList{
+export class ContainersList extends KeyNameList {
 
     public list: Container[] = [];
     public static ALL: ContainersList = new ContainersList();
@@ -31,15 +34,11 @@ export class ContainersList extends KeyNameList{
       if(json == null)
         return;
 
-      json.forEach((element: JSON) => {
-        this.list.push(new Container(element));
-      })
-
+      this.list = json.map(j => new Container(j));
     }
 
 
     public push(container: Container): ContainersList {
-
       let existingContainer = this.getById(container.id);
 
       if(existingContainer == null)
@@ -47,6 +46,7 @@ export class ContainersList extends KeyNameList{
       else {
         existingContainer.name = container.name;
         existingContainer.place = container.place;
+        existingContainer.instances = container.instances;
       }
 
       return this;
@@ -64,19 +64,10 @@ export class ContainersList extends KeyNameList{
 
 
     public getByPlaces(places: number | Entity | number[] | EntityList): ContainersList {
+      let ids = new IdSelector(places).id;
 
-      let placeIds: number[] = [];
-
-      if(typeof places === 'number')
-        placeIds.push(places);
-      else if(places instanceof Entity)
-        placeIds.push(places.id);
-      else if(places instanceof EntityList)
-        placeIds = places.getAllIds();
-
-      let result = new ContainersList();
-      result.list = this.list.filter(e => placeIds.includes(e.place));
-
+      const result = new ContainersList();
+      result.list = this.list.filter(e => ids.includes(e.place));
       return result;
     }
 

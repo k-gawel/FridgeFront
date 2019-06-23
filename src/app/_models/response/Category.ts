@@ -30,35 +30,27 @@ export class Category extends Entity {
       });
     }
 
-
     public isFinal(): boolean {
         return this.children == null || this.children.length == 0;
     }
 
-
     public addChild(child: KeyName) {
-
-        if(this.isFinal()) {
-            return;
-        }
+      if(this.isFinal())
+          return;
 
       let categoryChild = new Category();
       categoryChild.id = child.id;
-        categoryChild.name = child.name;
-        categoryChild.parent = this;
+      categoryChild.name = child.name;
+      categoryChild.parent = this;
 
-        this.children.push(categoryChild);
-
+      this.children.push(categoryChild);
     }
-
 
     public equals(category: Category): boolean {
       return category != null && category.id == this.id;
     }
 
-
     public getTrack(): Category[] {
-
       let result: Category[] = [];
       let category: Category = this;
 
@@ -70,16 +62,13 @@ export class Category extends Entity {
         return result;
     }
 
-
     public static getById(id: number): Category {
 
         return this.getByIdInChildren(id, Category.rootCategory);
 
     }
 
-
     private static getByIdInChildren(id: number, parent: Category): Category {
-
       let result = null;
 
       if(parent.id == id)
@@ -97,19 +86,15 @@ export class Category extends Entity {
             }
         }
 
-
-
         return result;
     }
 
-
     getFinalCategories(): Category[] {
-
       let result: Category[] = [];
 
-      if(this.isFinal()) {
+      if(this.isFinal())
         result.push(this);
-      } else {
+      else {
         for(let category of this.children) {
           let categories = category.getFinalCategories();
           categories.forEach((c: Category) => result.push(c));
@@ -117,8 +102,6 @@ export class Category extends Entity {
       }
 
       return result;
-
     }
-
 
 }

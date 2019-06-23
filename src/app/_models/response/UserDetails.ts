@@ -48,12 +48,12 @@ export class UserDetailsList extends KeyNameList {
         var result: KeyNameList = new KeyNameList();
 
         json.forEach( (element: JSON) => {
-            var userDetails = UserDetails.fromJSON(element);
+            var userDetails = new UserDetails(element);
             result.push(userDetails);
             let userKeyName = new KeyName();
             userKeyName.id = userDetails.id;
             userKeyName.name = userDetails.name;
-        })
+        });
 
         return result;
 
