@@ -14,6 +14,8 @@ export class ItemsList extends KeyNameList {
     if (json == undefined)
       return;
 
+    console.log("JSON", json);
+
     this.list = json.map(j => new Item(j));
   }
 

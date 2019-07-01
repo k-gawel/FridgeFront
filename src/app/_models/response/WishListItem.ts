@@ -14,7 +14,7 @@ export class WishListItem extends Entity {
     public addedOn: Date;
     public addedInstance: number | ItemInstance;
     public comment: string;
-    public category: number | Category;
+    public category: Category;
     public item: number | Item;
 
     constructor(json?: JSON | JSON[]) {

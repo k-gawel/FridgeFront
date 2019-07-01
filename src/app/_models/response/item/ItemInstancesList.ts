@@ -102,15 +102,17 @@ export class ItemInstancesList extends EntityList {
     }
   }
 
-  public filterByOpen(open: boolean): ItemInstancesList {
+  public filterByOpen(open: boolean | null): ItemInstancesList {
     const result = new ItemInstancesList();
-    result.list = this.list.filter(i => i.isOpen() == open);
+    result.list = open != null ?
+      this.list.filter(i => i.isOpen() == open) : [].concat(this.list);
     return result;
   }
 
-  public filterByDeleted(deleted: boolean): ItemInstancesList {
+  public filterByDeleted(deleted: boolean | null): ItemInstancesList {
     const result = new ItemInstancesList();
-    result.list = this.list.filter(i => i.isDeleted() == deleted);
+    result.list = deleted != null ?
+      this.list.filter(i => i.isDeleted() == deleted) : [].concat(this.list);
     return result;
   }
 

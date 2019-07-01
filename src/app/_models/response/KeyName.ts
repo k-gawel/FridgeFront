@@ -37,7 +37,7 @@ export class KeyNameList extends EntityList {
       let keys = Object.keys(json);
       this.list = keys.map(k => {
         let result = new KeyName();
-        result.id = <number> k;
+        result.id = Number.parseInt(k);
         result.name = json[k];
         return result;
       });

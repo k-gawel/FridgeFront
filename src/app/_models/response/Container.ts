@@ -2,6 +2,8 @@ import {KeyName, KeyNameList} from './KeyName';
 import {Entity, EntityList} from './Entity';
 import {ItemInstancesList} from './item/ItemInstancesList';
 import {IdSelector} from '../../_service/utils/EntitySelector';
+import {ItemInstance} from './item/ItemInstance';
+import {PlaceDetails, PlaceDetailsList} from './PlaceDetails';
 
 export class Container extends KeyName {
     place: number;
@@ -71,5 +73,24 @@ export class ContainersList extends KeyNameList {
       return result;
     }
 
+
+    public getAllInstances(): ItemInstancesList {
+      let list: ItemInstance[][] = this.list.map(c => c.instances.toArray());
+      let result = new ItemInstancesList();
+      list.forEach(l => l.forEach(ii => result.addInstance(ii)));
+      return result;
+    }
+
+
+    public getPlace(): PlaceDetails {
+      if(this.list.length == 0) return null;
+
+      let firstID = this.list[0].place;
+
+      if(this.list.filter(i => i.place == firstID).length == this.list.length)
+        return PlaceDetailsList.ALL.getById(firstID);
+      else
+        return null;
+    }
 
 }

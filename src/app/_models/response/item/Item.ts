@@ -15,7 +15,7 @@ export class Item extends KeyName {
 
     description: string;
     storage: string;
-    capacity: string;
+    capacity: Capacity;
 
     allergens: Allergen[];
     ingredients: Ingredient[];
@@ -38,7 +38,7 @@ export class Item extends KeyName {
 
         this.description = json['description'];
         this.storage = json['storage'];
-        this.capacity = json['capacity'];
+        this.capacity = new Capacity(<string> json['capacity']);
 
         this.allergens = json['allergens'].map(a => new Allergen(a));
         this.ingredients = json['ingredients'].map(i => new Ingredient(i));
@@ -99,7 +99,7 @@ export class Nutrition extends Entity {
         return;
 
       this.energy_KJ = json['energyKj'];
-      this.energy_KCAL = json['energyKcal']
+      this.energy_KCAL = json['energyKcal'];
       this.fat = json['fat'];
       this.saturatedFat = json['saturatedFat'];
       this.carbohydrate = json['carbohydrate'];
@@ -109,5 +109,22 @@ export class Nutrition extends Entity {
 
     }
 
+
+}
+
+export class Capacity {
+  value: number;
+  unit: string;
+
+  constructor(string: string) {
+    if(string == null) return;
+
+    this.value = Number.parseFloat(string.split(";")[0]);
+    this.unit  = string.split(";")[1];
+  }
+
+  toString(): string {
+    return this.value + this.unit;
+  }
 
 }

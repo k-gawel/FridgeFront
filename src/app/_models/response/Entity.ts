@@ -70,8 +70,8 @@ export class EntityList {
     }
 
     public remove(entity: Entity | number): EntityList {
-      entity = typeof entity === 'number' ? this.getById(entity) : entity;
-      this.list.filter(e => !e.equals(entity));
+      let en: Entity = typeof entity === 'number' ? this.getById(entity) : entity;
+      this.list.filter(e => !e.equals(en));
       return this;
     }
 

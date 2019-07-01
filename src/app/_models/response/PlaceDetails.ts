@@ -2,6 +2,7 @@ import {KeyName, KeyNameList} from './KeyName';
 import {PlaceUsersList} from './place-user/PlaceUsersList';
 import {ContainersList} from './Container';
 import {PlaceUser} from './place-user/PlaceUser';
+import {WishList} from './WishList';
 
 export class PlaceDetails extends KeyName{
 
@@ -9,6 +10,7 @@ export class PlaceDetails extends KeyName{
 
     containers: ContainersList;
     users: PlaceUsersList;
+    wishLists: WishList[];
 
     constructor(json?: JSON) {
       super();
@@ -22,6 +24,9 @@ export class PlaceDetails extends KeyName{
 
       this.containers = new ContainersList(json['containers']);
       this.users = new PlaceUsersList(json['users']);
+      this.wishLists = (<JSON[]> json['wish_lists']).map(j => new WishList(j));
+
+      PlaceDetailsList.ALL.push(this);
     }
 
 
@@ -63,9 +68,10 @@ export class PlaceDetailsList extends KeyNameList {
 
     }
 
-
-    public static getById(id: number) {
-        return this.ALL.getById(id);
+    public getById(id: number): PlaceDetails {
+      return <PlaceDetails> super.getById(id);
     }
+
+
 
 }
