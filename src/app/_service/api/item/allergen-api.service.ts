@@ -7,12 +7,12 @@ import {HttpParams} from '@angular/common/http';
 })
 export class AllergenApiService {
 
-  url: string = this.api.url + "ingredient/";
+  url: string = this.api.url + "allergens";
 
   constructor(private api: ApiService) { }
 
   public getByIds(ids: number[] | number) {
-    let url = this.url + "get";
+    let url = this.url;
     let params: HttpParams = new HttpParams();
     params = params.append("ids", ids.toString());
 
@@ -20,17 +20,8 @@ export class AllergenApiService {
   }
 
 
-  public getByName(name: string) {
-    let url = this.url + "get";
-    let params: HttpParams = new HttpParams();
-    params = params.append("name", name);
-
-    return this.api.get(url, null, params);
-  }
-
-
   public searchByName(name: string) {
-    let url = this.url + "search";
+    let url = this.url;
     let params: HttpParams = new HttpParams();
     params = params.append("name", name);
 
@@ -39,7 +30,7 @@ export class AllergenApiService {
 
 
   public getWhereNameStartsWith(nameStart: string) {
-    let url = this.url + "search";
+    let url = this.url;
     let params = new HttpParams();
     params = params.append("nameStart", nameStart);
 

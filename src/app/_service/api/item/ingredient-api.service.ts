@@ -7,13 +7,13 @@ import {ApiService} from '../api/api.service';
 })
 export class IngredientApiService {
 
-  url: string = this.api.url + "ingredient/";
+  url: string = this.api.url + "ingredients";
 
   constructor(private api: ApiService) {}
 
 
   public getByIds(ids: number[] | number) {
-    let url = this.url + "get";
+    let url = this.url;
     let params: HttpParams = new HttpParams();
     params = params.append("ids", ids.toString());
 
@@ -21,17 +21,8 @@ export class IngredientApiService {
   }
 
 
-  public getByName(name: string) {
-    let url = this.url + "get";
-    let params: HttpParams = new HttpParams();
-    params = params.append("name", name);
-
-    return this.api.get(url, null, params);
-  }
-
-
   public searchByName(name: string) {
-    let url = this.url + "search";
+    let url = this.url;
     let params: HttpParams = new HttpParams();
     params = params.append("name", name);
 
@@ -40,7 +31,7 @@ export class IngredientApiService {
 
 
   public getWhereNameStartsWith(nameStart: string) {
-    let url = this.url + "search";
+    let url = this.url;
     let params = new HttpParams();
     params = params.append("nameStart", nameStart);
 

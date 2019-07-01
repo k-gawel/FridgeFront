@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
-import {HttpHeaders} from '@angular/common/http';
+import {HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 
 @Injectable({
   providedIn: 'root'

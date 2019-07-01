@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
-import {WishListItemForm} from '../../../_models/response/WishListItemForm';
-import {ItemInstanceForm} from '../../../_models/response/ItemInstanceForm';
+import {WishListItemForm} from '../../../_models/request/WishListItemForm';
+import {ItemInstanceForm} from '../../../_models/request/ItemInstanceForm';
 import {HttpParams} from '@angular/common/http';
 
 @Injectable({
@@ -9,26 +9,24 @@ import {HttpParams} from '@angular/common/http';
 })
 export class WishListItemApiService {
 
-  private url: string = this.api.url + "wishListItem/";
+  private url: string = this.api.url + "wish_list_items";
 
   constructor(private api: ApiService) {
   }
 
   public newItem(form: WishListItemForm) {
-    let url = this.url + "new";
+    let url = this.url;
     let body = form;
     let header = this.api.getHeaderWithToken();
 
     return this.api.post(url, body, header);
   }
 
-  public addInstance(wishListItemId: number, instanceForm: ItemInstanceForm) {
-
-    let url = this.url + wishListItemId + "/addInstance";
+  public addInstance(wishListItemId: number, instanceId: number) {
+    let url = this.url + "/" + wishListItemId + "/instanes/" + instanceId;
     let header = this.api.getHeaderWithToken();
-    let body = instanceForm;
 
-    return this.api.post(url, body, header);
+    return this.api.post(url, null, header);
   }
 
   public get(id: number | number[]) {

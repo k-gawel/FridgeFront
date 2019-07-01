@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
-import {ItemForm} from '../../../_models/response/ItemForm';
+import {ItemForm} from '../../../_models/request/ItemForm';
 import {HttpParams} from '@angular/common/http';
 
 @Injectable({
@@ -8,12 +8,12 @@ import {HttpParams} from '@angular/common/http';
 })
 export class ItemApiService {
 
-  private url: string = this.api.url + "item/";
+  private url: string = this.api.url + "items";
 
   constructor(private api: ApiService) {}
 
   public newItem(form: ItemForm) {
-    let url = this.url + "newItem";
+    let url = this.url;
     let body = form;
     let header = this.api.getHeaderWithToken();
 
@@ -22,7 +22,8 @@ export class ItemApiService {
 
   public search(itemIds: number | number[], placeIds: number | number[], name: string,
                 barcode: Number, category: Number) {
-    let url = this.url + "search";
+    let url = this.url;
+
     let header = this.api.getHeaderWithToken();
     let params = new HttpParams();
     if(itemIds != null)

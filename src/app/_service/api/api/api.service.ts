@@ -52,6 +52,7 @@ export class ApiService {
   }
 
   public post(url: string, body: any, headers: HttpHeaders) {
+    headers = headers.append("Content-Type","application/json");
     return this.http.post(url, body, {headers: headers}).toPromise();
   }
 

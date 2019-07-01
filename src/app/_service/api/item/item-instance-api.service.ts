@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
-import {ItemInstanceForm} from '../../../_models/response/ItemInstanceForm';
+import {ItemInstanceForm} from '../../../_models/request/ItemInstanceForm';
 import {HttpParams} from '@angular/common/http';
 
 @Injectable({
@@ -8,29 +8,29 @@ import {HttpParams} from '@angular/common/http';
 })
 export class ItemInstanceApiService {
 
-  private url = this.api.url + "itemInstance/";
+  private url = this.api.url + "item_instances";
 
   constructor(private api: ApiService) { }
 
   public newItemInstance(form: ItemInstanceForm) {
-    let url = this.url + "new";
+    let url = this.url;
     let body = form;
     let header = this.api.getHeaderWithToken();
 
     return this.api.post(url, body, header);
   }
 
+
   public get(ids: number | number[], items: number | number[], places: number | number[],
              containers: number | number[], owners: number | number[], deleted: Boolean,
              open: Boolean, frozen: Boolean, limit: Number) {
-
     let idsString = ApiService.numbersArrayToString(ids);
     let itemsString = ApiService.numbersArrayToString(items);
     let placesString = ApiService.numbersArrayToString(places);
     let containersString = ApiService.numbersArrayToString(containers);
     let ownersString = ApiService.numbersArrayToString(owners);
 
-    let url = this.url + "get";
+    let url = this.url;
     let params = new HttpParams();
     if(idsString != '')
       params = params.append("ids", idsString);
@@ -56,9 +56,9 @@ export class ItemInstanceApiService {
     return this.api.get(url, header, params);
   }
 
-  public update(instanceId: number, _delete: Boolean, open: Boolean, frozenOrUnfroze: Boolean) {
 
-    let url = this.url + "update/" + instanceId;
+  public update(instanceId: number, _delete: Boolean, open: Boolean, frozenOrUnfroze: Boolean) {
+    let url = this.url + "/" + instanceId;
     let header = this.api.getHeaderWithToken();
     let params = new HttpParams();
     if(_delete != null)

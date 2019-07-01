@@ -1,21 +1,21 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
 import {HttpParams} from '@angular/common/http';
-import {ContainerForm} from '../../../_models/response/ContainerForm';
+import {ContainerForm} from '../../../_models/request/ContainerForm';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContainerApiService {
 
-  private url = this.api.url + "container/";
+  private url = this.api.url + "containers";
 
   constructor(private api: ApiService) {
   }
 
 
   public addNewContainer(form: ContainerForm) {
-    let url = this.url + "addNewContainer";
+    let url = this.url;
     let body = form;
     let header = this.api.getHeaderWithToken();
 
@@ -23,7 +23,8 @@ export class ContainerApiService {
   }
 
 
-  public get(ids: number[] | number, placeIds: number[] | number) {let url = this.url + "get";
+  public get(ids: number[] | number, placeIds: number[] | number) {
+    let url = this.url;
     let params = new HttpParams();
     if (ids != null)
       params = params.append("ids", ApiService.numbersArrayToString(ids));
