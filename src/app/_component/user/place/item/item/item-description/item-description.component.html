@@ -22,8 +22,8 @@
           <td>{{item.producer.name}}</td>
         </tr>
         <tr>
-          <td><b>Net weight:</b></td>
-          <td>{{item.netWeight}}</td>
+          <td><b>Capacity:</b></td>
+          <td>{{item.capacity.toString()}}</td>
         </tr>
         <tr>
           <td><b>Barcode:</b></td>
@@ -66,14 +66,14 @@
       <thead>
         <tr>
           <th scope="col">Typical Values</th>
-          <th scope="col">Typical Values per 100g/ml</th>
+          <th scope="col">Typical Values per 100[g/ml]</th>
         </tr>
       </thead>
 
       <tbody>
         <tr>
           <td>Energy</td>
-          <td>{{item.nutrition.energy}} kcal</td>
+          <td>{{item.nutrition.energy_KCAL}}kcal / {{item.nutrition.energy_KJ}}kJ</td>
         </tr>
         <tr>
           <td>Fat</td>
