@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {KeyName, KeyNameList} from '../../../../_models/request/KeyName';
-import {PlaceForm} from '../../../../_models/response/PlaceForm';
+import {KeyName, KeyNameList} from '../../../../_models/response/KeyName';
+import {PlaceForm} from '../../../../_models/request/PlaceForm';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
 import {PlaceService} from '../../../../_service/user/place/place/place.service';
-import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
+import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
 import {ErrorStateMatcher} from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 

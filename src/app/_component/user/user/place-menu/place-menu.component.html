@@ -1,6 +1,8 @@
-<a class="dropdown-item" *ngFor="let p of places.list" (click)="setPlace(p)">{{p.name}}</a>
-<div class="dropdown-divider"></div>
-<div class="input-group" (click)="$event.stopPropagation()">
-  <input type="text" class="form-control" name="placename" [(ngModel)]="form.name" placeholder="New place name" (keyup.ENTER)="addNewPlace()">
-  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-</div>
+<ng-container *ngIf="places != null">
+  <a class="dropdown-item" *ngFor="let p of places.list" (click)="setPlace(p)">{{p.name}}</a>
+  <div class="dropdown-divider"></div>
+  <div class="input-group" (click)="$event.stopPropagation()">
+    <input type="text" class="form-control" name="placename" [(ngModel)]="form.name" placeholder="New place name" (keyup.ENTER)="addNewPlace()">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+  </div>
+</ng-container>
