@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { WindowService } from './window.service';
+import {WindowService} from './window.service';
 
 describe('WindowService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

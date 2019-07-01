@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CategoryApiService} from '../api/utils/category-api.service';
-import {Category} from '../../_models/request/Category';
+import {Category} from '../../_models/response/Category';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ErrorHandlerService} from './errorhanler/error-handler.service';
 import {ErrorMessage} from '../../_models/util/ErrorMessage';

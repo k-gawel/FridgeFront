@@ -1,4 +1,4 @@
-import {Entity, EntityList} from '../../_models/request/Entity';
+import {Entity, EntityList} from '../../_models/response/Entity';
 
 export class IdSelector {
   get id(): number[] {
