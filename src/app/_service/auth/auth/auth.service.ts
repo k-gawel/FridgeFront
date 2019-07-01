@@ -2,14 +2,15 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {RoleContent} from '../../../_models/util/Content';
 import {AuthorizationApiService} from '../../api/account/authorization-api.service';
-import {LoginForm} from '../../../_models/response/LoginForm';
-import {AccountForm} from '../../../_models/response/AccountForm';
+import {LoginForm} from '../../../_models/request/LoginForm';
+import {AccountForm} from '../../../_models/request/AccountForm';
 import {AccountApiService} from '../../api/account/account-api.service';
 import {ErrorMessage} from '../../../_models/util/ErrorMessage';
-import {AccountDatas} from '../../../_models/request/AccountDatas';
-import {HttpErrorResponse} from '@angular/common/http';
+import {AccountDatas} from '../../../_models/response/AccountDatas';
 import {CookieDataService} from '../cookieDatas/cookie-datas.service';
-import {CategoriesServiceService} from '../../utils/categories-service.service';
+import {Producer} from '../../../_models/response/item/Producer';
+import {Category} from '../../../_models/response/Category';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -20,56 +21,32 @@ export class AuthService {
 
   constructor(private accountApi: AccountApiService,
               private authApi: AuthorizationApiService,
-              private cookiesData: CookieDataService,
-              private categoryService: CategoriesServiceService) {
+              private cookiesData: CookieDataService) {
   }
 
-  public async register(form: AccountForm): Promise<Boolean> {
-
-    if(!form.validate())
-      throw form.errors;
-
-    let result: boolean;
-
-    await this.accountApi.newAccount(form)
-      .then((response: Boolean) => {
-        if(response)
-          result = true;
-        else
-          throw new ErrorMessage("accountcreate.unable");
-      } )
-      .catch((error: ErrorMessage) => {
-        throw error;
-      } );
-
-    return result;
+  public register(form: AccountForm) {
+    return this.accountApi.newAccount(form)
+      .then((r: string) => this.cookiesData.setToken(r) )
+      .catch((error: ErrorMessage) => error);
   }
 
 
-  public async login(form?: LoginForm): Promise<AccountDatas> {
-    let result: AccountDatas;
-    let errorResult: ErrorMessage;
+  public login(form?: LoginForm): Promise<AccountDatas> {
+    console.log("LOGIN FORM: ", form);
 
-    if(form != undefined)
-      await this.loginWithForm(form)
-        .then((response: AccountDatas) => {
-          result = response;
-        } )
-        .catch((error: ErrorMessage) => errorResult = error );
-    else
-      await this.loginByToken()
-        .then((response: AccountDatas) => result = response )
-        .catch((error: ErrorMessage) => errorResult = error );
+    let initialResponse = form != undefined ?
+      this.authApi.loginWithForm(form.name, form.password) : this.authApi.loginWithToken();
 
-    if(errorResult != null)
-      throw errorResult;
 
-    if(result != null) {
-      this.cookiesData.setUserId(result.id);
-      this.cookiesData.setToken(result.token);
-    }
-
-    return result;
+    return initialResponse.then((r: JSON) => {
+      this.processInitialResponse(r);
+      return new AccountDatas(r);
+    }).catch((e: HttpErrorResponse) => {
+      if(form == undefined)
+        return null;
+      else
+        throw e;
+    });
   }
 
 
@@ -78,29 +55,14 @@ export class AuthService {
   }
 
 
-  private loginWithForm(form: LoginForm): Promise<AccountDatas> {
-    if(!form.validate())
-      throw form.errors;
+  private processInitialResponse(json: JSON): void {
+    if(json == null) return;
 
-    return this.authApi.loginWithForm(form.name, form.password)
-      .then((response: JSON) => {
-        let result = new AccountDatas(response);
-        return result;
-      } )
-      .catch((error: HttpErrorResponse) => {
-        throw new ErrorMessage(error);
-      } );
-  }
+    this.cookiesData.setUserId(json['id']);
+    this.cookiesData.setToken(json['token']);
 
-
-  private loginByToken(): Promise<AccountDatas> {
-    return this.authApi.loginWithToken()
-      .then((response: JSON) => {
-        return new AccountDatas(response);
-      } )
-      .catch((error: HttpErrorResponse) => {
-        return null;
-      } );
+    (<JSON[]> json['producers']).forEach(j => new Producer(j));
+    Category.rootCategory = new Category(json['root_category']);
   }
 
 
