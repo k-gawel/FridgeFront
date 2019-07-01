@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Category} from '../../../../../_models/request/Category';
-import {PlaceDetails} from '../../../../../_models/request/PlaceDetails';
-import {Item} from '../../../../../_models/request/item/Item';
-import {AllergenForm, IngredientForm, ItemForm} from '../../../../../_models/response/ItemForm';
+import {Category} from '../../../../../_models/response/Category';
+import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
+import {Item} from '../../../../../_models/response/item/Item';
+import {AllergenForm, IngredientForm, ItemForm} from '../../../../../_models/request/ItemForm';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
 import {ItemService} from '../../../../../_service/user/item/item/item.service';
 
