@@ -2,20 +2,41 @@
 
   <div class="card" style="padding-left: 0; padding-right: 0">
 
-    <div class="row input-group" style="margin: 0">
-      <input type="text" class="form-control" placeholder="Search by name or barcode"
-             name="name" [(ngModel)]="textSearch" (keyup)="onTextSearchChange()" (focus)="focused(true)" (blur)="focused(false)">
+    <div class="input-group" style="margin: 0">
 
-      <button type="button" class="btn btn-primary"
-              [disabled]="_category.isFinal() ? 0 : 1"
-              (click)="createNewItem()">
-        Create new item
-      </button>
+      <div class="input-group-prepend" style="display: flex; width: 100%">
+        <span class="input-group-text" style="flex-grow: 1">
+          {{_category.name}}
+        </span>
+        <span class="input-group-text" style="flex-grow: 1">
+          Producer
+        </span>
+      </div>
+
+      <div style="width: 100%; display: flex">
+
+        <input type="text" class="form-control" placeholder="Search by name..."
+               name="name" [(ngModel)]="textSearch" (keyup)="onTextSearchChange()">
+
+        <div class="input-group-append">
+          <button type="button" class="btn btn-secondary"
+                  (click)="scanBarcode()">
+            <i class="fas fa-barcode"></i>
+          </button>
+
+          <button type="button" class="btn btn-primary"
+                  [disabled]="_category.isFinal() ? 0 : 1"
+                  (click)="createNewItem()">
+            <i class="fas fa-plus-square"></i>
+          </button>
+        </div>
+
+      </div>
 
     </div>
 
     <!-- SEARCH RESULTS -->
-    <div class="row" [ngbCollapse]="isCollapsed" style="margin: 0; height: 350px; overflow: auto; -webkit-overflow-scrolling: touch;">
+    <div class="row" style="margin: 0; height: 350px; overflow: auto; -webkit-overflow-scrolling: touch;">
 
       <span style="margin: auto" *ngIf="items != null && items.size() === 0 && relatedItems == null">No results</span>
 
@@ -28,18 +49,16 @@
       </ul>
 
       <app-related-items-scene *ngIf = "showRelatedItems"
-                               [items]="relatedItems"
-                               (chosen)="selectedItem.emit($event)"
-                               style="max-width: 100%; margin-top: 2px">
+                               [place]="_place"
+                               [category]="_category"
+                               (chosen)="selectedItem.emit($event)">
       </app-related-items-scene>
 
-      <ng-container *ngIf="errorMessage != null" (click)="errorMessage = null">
-        <p class="border border-danger">
-          <span *ngFor="let e of errorMessage.messages">
-            {{e}}
-          </span>
-        </p>
-      </ng-container>
+      <p class="border border-danger" *ngIf="errorMessage != null" (click)="errorMessage = null">
+        <span *ngFor="let e of errorMessage.messages">
+          {{e}}
+        </span>
+      </p>
 
     </div>
 
@@ -47,8 +66,4 @@
 
 </ng-container>
 
-<ng-container *ngIf="!(_place != null && _category != null)">
-
-  <img src="https://cdn-images-1.medium.com/max/1600/0*mv8MNRLDNNnt5f72.gif"/> <br>
-
-</ng-container>
+<app-loader *ngIf="!(_place != null && _category != null)"></app-loader>

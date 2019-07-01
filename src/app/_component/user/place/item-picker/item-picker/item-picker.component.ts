@@ -2,13 +2,14 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ItemService} from '../../../../../_service/user/item/item/item.service';
 import {RelatedItemsService} from '../../../../../_service/user/item/relatedItems/related-items.service';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
-import {Category} from '../../../../../_models/request/Category';
-import {PlaceDetails} from '../../../../../_models/request/PlaceDetails';
-import {ItemsList} from '../../../../../_models/request/item/ItemsList';
-import {Item} from '../../../../../_models/request/item/Item';
+import {Category} from '../../../../../_models/response/Category';
+import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
+import {ItemsList} from '../../../../../_models/response/item/ItemsList';
+import {Item} from '../../../../../_models/response/item/Item';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NewItemComponent} from '../new_item/new_item.component';
 import {Size, WindowService} from '../../../../../_service/utils/window.service';
+import {BarcodeScannerComponent} from '../barcode-scanner/barcode-scanner.component';
 
 
 @Component({
@@ -18,12 +19,10 @@ import {Size, WindowService} from '../../../../../_service/utils/window.service'
 })
 export class ItemPickerComponent implements OnInit {
 
-  isCollapsed: boolean;
   constructor(private itemService: ItemService,
               private relatedItemsService: RelatedItemsService,
               private modalService: NgbModal,
               private windowService: WindowService) {
-    windowService.$resize.subscribe(s => this.isCollapsed = s <= Size.SM);
   }
 
   errorMessage: ErrorMessage;
@@ -31,7 +30,6 @@ export class ItemPickerComponent implements OnInit {
   _category: Category = new Category();
   @Input() set category(category: Category) {
     console.debug("ItemPickerComponent.setCategory()", category);
-
     if(this._category.equals(category) || category == null)
       return;
 
@@ -48,12 +46,6 @@ export class ItemPickerComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<Item>();
 
   ngOnInit(): void {
-    this.getRelatedItems();
-  }
-
-
-  focused(value: boolean) {
-    this.isCollapsed = this.windowService.$resize.value > Size.SM ? false : !value && this.items == null;
   }
 
 
@@ -67,15 +59,9 @@ export class ItemPickerComponent implements OnInit {
   // PICKER FORM METHODS
 
   searchByBarcode(barcode: number) {
-    console.debug("ItemPickerComponent.searchByBarcode()", barcode);
     this.itemService.searchItemsByBarcode(barcode, this._place)
-      .then((items: ItemsList) => {
-        this.items = items;
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorMessage = e;
-        console.log(e);
-      })
+      .then((items: ItemsList) => this.items = items )
+      .catch((e: ErrorMessage) => this.errorMessage = e )
   }
 
 
@@ -88,34 +74,38 @@ export class ItemPickerComponent implements OnInit {
 
   getRelatedItems() {
     console.debug("ItemPicker.getRelatedItems()", this._category);
-
     this.relatedItemsService.getMostPopular(this._category, this._place)
       .then( (items: ItemsList) => {
+        console.debug("ItemPicker.getRelatedItems().then()", items);
         this.relatedItems = items;
+        console.debug("AFTER INITIALIZATION");
       } )
       .catch( (e: ErrorMessage) => {
         this.errorMessage = e;
-        console.log(e);
+        console.error(e);
       });
 
   }
 
 
   onTextSearchChange() {
+    console.debug("ItemPicker.onTextSearchChange()");
     if(this.textSearch.toString().length <= 4) {
+      console.debug("ItemPicker.onTextSearchChange() <=4");
         this.getRelatedItems();
         this.showRelatedItems = true;
     } else if(!isNaN(Number(this.textSearch))) {
+      console.debug("ItemPicker.onTextSearchChange() number");
         let barcode = Number(this.textSearch);
         this.searchByBarcode(barcode);
         this.showRelatedItems = false;
     } else if(isNaN(Number(this.textSearch))) {
+      console.debug("ItemPicker.onTextSearchChange() barcode")
         let name = String(this.textSearch);
         this.searchByName(name);
         this.showRelatedItems = false;
     }
   }
-
 
   createNewItem() {
     if(!this._category.isFinal())
@@ -130,6 +120,15 @@ export class ItemPickerComponent implements OnInit {
       modalRef.componentInstance.name = this.textSearch;
   }
 
+  scanBarcode() {
+    const modalRef = this.modalService.open(BarcodeScannerComponent);
+    modalRef.componentInstance.barcode.subscribe(res => {
+      this.textSearch = res;
+      this.searchByBarcode(res);
+      modalRef.close()
+    });
+    modalRef.componentInstance.close.subscribe(() => modalRef.close())
+  }
 
   closeErrors() {
     this.errorMessage = null;
