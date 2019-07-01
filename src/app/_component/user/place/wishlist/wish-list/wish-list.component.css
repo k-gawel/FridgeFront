@@ -1,0 +1,9 @@
+.menu-button {
+  white-space: nowrap;
+}
+
+@media (min-width: 576px) {
+  .menu-button[title]:after {
+    content: ' ' attr(title);
+  }
+}

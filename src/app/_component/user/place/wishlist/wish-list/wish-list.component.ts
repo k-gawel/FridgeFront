@@ -1,16 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {WishList} from '../../../../../_models/request/WishList';
-import {WishListItem} from '../../../../../_models/request/WishListItem';
+import {WishList} from '../../../../../_models/response/WishList';
+import {WishListItem} from '../../../../../_models/response/WishListItem';
 import {WishListService} from '../../../../../_service/user/place/wishlist/wishlist/wish-list.service';
 import {WishListItemFormComponent} from '../wish-list-item-form/wish-list-item-form.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Item} from '../../../../../_models/request/item/Item';
+import {Item} from '../../../../../_models/response/item/Item';
 import {InstanceService} from '../../../../../_service/user/instance/instance.service';
-import {ContainersList} from '../../../../../_models/request/Container';
+import {ContainersList} from '../../../../../_models/response/Container';
 import {IdSelector} from '../../../../../_service/utils/EntitySelector';
 import {WishListItemService} from '../../../../../_service/user/place/wishlist/wishListItem/wish-list-item.service';
-import {ItemInstancesList} from '../../../../../_models/request/item/ItemInstancesLst';
-import {PlaceDetails} from '../../../../../_models/request/PlaceDetails';
+import {ItemInstancesList} from '../../../../../_models/response/item/ItemInstancesList';
+import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
 import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
 
 @Component({
@@ -23,7 +23,6 @@ export class WishListComponent implements OnInit {
   _wishList: WishList = null;
   _place: PlaceDetails;
   items: WishListItem[] = [];
-  activeItem: WishListItem = null;
 
   containers: ContainersList;
   itemsInstances: ItemInstancesList = new ItemInstancesList();
@@ -71,15 +70,12 @@ export class WishListComponent implements OnInit {
   ngOnInit() {
   }
 
+  close() {
+    this.closeWishList.emit();
+  }
 
   archive() {
     this.wishListService.archive(this._wishList);
-  }
-
-
-  selectItem(item: WishListItem) {
-    if (item.equals(this.activeItem)) { return; }
-    this.activeItem = item;
   }
 
 
@@ -99,14 +95,21 @@ export class WishListComponent implements OnInit {
   }
 
 
+  addInstance(item: WishListItem) {
+
+  }
+
+
   openForm() {
-    let modalRef = this.modalService.open(WishListItemFormComponent, {size: 'lg'});
+    const modalRef = this.modalService.open(WishListItemFormComponent, {size: 'lg'});
     modalRef.componentInstance.wishList = this._wishList;
     modalRef.componentInstance.newItem
       .subscribe((res: WishListItem) => {
         this.newWishListItem(res);
         modalRef.close();
       });
+    modalRef.componentInstance.close.subscribe(() => modalRef.close());
+
   }
 
 

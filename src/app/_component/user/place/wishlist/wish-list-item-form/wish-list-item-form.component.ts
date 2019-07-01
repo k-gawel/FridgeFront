@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Item} from '../../../../../_models/request/item/Item';
-import {Category} from '../../../../../_models/request/Category';
+import {Item} from '../../../../../_models/response/item/Item';
+import {Category} from '../../../../../_models/response/Category';
 import {ItemService} from '../../../../../_service/user/item/item/item.service';
 import {WishListItemService} from '../../../../../_service/user/place/wishlist/wishListItem/wish-list-item.service';
-import {WishListItem} from '../../../../../_models/request/WishListItem';
-import {WishList} from '../../../../../_models/request/WishList';
-import {WishListItemForm} from '../../../../../_models/response/WishListItemForm';
-import {PlaceDetails} from '../../../../../_models/request/PlaceDetails';
+import {WishListItem} from '../../../../../_models/response/WishListItem';
+import {WishList} from '../../../../../_models/response/WishList';
+import {WishListItemForm} from '../../../../../_models/request/WishListItemForm';
+import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
 import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
 
 @Component({
@@ -22,16 +22,16 @@ export class WishListItemFormComponent implements OnInit {
   @Input()
   set wishList(wishList: WishList) {
     console.log("WishListItemFormComponent.setWishList()", wishList);
-    this.form.wishList = wishList.id;
+    this.form.wish_list_id = wishList.id;
     this._place.id = wishList.placeId;
     this._wishList = wishList;
   }
 
   @Output() newItem = new EventEmitter<WishListItem>();
+  @Output() close = new EventEmitter<void>();
 
   activeElement: Item | Category = null;
   chosenCategory: Category = Category.rootCategory;
-
 
   form: WishListItemForm = new WishListItemForm();
 
@@ -40,26 +40,24 @@ export class WishListItemFormComponent implements OnInit {
               private cookieDatas: CookieDataService) { }
 
   ngOnInit() {
-    this.form.author = this.cookieDatas.getUserId();
+    this.form.author_id = this.cookieDatas.getUserId();
   }
-
 
   selectCategory(category: Category) {
     console.debug("WishListItemFormComponent.selectCategory()", category);
     this.chosenCategory = category;
-    this.form.item = 0;
-    this.form.category = category.id;
+    this.form.item_id = null;
+    this.form.category_id = category.id;
     this.activeElement = category;
   }
 
-
   selectItem(item: Item) {
     console.debug("WishListItemFormComponent.selectItem()", item);
-    this.form.item = item.id;
-    this.form.category = item.category.id;
+    this.chosenCategory = item.category;
+    this.form.item_id = item.id;
+    this.form.category_id = null;
     this.activeElement = item;
   }
-
 
   submit() {
     console.debug("WishListItemFormComponent.submit()");
@@ -78,6 +76,5 @@ export class WishListItemFormComponent implements OnInit {
         console.debug("WishListItemFormComponent.submit() error", e);
     })
   }
-
 
 }
