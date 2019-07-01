@@ -1,33 +1,6 @@
-<div class="container-fullwidth" *ngIf="_accountDatas != null">
+<div *ngIf="_accountDatas != null">
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-
-    <a class="navbar-brand" role="button" style="cursor: default">{{_accountDatas.name}}</a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" (click)="setAccountManagement()">Manage account</a>
-        </li>
-
-        <li ngbDropdown>
-          <a class="nav-link" id="placesMenuDropdown" ngbDropdownToggle aria-expanded="false">
-            PLACES
-          </a>
-          <app-place-menu ngbDropdownMenu aria-labelledby="placesMenuDropdown" [places]="_accountDatas.places" [removedPlace]="removedPlace" (chosenPlace)="setPlace($event)"></app-place-menu>
-        </li>
-
-      </ul>
-
-    </div>
-
-  </nav>
-
+  <app-navbar [accountDatas]="_accountDatas" (chosenPlace)="setPlace($event)"></app-navbar>
 
   <main role="main">
     <app-place *ngIf="_userContent === 'PLACE'" [place]="_contentParams" (leavedPlace)="removePlace($event)"></app-place>
@@ -36,7 +9,4 @@
 
 </div>
 
-
-<mat-menu #placesMenu="matMenu" yPosition="below" style="width: 300px">
-  <app-place-menu [places]="_accountDatas.places" (chosenPlace)="setPlace($event)"></app-place-menu>
-</mat-menu>
+<app-loader *ngIf="_accountDatas == null"></app-loader>

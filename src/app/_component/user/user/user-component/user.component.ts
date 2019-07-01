@@ -1,8 +1,8 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {UserContent} from '../../../../_models/util/Content';
-import {AccountDatas} from '../../../../_models/request/AccountDatas';
-import {KeyName} from '../../../../_models/request/KeyName';
-import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
+import {AccountDatas} from '../../../../_models/response/AccountDatas';
+import {KeyName} from '../../../../_models/response/KeyName';
+import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
 import {CookieDataService} from '../../../../_service/auth/cookieDatas/cookie-datas.service';
 
 @Component({
@@ -17,14 +17,9 @@ export class UserComponent implements OnInit, OnDestroy {
     this._accountDatas = value;
   }
 
-  isCollapsed: boolean = false;
-
-
   _userContent: UserContent;
   _contentParams: any;
   _accountDatas: AccountDatas;
-
-
 
   constructor(private cookieDatas: CookieDataService) {
   }
