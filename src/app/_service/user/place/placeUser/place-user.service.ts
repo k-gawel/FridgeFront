@@ -1,42 +1,62 @@
 import {Injectable} from '@angular/core';
-import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
-import {IdSelector} from '../../../utils/EntitySelector';
-import {ContainerApiService} from '../../../api/place/container-api.service';
-import {PlaceUserStatsList} from '../../../../_models/request/place/place-user-stats';
+import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
+import {KeyName} from '../../../../_models/response/KeyName';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
+import {PlaceApiService} from '../../../api/place/place-api.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {PlaceUser} from '../../../../_models/response/place-user/PlaceUser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceUserService {
 
-  constructor(private containerApi: ContainerApiService) { }
+  constructor(private placeApi: PlaceApiService) { }
+
+  public removeUser(place: PlaceDetails, user: KeyName | number) {
+    user  = typeof user  === 'number' ? user  : user.id;
+
+    return this.placeApi.removeUser(place.id, user)
+      .then(res => {
+        if(res) place.users.remove(user);
+        else throw new Error("Couldn't remove user.");
+      })
+      .catch(e => new ErrorMessage(e.message));
+  }
 
 
-  public getStats(users: IdSelector, containers: IdSelector, places: IdSelector): Promise<PlaceUserStatsList> {
+  public changeAdmin(place: PlaceDetails, user: KeyName){
 
-    let userIds = users != null ? users.id : null;
-    let containerIds = containers != null ? containers.id : null;
-    let placeIds = places != null ? places.id : null;
-
-    return this.containerApi.getUsersStats(userIds, placeIds, containerIds)
-      .then((res: JSON[]) => {
-        if(res != null)
-          return new PlaceUserStatsList(res);
+    return this.placeApi.changeAdmin(place.id, user.id)
+      .then(res => {
+        if(res)
+          place.adminId = user.id;
         else
-          throw new ErrorMessage("result was null");
+          throw new Error("Couldn't promote this user.");
       })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e.message);
-      })
+      .catch(e => new ErrorMessage(e.message));
 
   }
 
-  public getPlaceStats(place: PlaceDetails): Promise<PlaceUserStatsList> {
-    let placeId = new IdSelector(place);
 
-    return this.getStats(null, null, placeId);
+  public addUser(place: PlaceDetails, user: KeyName) {
+
+    return this.placeApi.addUser(place.id, user.id)
+      .then(res => {
+        if(!res)
+          throw new Error("Could not add user");
+        else
+          PlaceUserService.addUserToPlace(user, place);
+      })
+      .catch((e: HttpErrorResponse) => new ErrorMessage(e.message))
+
+  }
+
+  private static addUserToPlace(user: KeyName, place: PlaceDetails) {
+    let placeUser = place.users.getById(user.id);
+    if(placeUser == undefined)
+      placeUser = PlaceUser.clone(user, true);
+    place.users.push(placeUser);
   }
 
 

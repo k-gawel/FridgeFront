@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ItemInstanceApiService} from '../../api/item/item-instance-api.service';
-import {ItemInstance} from '../../../_models/request/item/ItemInstance';
+import {ItemInstance} from '../../../_models/response/item/ItemInstance';
 import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 import {HttpErrorResponse} from '@angular/common/http';
-import {Entity} from '../../../_models/request/Entity';
+import {Entity} from '../../../_models/response/Entity';
 import {IdSelector} from '../../utils/EntitySelector';
 import {CookieDataService} from '../../auth/cookieDatas/cookie-datas.service';
-import {ItemInstanceForm} from '../../../_models/response/ItemInstanceForm';
-import {ItemInstancesList} from '../../../_models/request/item/ItemInstancesLst';
+import {ItemInstanceForm} from '../../../_models/request/ItemInstanceForm';
+import {ItemInstancesList} from '../../../_models/response/item/ItemInstancesList';
 import {Subject} from 'rxjs/Subject';
 import {LocalDate} from '../../../_util/date/JavaLocalDate';
 
@@ -49,9 +49,9 @@ export class InstanceService {
       result.pushAll(list);
 
       if(query.open != undefined)
-        result = result.filtrByOpen(<boolean> query.open);
+        result = result.filterByOpen(<boolean> query.open);
       if(query.deleted != undefined)
-        result = result.filtrByDeleted(<boolean> query.deleted);
+        result = result.filterByDeleted(<boolean> query.deleted);
       if(query.containers != undefined)
         result = result.getByContainers(query.containers);
       if(query.items != undefined)
@@ -76,7 +76,7 @@ export class InstanceService {
     let result: ItemInstance | ErrorMessage = null;
 
     if(!refresh) {
-      result = ItemInstancesList.getById(id);
+      result = ItemInstancesList.ALL.getById(id);
     }
 
     if(result === null) {
@@ -102,7 +102,7 @@ export class InstanceService {
 
     if(!refresh) {
       for(let singleId of ids) {
-        let instance = ItemInstancesList.getById(singleId);
+        let instance = ItemInstancesList.ALL.getById(singleId);
         if(instance != null) {
           idsToFind.splice(idsToFind.indexOf(singleId), 1);
           result.push(instance);
@@ -170,7 +170,7 @@ export class InstanceService {
   }
 
   public deleteInstance(instance: Entity | number) {
-    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.getById(instance) : <ItemInstance> instance;
+    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL.getById(instance) : <ItemInstance> instance;
     return this.updateInstance(instanceEntity.id, 'delete').then(
       (result: Boolean) => {
         if(result) {
@@ -188,7 +188,7 @@ export class InstanceService {
   }
 
   public openInstance(instance: Entity | number) {
-    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.getById(instance) : <ItemInstance> instance;
+    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL.getById(instance) : <ItemInstance> instance;
 
     return this.updateInstance(instanceEntity.id, 'open')
       .then((result: Boolean) => {
@@ -205,7 +205,7 @@ export class InstanceService {
   }
 
   public frozeOrUnfrozeInstance(instance: Entity | number) {
-    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.getById(instance) : <ItemInstance> instance;
+    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL.getById(instance) : <ItemInstance> instance;
     return this.updateInstance(instanceEntity.id, 'frozeOrUnfroze')
       .then((result: Boolean) => {
         if(result) {

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AccountApiService} from '../../api/account/account-api.service';
-import {PlaceUsersList} from '../../../_models/request/place-user/PlaceUsersList';
-import {KeyName, KeyNameList} from '../../../_models/request/KeyName';
+import {PlaceUsersList} from '../../../_models/response/place-user/PlaceUsersList';
+import {KeyName, KeyNameList} from '../../../_models/response/KeyName';
 import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 import {HttpErrorResponse} from '@angular/common/http';
 

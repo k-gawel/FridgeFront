@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ItemApiService} from '../../../api/item/item-api.service';
-import {Item} from '../../../../_models/request/item/Item';
+import {Item} from '../../../../_models/response/item/Item';
 import {HttpErrorResponse} from '@angular/common/http';
-import {Category} from '../../../../_models/request/Category';
-import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
+import {Category} from '../../../../_models/response/Category';
+import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
-import {ItemForm} from '../../../../_models/response/ItemForm';
+import {ItemForm} from '../../../../_models/request/ItemForm';
 import {IdSelector} from '../../../utils/EntitySelector';
-import {ItemsList} from '../../../../_models/request/item/ItemsList';
+import {ItemsList} from '../../../../_models/response/item/ItemsList';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +37,7 @@ export class  ItemService {
     let result: Item | ErrorMessage = null;
 
     if(!refresh)
-      result = ItemsList.getById(id);
+      result = ItemsList.ALL.getById(id);
 
     if(result === null) {
 
@@ -63,15 +63,14 @@ export class  ItemService {
   }
 
 
-  public async getItemsByIds(ids: number[], refresh?: boolean): Promise<ItemsList | ErrorMessage> {
-
-    let result: ItemsList | ErrorMessage = new ItemsList();
+  public async getItemsByIds(ids: number[], refresh?: boolean): Promise<ItemsList> {
+    let result: ItemsList = new ItemsList();
     let idsToFind: number[] = [];
     idsToFind = idsToFind.concat(ids);
 
     if(!refresh) {
       for(let id of ids) {
-        let item = ItemsList.getById(id);
+        let item = ItemsList.ALL.getById(id);
         if(item != null) {
           result.push(item);
           idsToFind.splice(idsToFind.indexOf(id), 1);
@@ -79,21 +78,12 @@ export class  ItemService {
       }
     }
 
-    if(idsToFind.length !== 0) {
+    if(idsToFind.length != 0) {
       let query = new ItemQuery(this.itemApi);
       query.itemIds = idsToFind;
-
-      await query.execute().then(
-        (response: JSON[]) => {
-          if(result instanceof ItemsList)
-            result.pushAll(new ItemsList(response));
-        },
-        (error: HttpErrorResponse) => {
-          result = new ErrorMessage(error.message);
-        }
-
-      )
-
+      await query.execute()
+        .then((r: JSON[])=> new ItemsList(r))
+        .then(r => <ItemsList> result.pushAll(r))
     }
 
     return result;

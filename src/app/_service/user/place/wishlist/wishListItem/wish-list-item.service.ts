@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
 import {WishListItemApiService} from '../../../../api/wishlist/wish-list-item-api.service';
 import {ItemService} from '../../../item/item/item.service';
-import {WishListItem} from '../../../../../_models/request/WishListItem';
-import {UserDetailsList} from '../../../../../_models/request/UserDetails';
-import {KeyName} from '../../../../../_models/request/KeyName';
-import {Category} from '../../../../../_models/request/Category';
+import {WishListItem} from '../../../../../_models/response/WishListItem';
+import {UserDetailsList} from '../../../../../_models/response/UserDetails';
+import {KeyName} from '../../../../../_models/response/KeyName';
+import {Category} from '../../../../../_models/response/Category';
 import {InstanceService} from '../../../instance/instance.service';
-import {Item} from '../../../../../_models/request/item/Item';
+import {Item} from '../../../../../_models/response/item/Item';
 import {ErrorHandlerService} from '../../../../utils/errorhanler/error-handler.service';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
-import {WishListItemForm} from '../../../../../_models/response/WishListItemForm';
-import {ItemInstanceForm} from '../../../../../_models/response/ItemInstanceForm';
+import {WishListItemForm} from '../../../../../_models/request/WishListItemForm';
+import {ItemInstanceForm} from '../../../../../_models/request/ItemInstanceForm';
 import {HttpErrorResponse} from '@angular/common/http';
 import {CookieDataService} from '../../../../auth/cookieDatas/cookie-datas.service';
-import {ItemInstance} from '../../../../../_models/request/item/ItemInstance';
-import {PlaceUsersList} from '../../../../../_models/request/place-user/PlaceUsersList';
+import {ItemInstance} from '../../../../../_models/response/item/ItemInstance';
+import {PlaceUsersList} from '../../../../../_models/response/place-user/PlaceUsersList';
 import {WishListService} from '../wishlist/wish-list.service';
 
 @Injectable({
@@ -101,16 +101,10 @@ export class WishListItemService {
   }
 
 
-  public async addInstance(item: WishListItem, form: ItemInstanceForm) {
-
-    if(!form.validate())
-      throw form.errors;
-
-    return this.wishListItemApi.addInstance(item.id, form)
+  public async addInstance(item: WishListItem, instance: ItemInstance) {
+    return this.wishListItemApi.addInstance(item.id, instance.id)
       .then((response: JSON) => {
-        item.addedInstance = new ItemInstance(response);
-        item.addedOn = new Date();
-        item.addedBy = this.cookiesData.getUserId();
+        item.addedInstance = instance;
       })
       .catch((error: HttpErrorResponse) => this.errorHandler.sendErrors(new ErrorMessage(error.message)) );
 

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Ingredient} from '../../../../_models/request/item/Item';
+import {Ingredient} from '../../../../_models/response/item/Item';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {IngredientApiService} from '../../../api/item/ingredient-api.service';
@@ -21,19 +21,6 @@ export class IngredientService {
       .catch((e: HttpErrorResponse) => {
         throw new ErrorMessage(e);
       })
-
-  }
-
-
-  public getByName(name: string): Promise<Ingredient> {
-
-    return this.ingredientApi.getByName(name)
-      .then((res: JSON[]) => {
-        return res != null && res.length != 0 ? new Ingredient(res[0]) : null;
-      })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e);
-      });
 
   }
 

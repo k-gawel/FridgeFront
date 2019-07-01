@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {PlaceDetails, PlaceDetailsList} from '../../../../_models/request/PlaceDetails';
+import {PlaceDetails, PlaceDetailsList} from '../../../../_models/response/PlaceDetails';
 import {PlaceApiService} from '../../../api/place/place-api.service';
-import {KeyName} from '../../../../_models/request/KeyName';
-import {PlaceForm} from '../../../../_models/response/PlaceForm';
+import {KeyName} from '../../../../_models/response/KeyName';
+import {PlaceForm} from '../../../../_models/request/PlaceForm';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {HttpErrorResponse} from '@angular/common/http';
 import {IdSelector} from '../../../utils/EntitySelector';
@@ -56,36 +56,8 @@ export class PlaceService {
   }
 
 
-  public addUser(place: PlaceDetails, user: KeyName): Promise<boolean> {
-
-    return this.placeApi.addUser(place.id, user.id)
-      .then(res => res)
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e.message);
-      })
-
-  }
 
 
-  public changeAdmin(place: PlaceDetails, user: KeyName): Promise<boolean> {
-
-    return this.placeApi.changeAdmin(place.id, user.id)
-      .then(res => {
-        place.adminId = res ? user.id : place.adminId;
-        return res;
-      })
-      .catch(e => new ErrorMessage(e.message));
-
-  }
-
-
-  public removeUser(place: PlaceDetails, user: KeyName): Promise<boolean> {
-
-    return this.placeApi.removeUser(place.id, user.id)
-      .then(res => res)
-      .catch(e => new ErrorMessage(e.message));
-
-  }
 
 
 
