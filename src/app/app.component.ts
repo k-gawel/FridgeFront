@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from './_service/auth/auth/auth.service';
 import {RoleContent} from './_models/util/Content';
-import {AccountDatas} from './_models/request/AccountDatas';
+import {AccountDatas} from './_models/response/AccountDatas';
 
 @Component({
   selector: 'app-root',
@@ -23,10 +23,9 @@ export class AppComponent implements OnInit {
 
     this.authService.login()
       .then((response: AccountDatas) => {
-        if(response != null) {
-         this.setAccount(response);
-        }
-      });
+        if(response != null)
+          this.setAccount(response);
+      })
   }
 
   setAccount(account: AccountDatas) {

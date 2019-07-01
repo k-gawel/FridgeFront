@@ -23,8 +23,8 @@ import {RelatedItemsSceneComponent} from './_component/user/place/item-picker/re
 import {NewItemComponent} from './_component/user/place/item-picker/new_item/new_item.component';
 import {WishListComponent} from './_component/user/place/wishlist/wish-list/wish-list.component';
 import {WishListFormComponent} from './_component/user/place/right-sidebar/wish-list-menu/wish-list-form/wish-list-form.component';
-import {WishListMenuComponent} from './_component/user/place/right-sidebar/wish-list-menu/wishl-list-menu-list/wish-list-menu.component';
-import {WishListItemComponent} from './_component/user/place/wishlist/wish-list-item/wish-list-item.component';
+import {WishListMenuComponent} from './_component/user/place/right-sidebar/wish-list-menu/wishl-list-menu/wish-list-menu.component';
+import {NewInstanceForm, WishListItemComponent} from './_component/user/place/wishlist/wish-list-item/wish-list-item.component';
 import {WishListItemFormComponent} from './_component/user/place/wishlist/wish-list-item-form/wish-list-item-form.component';
 import {ItemPickerComponent} from './_component/user/place/item-picker/item-picker/item-picker.component';
 import {PlaceItemsSceneComponent} from './_component/user/place/place-items-scene/place-items-scene.component';
@@ -43,8 +43,11 @@ import {
   MatMenuModule,
   MatToolbarModule
 } from '@angular/material';
-import { CollapsableListDirective } from './_component/user/place/right-sidebar/right-side-bar/collapsable-list.directive';
-import { RightSideBarComponent } from './_component/user/place/right-sidebar/right-side-bar/right-side-bar.component';
+import {CollapsableListDirective} from './_component/user/place/right-sidebar/right-side-bar/collapsable-list.directive';
+import {RightSideBarComponent} from './_component/user/place/right-sidebar/right-side-bar/right-side-bar.component';
+import {LoaderComponent} from './_component/utils/loader/loader.component';
+import { BarcodeScannerComponent } from './_component/user/place/item-picker/barcode-scanner/barcode-scanner.component';
+import { NavbarComponent } from './_component/user/user/navbar/navbar.component';
 
 
 const appRoutes: Routes = [];
@@ -78,13 +81,19 @@ const appRoutes: Routes = [];
     AccountManagmentComponent,
     UsersMenuComponent,
     CollapsableListDirective,
-    RightSideBarComponent
+    RightSideBarComponent,
+    LoaderComponent,
+    NewInstanceForm,
+    BarcodeScannerComponent,
+    NavbarComponent
   ],
   entryComponents: [
     NewInstanceFormComponent,
     WishListFormComponent,
     WishListItemFormComponent,
-    NewItemComponent
+    NewItemComponent,
+    NewInstanceForm,
+    BarcodeScannerComponent
   ],
   imports: [
     BrowserModule,
