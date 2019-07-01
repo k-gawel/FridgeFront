@@ -1,21 +1,21 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
-import {PlaceUsersList} from '../../../../_models/request/place-user/PlaceUsersList';
-import {ContainersList} from '../../../../_models/request/Container';
-import {Category} from '../../../../_models/request/Category';
-import {Item} from '../../../../_models/request/item/Item';
-import {Subscription} from 'rxjs';
-import {KeyNameList} from '../../../../_models/request/KeyName';
+import {PlaceDetails, PlaceDetailsList} from '../../../../_models/response/PlaceDetails';
+import {PlaceUsersList} from '../../../../_models/response/place-user/PlaceUsersList';
+import {ContainersList} from '../../../../_models/response/Container';
+import {Category} from '../../../../_models/response/Category';
+import {Item} from '../../../../_models/response/item/Item';
+import {Observable, Subscription} from 'rxjs';
+import {KeyNameList} from '../../../../_models/response/KeyName';
 import {ItemService} from '../../../../_service/user/item/item/item.service';
 import {InstanceService, ItemInstanceQuery} from '../../../../_service/user/instance/instance.service';
-import {InstanceChangeList} from '../../../../_models/request/InstanceChange';
+import {InstanceChangeList} from '../../../../_models/response/InstanceChange';
 import {LoggerServiceService} from '../../../../_service/user/user/logger/logger-service.service';
 import {IdSelector} from '../../../../_service/utils/EntitySelector';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
-import {ItemsList} from '../../../../_models/request/item/ItemsList';
-import {ItemInstancesList} from '../../../../_models/request/item/ItemInstancesLst';
-import {ItemInstance} from '../../../../_models/request/item/ItemInstance';
+import {ItemsList} from '../../../../_models/response/item/ItemsList';
+import {ItemInstancesList} from '../../../../_models/response/item/ItemInstancesList';
+import {ItemInstance} from '../../../../_models/response/item/ItemInstance';
 
 @Component({
   selector: 'app-place-items-scene',
@@ -30,8 +30,18 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
               private errorHandler: ErrorHandlerService) {
   }
 
+  owners:   KeyNameList;
+
+  open:    boolean | null = null;
+  frozen:  boolean | null = null;
+  deleted: boolean | null = false;
+
+  baseInstances: ItemInstancesList = new ItemInstancesList();
 
   instancesLogs: InstanceChangeList = null;
+
+  items: Item[] = [];
+
 
   selectedItem: Item = null;
   setSelectedItem(item: Item) {
@@ -39,107 +49,53 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
     this.selectedItem = item;
   }
 
+  getVisibleInstances(): ItemInstancesList {
+    return this.baseInstances.getByOwners(this.owners)
+                             .filterByOpen(this.open)
+                             .filterByDeleted(this.deleted);
+  }
+
+  getVisibleItems() {
+    let ids = this.getVisibleInstances().getItemIds();
+    this.itemService.getItemsByIds(ids)
+                    .then(r => r.getByCategory(this._category))
+                    .then(r => r.toArray())
+                    .then(r => this.items = <Item[]> r);
+  }
 
   _containers: ContainersList = new ContainersList();
   @Input() set containers(containers: ContainersList) {
-    console.debug("PlaceItemsSceneComponent.setContainers()", containers);
+    if(containers == undefined) return;
+
     this._containers = containers;
-    this.visibleInstances = this.instances.getByContainers(containers);
+    this._place      = containers.getPlace();
+    this.owners      = this._place.users;
+    this.baseInstances = containers.getAllInstances();
+    this.getVisibleItems();
   }
 
 
   _category: Category = Category.rootCategory;
   @Input() set category(category: Category) {
-    console.debug("PlaceItemsSceneComponent.setCategory()", category);
+    if(category == undefined) return;
+
     this._category = category;
-    this.setVisibleItems();
+    this.getVisibleItems();
   }
 
-
-  _place: PlaceDetails = new PlaceDetails();
+  _place: PlaceDetails;
   users: KeyNameList = PlaceUsersList.ALL;
-  @Input() set place(place: PlaceDetails) {
-    console.debug("PlaceItemsSceneComponent.setPlace()", place);
-
-    this._place = place;
-
-    let query = new ItemInstanceQuery();
-    query.places = new IdSelector(place).id;
-    query.deleted = false;
-
-    this.instanceService.get(query)
-      .then( (res: ItemInstancesList) => {
-        this.setInstances(res);
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      });
-  }
 
 
-  instances: ItemInstancesList = new ItemInstancesList();
-  visibleInstances: ItemInstancesList = new ItemInstancesList();
   newInstance(instance: ItemInstance) {
-    this.instances = <ItemInstancesList> this.instances.push(instance);
-    this.visibleInstances = <ItemInstancesList> this.visibleInstances.push(instance);
-    this.itemService.getItemById(instance.itemId)
-      .then((item: Item) => {
-        this.items.push(item);
-        this.visibleItems.push(item);
-      })
+    this.baseInstances.push(instance);
   }
 
-
-  deleteInstance(instance: ItemInstance) {
-    console.debug("PlaceItemsSceneComponent.deleteInstance()", instance);
-    this.visibleInstances = this.visibleInstances.remove(instance);
-    this.visibleItems = this.visibleItems.getByIds(this.visibleInstances.getItemIds());
-  }
-
-
-  items: ItemsList = new ItemsList();
-  visibleItems: ItemsList = new ItemsList();
-  setInstances(instances: ItemInstancesList) {
-    console.debug("PlaceItemsScene.setInstances()", instances);
-    this.instances = instances;
-    this.visibleInstances = this.instances.getByContainers(this._containers);
-
-    let itemIds = this.instances.getItemIds();
-    let visibleItemIds = this.visibleInstances.getItemIds();
-    this.itemService.getItemsByIds(itemIds)
-      .then((items: ItemsList) => {
-        console.log("PlaceItemsScene.setInstances() items", items);
-        this.items = items;
-        this.setVisibleItems();
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      })
-  }
-
-
-  setVisibleItems() {
-    console.debug("PlaceItemsScene.setVisibleItems()");
-    let visibleItemIds = this.visibleInstances.getItemIds();
-    this.visibleItems = new ItemsList();
-    visibleItemIds.forEach((id: number) => {
-      this.visibleItems.push(this.items.getById(id));
-    });
-    console.debug("PlaceItemsScene.setVisibleItems() visibleItems of instances", this.visibleItems);
-    this.visibleItems = this.visibleItems.getByCategory(this._category);
-  }
-
-  deletedInstanceSubscription: Subscription;
   ngOnInit() {
-    this.users = PlaceUsersList.ALL;
-    this.deletedInstanceSubscription = this.instanceService.$deletedInstance.subscribe((instance: ItemInstance) => {
-      this.deleteInstance(instance);
-    })
   }
-
 
   ngOnDestroy() {
-    this.deletedInstanceSubscription.unsubscribe();
+    this.instanceService.$deletedInstance.unsubscribe();
   }
 
 }

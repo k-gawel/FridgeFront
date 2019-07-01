@@ -14,12 +14,12 @@
       <app-item *ngIf="selectedItem != null"
                 [chosenContainers]="_containers"
                 [item]="selectedItem"
-                [instances]="visibleInstances.getByItem(selectedItem)"
+                [instances]="baseInstances.getByItems(selectedItem)"
                 [fullScreen]="true"
                 [chosen]="true"
                 (closeChosen)="selectedItem = null"
-                (newItemInstance)="newInstance($event)"
-      ></app-item>
+                (newItemInstance)="newInstance($event)">
+      </app-item>
 
       <ul *ngIf="instancesLogs != null && selectedItem == null">
         <li *ngFor="let log of instancesLogs.list;">
@@ -33,12 +33,11 @@
    <!-- ALL OF ITEMS WITH (defaultly) UNDELETED INSTANCES -->
   <div class="row" style="margin-top: 30px;">
 
-    <div class="col" style="">
-      <div class="row" style="margin-right: 0; margin-left: 0;"
-           *ngFor="let item of visibleItems.list; let i = index" >
+    <div class="col-sm-12 col-md-6 items-row">
+      <div class="row" style="margin-right: 0; margin-left: 0;" *ngFor="let item of items; let i = index" >
         <app-item *ngIf="i%2 == 0"
                   [item]="item"
-                  [instances]="visibleInstances.getByItem(item)"
+                  [instances]="getVisibleInstances().getByItems(item)"
                   [chosenContainers]="_containers"
                   [fullScreen]="true"
                   (visible)="$event ? items.push(item): items.remove(item)"
@@ -48,45 +47,24 @@
       </div>
     </div>
 
-    <div class="col" style="">
-      <div class="row" style="margin-right: 0; margin-left: 0;"
-          *ngFor="let item of visibleItems.list; let i = index">
-
-      </div>
-
-      <div  class="row" style="margin-right: 0; margin-left: 0" *ngFor="let item of visibleItems.list; let i = index">
+    <div class="col-sm-12 col-md-6 items-row" style="">
+      <div  class="row" style="margin-right: 0; margin-left: 0" *ngFor="let item of items; let i = index">
         <app-item *ngIf="i%2 == 1"
                   [item]="item"
-                  [instances]="visibleInstances.getByItem(item)"
+                  [instances]="getVisibleInstances().getByItems(item)"
                   [chosenContainers]="_containers"
                   [fullScreen]="true"
                   (visible)="$event ? items.push(item): items.remove(item)"
-                  (newItemInstance)="newInstance($event)"
-        >
+                  (newItemInstance)="newInstance($event)">
         </app-item>
       </div>
     </div>
+
 
   </div>
 
 </ng-container>
 
 
-<ng-container *ngIf="!(_place != null && _category != null && _containers != null)">
-  <img src="https://media1.tenor.com/images/c26a081912a71af8d0e57799c291ced5/tenor.gif?itemid=8524221"/>
-</ng-container>
+<app-loader *ngIf="!(_place != null && _category != null && _containers != null)"></app-loader>
 
-
-<ng-template #itemOnList let-item let-index let-position>
-
-  <app-item *ngIf="index%2 == position"
-            [item]="item"
-            [instances]="instances.getByItem(item)"
-            [chosenContainers]="_containers"
-            [fullScreen]="true"
-            (visible)="$event ? items.push(item): items.remove(item)"
-            (newItemInstance)="newInstance($event)"
-  >
-  </app-item>
-
-</ng-template>
