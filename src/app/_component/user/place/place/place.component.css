@@ -2,6 +2,7 @@
   .sidebar {
     padding: 0;
   }
+
 }
 
 @media screen and (min-width: var(--breakpoint-sm)) {

@@ -1,32 +1,29 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {PlaceDetails} from '../../../../_models/request/PlaceDetails';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
 import {CookieDataService} from '../../../../_service/auth/cookieDatas/cookie-datas.service';
-import {ContainersList} from '../../../../_models/request/Container';
-import {KeyName} from '../../../../_models/request/KeyName';
+import {ContainersList} from '../../../../_models/response/Container';
+import {KeyName} from '../../../../_models/response/KeyName';
 import {PlaceService} from '../../../../_service/user/place/place/place.service';
 import {IdSelector} from '../../../../_service/utils/EntitySelector';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
-import {Category} from '../../../../_models/request/Category';
-import {WishList} from '../../../../_models/request/WishList';
+import {Category} from '../../../../_models/response/Category';
+import {WishList} from '../../../../_models/response/WishList';
 import {PlaceContent} from '../../../../_models/util/Content';
+import {PlaceUserService} from '../../../../_service/user/place/placeUser/place-user.service';
 
 @Component({
   selector: 'app-place',
   templateUrl: './place.component.html',
   styleUrls: ['./place.component.css']
 })
-export class PlaceComponent implements OnInit, OnDestroy {
+export class PlaceComponent  {
 
   @Input()
   set place(value: KeyName) {
     this.placeService.getById(new IdSelector(value))
-      .then((result: PlaceDetails) => {
-        this._place = result;
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      })
+      .then((result: PlaceDetails) => this._place = result )
+      .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e) );
   }
 
   _place: PlaceDetails;
@@ -39,14 +36,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   constructor(private cookieData: CookieDataService,
               private placeService: PlaceService,
+              private placeUserService: PlaceUserService,
               private errorHandler: ErrorHandlerService) {
-  }
-
-  ngOnInit(): void {
-  }
-
-
-  ngOnDestroy(): void {
   }
 
 
@@ -77,13 +68,11 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.content = PlaceContent.ITEMS;
   }
 
-
   @Output() leavedPlace = new EventEmitter<PlaceDetails>();
 
   canLeavePlace(): boolean {
     return !this.isAdmin() || this._place.users.size() === 1
   }
-
 
   leavePlace() {
     if (!this.canLeavePlace()) {
@@ -91,15 +80,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let keyName = new KeyName();
-    keyName.id = this.cookieData.getUserId();
-    this.placeService.removeUser(this._place, keyName)
-      .then((res: boolean) => {
-        if (!res)
-          this.errorHandler.sendErrors(["Couldn't remove you from this placeId..."]);
-        else
-          this.leavedPlace.emit(this._place);
-      })
+    this.placeUserService.removeUser(this._place, this.cookieData.getUserId())
+      .then(() => this.leavedPlace.emit(this._place) )
       .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e));
   }
 
