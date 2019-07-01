@@ -2,11 +2,11 @@ import {Form} from './Form';
 
 export class WishListItemForm extends Form{
 
-    category: number;
-    item: number;
-    comment: string;
-    author: number;
-    wishList: number = null;
+  wish_list_id: number = null;
+  author_id: number;
+  category_id: number;
+  item_id: number;
+  comment: string;
 
 
     validate(): boolean {
@@ -16,10 +16,10 @@ export class WishListItemForm extends Form{
 
 
     validateCategory(): boolean {
-      if(this.category == null && this.item == null) {
-        this.sendMessage("category.null|item.null");
+      if(this.category_id == null && this.item_id == null) {
+        this.sendMessage("category_id.null|item_id.null");
         return false;
-      } else if(this.category != null && this.item != null) {
+      } else if(this.category_id != null && this.item_id != null) {
         this.sendMessage("category_and_item.not_null");
         return false;
       } else
@@ -28,10 +28,10 @@ export class WishListItemForm extends Form{
 
 
     validateItem(): boolean {
-      if(this.category == null && this.item == null) {
-        this.sendMessage("category.null|item.null");
+      if(this.category_id == null && this.item_id == null) {
+        this.sendMessage("category_id.null|item_id.null");
         return false;
-      } else if(this.category != null && this.item != null) {
+      } else if(this.category_id != null && this.item_id != null) {
         this.sendMessage("category_and_item.not_null");
         return false;
       } else
@@ -49,8 +49,8 @@ export class WishListItemForm extends Form{
 
 
     validateAuthor(): boolean {
-      if(this.author == null) {
-        this.sendMessage("author.null");
+      if(this.author_id == null) {
+        this.sendMessage("author_id.null");
         return false;
       }
       return true;
@@ -58,7 +58,7 @@ export class WishListItemForm extends Form{
 
 
     validateWishList(): boolean {
-      if(this.wishList == null) {
+      if(this.wish_list_id == null) {
         this.sendMessage("wish_list.null");
         return false;
       }
