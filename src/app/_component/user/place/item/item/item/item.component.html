@@ -7,28 +7,32 @@
     <!--NAME, IMAGE, CATEGORIES-->
     <div class="card-header" style="padding: 10px;">
 
-      <div class="row" style="padding: 0; margin: 0; min-width: 100%">
+      <div class="row">
 
-        <!--NAME, CATEGORIES-->
-        <div class="col-sm-9" style="margin: 0; padding: 0; overflow-wrap: break-word">
+        <div class="col-10">
 
           <!--CATEGORIES-->
           <div class="row" style="margin: 0;">
-            <ul class="cat-breadcrumb card-subtitle mb-2 text-muted" style="padding-left: 0; float: left">
+            <ul class="cat-breadcrumb card-subtitle mb-2 text-muted" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
               <li *ngFor="let category of _item.category.getTrack()" >{{category.name}}</li>
             </ul>
           </div>
 
           <!--NAME-->
-          <div class="row" style="margin: 0">
-            <h5 class="card-title" >{{_item.name}}</h5>
+          <div class="row">
+            <h5 class="card-title col-12"
+                style="text-overflow: ellipsis; overflow: hidden"
+                [ngStyle]="{'white-space': wrapWS ? 'normal' : 'nowrap'}"
+                (mousedown)="wrapWS = true" (mouseup)="wrapWS = false" (dblclick)="wrapWS = !wrapWS">
+              {{_item.name}}
+            </h5>
           </div>
 
         </div>
 
         <!--IMAGE-->
-        <div class="col-sm-2" style="padding: 0">
-          <img [attr.src]="'http://localhost:8080/itemImage/' + _item.id + '.jpg'" class="rounded-circle" style="max-width: 100%; height: auto;">
+        <div class="col-2" style="padding: 0">
+          <img [attr.src]="'http://91.134.142.39:8080/fridgeapi/images/' + _item.id + '.jpg'" class="rounded-circle" style="max-width: 100%; height: auto;">
         </div>
 
       </div>
@@ -40,23 +44,20 @@
     <div class="btn-group" role="group">
 
        <!--NEW INSTANCE BUTTON-->
-       <button type="button" class="btn btn-secondary" style="width: calc(100% / 3)"
-               (click)="expand('NEW_INSTANCE')"
-       >
+       <button type="button" class="btn btn-secondary text-nowrap" style="width: calc(100% / 3)"
+               (click)="expand('NEW_INSTANCE')">
          + instance
        </button>
 
        <!--INSTANCES ALL BUTTON-->
-       <button type="button" class="btn btn-secondary" style="width: calc(100% / 3)"
-               (click)="expand('INSTANCES')"
-       >
+       <button type="button" class="btn btn-secondary text-nowrap" style="width: calc(100% / 3)"
+               (click)="expand('INSTANCES')">
          {{_instances.size()}} instances
        </button>
 
        <!--DETAILS BUTTON-->
-       <button type="button" class="btn btn-secondary" style="width: calc(100% / 3)"
-               (click)="expand('DETAILS')"
-       >
+       <button type="button" class="btn btn-secondary text-nowrap" style="width: calc(100% / 3)"
+               (click)="expand('DETAILS')">
          Show details
        </button>
 
@@ -86,9 +87,7 @@
 
 
   <!--BEFORE LOADED-->
-  <ng-container *ngIf="_item == null">
-    <img src="https://i.gifer.com/EXfl.gif"/>
-  </ng-container>
+  <app-loader *ngIf="_item == null"></app-loader>
 
 </div>
 

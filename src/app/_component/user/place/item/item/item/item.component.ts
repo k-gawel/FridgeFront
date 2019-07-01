@@ -1,12 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ItemContent} from '../../../../../../_models/util/Content';
-import {KeyNameList} from '../../../../../../_models/request/KeyName';
-import {ContainersList} from '../../../../../../_models/request/Container';
-import {EntityList} from '../../../../../../_models/request/Entity';
-import {ItemInstancesList} from '../../../../../../_models/request/item/ItemInstancesLst';
-import {ItemInstance} from '../../../../../../_models/request/item/ItemInstance';
-import {Item} from '../../../../../../_models/request/item/Item';
-import {PlaceUsersList} from '../../../../../../_models/request/place-user/PlaceUsersList';
+import {KeyNameList} from '../../../../../../_models/response/KeyName';
+import {ContainersList} from '../../../../../../_models/response/Container';
+import {EntityList} from '../../../../../../_models/response/Entity';
+import {ItemInstancesList} from '../../../../../../_models/response/item/ItemInstancesList';
+import {ItemInstance} from '../../../../../../_models/response/item/ItemInstance';
+import {Item} from '../../../../../../_models/response/item/Item';
+import {PlaceUsersList} from '../../../../../../_models/response/place-user/PlaceUsersList';
+import {ImageService} from '../../../../../../_service/utils/image.service';
+import {Category} from '../../../../../../_models/response/Category';
 
 @Component({
   selector: 'app-item',
@@ -15,6 +17,8 @@ import {PlaceUsersList} from '../../../../../../_models/request/place-user/Place
 })
 export class ItemComponent implements OnInit {
 
+
+  wrapWS: boolean = false;
 
   _content: ItemContent;
   _collapsed: boolean = true;
@@ -31,6 +35,8 @@ export class ItemComponent implements OnInit {
     }
 
   }
+
+
 
   // SETTINGS
   @Input() fullScreen: boolean = true;
@@ -74,7 +80,7 @@ export class ItemComponent implements OnInit {
       return;
 
     this._instances = instances;
-    this.currentInstances = instances.filtrByDeleted(false);
+    this.currentInstances = instances.filterByDeleted(false);
     this.visibleContainers = this._instances.getContainers();
   }
 
@@ -85,15 +91,12 @@ export class ItemComponent implements OnInit {
   _item: Item = null;
   @Input() set item(item: Item) {
     console.debug(this.componentId, "ItemComponent.setItem()", item);
-
     if(item == null)
       return;
-
-    if(this._item === null) {
+    else if(this._item === null) {
       this._item = item;
       return;
     }
-
     this._item = item;
   }
 
@@ -102,14 +105,15 @@ export class ItemComponent implements OnInit {
   }
 
 
-  constructor() {
+  constructor(private imageService: ImageService) {
     this.componentId = Math.random();
+    this.users = PlaceUsersList.ALL;
   }
 
 
   ngOnInit() {
-    this.users = PlaceUsersList.ALL;
   }
+
 
 
 

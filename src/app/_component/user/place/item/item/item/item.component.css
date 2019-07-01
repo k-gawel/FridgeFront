@@ -1,5 +1,6 @@
 :host {
   width: 100%;
+  padding-bottom: 15px;
 }
 
 /* Style the ALL */
@@ -82,3 +83,4 @@ ul.cat-breadcrumb li+li:before {
   border-left: 50px solid transparent;
   border-bottom: 40px solid #000000;
 }
+
