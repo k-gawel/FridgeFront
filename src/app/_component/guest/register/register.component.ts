@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from '../../../_service/auth/auth/auth.service';
 import {RoleContent} from '../../../_models/util/Content';
-import {AccountForm} from '../../../_models/response/AccountForm';
+import {AccountForm} from '../../../_models/request/AccountForm';
 import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 
 @Component({
@@ -9,25 +9,19 @@ import {ErrorMessage} from '../../../_models/util/ErrorMessage';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
   form: AccountForm = new AccountForm();
 
   constructor(private authService: AuthService) { }
 
-  ngOnInit() {
-  }
-
   submit() {
+    if(!this.form.validate())
+      return;
 
     this.authService.register(this.form)
-      .then((response: Boolean) => {
-        this.switchToLogin();
-      })
-      .catch((error: ErrorMessage) => {
-        console.log(error.messages);
-      });
-
+      .then(() => window.location.reload() )
+      .catch((error: ErrorMessage) => console.log(error.messages) );
   }
 
   switchToLogin() {
