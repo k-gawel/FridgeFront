@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Category} from '../../../../_models/request/Category';
+import {Category} from '../../../../_models/response/Category';
 import {CategoryService} from '../../../../_service/user/category/category.service';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
