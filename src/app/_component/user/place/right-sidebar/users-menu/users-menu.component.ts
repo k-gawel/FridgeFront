@@ -1,16 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PlaceDetails} from '../../../../../_models/request/PlaceDetails';
-import {PlaceUsersList} from '../../../../../_models/request/place-user/PlaceUsersList';
+import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
+import {PlaceUsersList} from '../../../../../_models/response/place-user/PlaceUsersList';
 import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
-import {KeyName, KeyNameList} from '../../../../../_models/request/KeyName';
+import {KeyName, KeyNameList} from '../../../../../_models/response/KeyName';
 import {PlaceService} from '../../../../../_service/user/place/place/place.service';
 import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
 import {UserService} from '../../../../../_service/user/user/user.service';
-import {PlaceUserStats, PlaceUserStatsList} from '../../../../../_models/request/place/place-user-stats';
+import {PlaceUserStats, PlaceUserStatsList} from '../../../../../_models/response/place-user/PlaceUserStats';
 import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
-import {PlaceUser} from '../../../../../_models/request/place-user/PlaceUser';
-import {Size, WindowService} from '../../../../../_service/utils/window.service';
+import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
 
 
 @Component({
@@ -44,13 +43,6 @@ export class UsersMenuComponent implements OnInit {
     console.debug("UsersMenuComponent.setPlace()", value);
     this._place = value;
     this._users = this._place.users;
-
-    this.placeUserService.getPlaceStats(this._place)
-      .then((res: PlaceUserStatsList) => {
-        console.debug("UsersMenuComponent.getPlaceStats()", res);
-        this.usersStats = res;
-      })
-      .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e));
   }
 
 
@@ -79,13 +71,7 @@ export class UsersMenuComponent implements OnInit {
 
 
   addUser() {
-    this.placeService.addUser(this._place, this.form)
-      .then((res: boolean) => {
-        if (res)
-          this.pushUser(this.form);
-        else
-          this.errorHandler.sendErrors(['Couldn\'t add this user to placeId']);
-      })
+    this.placeUserService.addUser(this._place, this.form)
       .catch( e => this.errorHandler.sendErrors(e) )
       .then( () => this.form = new KeyName() );
   }
@@ -99,28 +85,16 @@ export class UsersMenuComponent implements OnInit {
       this.usersStats.push(PlaceUserStats.create(user.id));
   }
 
+  canRemoveUser(user: PlaceUser): boolean {
+    return user != null && user.status && !this.isAdmin(user) && this.isAdmin();
+  }
+
   removeUser(user: PlaceUser) {
+    if(!this.canRemoveUser(user))
+      this.errorHandler.sendErrors(["Can not remove user"]);
 
-    if(user == null || !user.status || this.isAdmin(user) || !this.isAdmin()) {
-      this.errorHandler.sendErrors(["You can't delete this user!",
-        user == null ? "User is null" : null,
-        !user.status ? "User is already deleted." : null,
-        this.isAdmin(user) ? "User is an admin" : null,
-        !this.isAdmin() ? "You are not and admin..." : null]);
-      return;
-    }
-
-    this.placeService.removeUser(this._place, user)
-      .then((res: boolean) => {
-        if(res) {
-          this._users.remove(user);
-        } else {
-          this.errorHandler.sendErrors(["You can't delete this user"]);
-        }
-      })
-      .catch((e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      })
+    this.placeUserService.removeUser(this._place, user)
+      .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e) );
   }
 
 
@@ -128,13 +102,8 @@ export class UsersMenuComponent implements OnInit {
     if (this.isAdmin(user) || !this.isAdmin())
       this.errorHandler.sendErrors(["You can't promote this user!"]);
     else
-      this.placeService.changeAdmin(this._place, user)
-        .then((res: boolean) =>{
-          if(!res) this.errorHandler.sendErrors(["Couldn't promote this user"]);
-        })
-        .catch((e: ErrorMessage) => {
-          this.errorHandler.sendErrors(e);
-        })
+      this.placeUserService.changeAdmin(this._place, user)
+        .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e));
   }
 
 

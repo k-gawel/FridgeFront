@@ -1,4 +1,4 @@
-import { CollapsableListDirective } from './collapsable-list.directive';
+import {CollapsableListDirective} from './collapsable-list.directive';
 
 describe('CollapsableListDirective', () => {
   it('should create an instance', () => {

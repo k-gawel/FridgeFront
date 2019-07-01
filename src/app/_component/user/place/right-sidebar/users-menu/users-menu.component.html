@@ -11,9 +11,9 @@
       <!-- STATS POPOVER -->
       <ng-template #statsPopoverContent>
         <ul class="list-group list-group-flush" *ngIf="usersStats != null">
-          <li class="list-group-item"> Added:   <b>{{usersStats.getById(user.id).instancesAdded}}</b> </li>
-          <li class="list-group-item"> Opened:  <b>{{usersStats.getById(user.id).instancesOpened}}</b> </li>
-          <li class="list-group-item"> Deleted: <b>{{usersStats.getById(user.id).instancesDeleted}}</b> </li>
+          <li class="list-group-item"> Added:   <b>{{user.stats.instancesAdded}}</b> </li>
+          <li class="list-group-item"> Opened:  <b>{{user.stats.instancesOpened}}</b> </li>
+          <li class="list-group-item"> Deleted: <b>{{user.stats.instancesDeleted}}</b> </li>
         </ul>
       </ng-template>
 
@@ -32,7 +32,7 @@
       </ng-template>
 
 
-      <!--HIDDEN non-positionabsoluteelement is required to item display properly-->
+      <!--HIDDEN non-positionabsoluteelement is required to item_id display properly-->
       <span style="visibility: hidden">users</span>
 
     </li>

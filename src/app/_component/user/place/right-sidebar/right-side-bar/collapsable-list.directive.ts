@@ -1,5 +1,6 @@
 import {Directive, ElementRef, Input, OnInit} from '@angular/core';
 import {Size, WindowService} from '../../../../../_service/utils/window.service';
+import {stringify} from 'querystring';
 
 @Directive({
   selector: '[appCollapsableListHeader]'
@@ -11,9 +12,7 @@ export class CollapsableListDirective implements OnInit {
 
   @Input() collapseName: string;
   @Input() set title(value: string) {
-    console.log("TITLE NODE INIT", value);
     this.titleNode = this.getTitleNode(value);
-    console.log("TITLE NODE ON INPIUT", this.titleNode);
   }
 
   titleNode;
@@ -30,18 +29,46 @@ export class CollapsableListDirective implements OnInit {
 
   ngOnInit() {
     this.nL.style.display = "flex";
-    console.debug("TITLE NODE ON INIT", this.titleNode);
     this.nL.appendChild(this.titleNode);
     this.nL.appendChild(this.iconNodeNone);
 
-    this.windowService.$resize.subscribe(s => s > Size.SM ? this.onLarge() : this.onSmall() );
+    this.windowService.$resize.subscribe(s => {
+      switch (s) {
+        case Size.XS:
+          this.onExtraSmall();
+          break;
+        case Size.SM:
+          this.onSmall();
+          break;
+        case Size.MD:
+          this.onMid();
+          break;
+        case Size.LG:
+          this.onLarge();
+          break;
+        case Size.XL:
+          this.onExtraLarge();
+          break;
+        default:
+          throw Error("Unknown size type: " + stringify(s));
+      }
+    } );
   }
 
   setIconNode(iconNode) {
     this.nL.replaceChild(iconNode, this.nL.childNodes[1]);
   }
 
+  onExtraSmall() {
+    this.onSmall();
+  }
+
   onSmall() {
+    this.show();
+    this.setIconNode(this.iconNodeNone);
+  }
+
+  onMid() {
     this.hide();
     this.setIconNode(this.iconNodeDown);
   }
@@ -49,6 +76,10 @@ export class CollapsableListDirective implements OnInit {
   onLarge() {
     this.show();
     this.setIconNode(this.iconNodeNone);
+  }
+
+  onExtraLarge() {
+    this.onLarge();
   }
 
   show() {

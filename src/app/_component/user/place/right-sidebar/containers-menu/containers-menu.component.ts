@@ -1,11 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Container, ContainersList} from '../../../../../_models/request/Container';
-import {PlaceDetails} from '../../../../../_models/request/PlaceDetails';
+import {Container, ContainersList} from '../../../../../_models/response/Container';
+import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
 import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
 import {ContainerService} from '../../../../../_service/user/place/container/container.service';
-import {ContainerForm} from '../../../../../_models/response/ContainerForm';
+import {ContainerForm} from '../../../../../_models/request/ContainerForm';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
-import {Size, WindowService} from '../../../../../_service/utils/window.service';
 
 @Component({
   selector: 'app-containers-menu',

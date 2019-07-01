@@ -1,9 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {WishListForm} from '../../../../../../_models/response/WishList';
-import {PlaceDetails} from '../../../../../../_models/request/PlaceDetails';
-import {WishList} from '../../../../../../_models/request/WishList';
+import {WishListForm} from '../../../../../../_models/request/WishList';
+import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
+import {WishList} from '../../../../../../_models/response/WishList';
 import {WishListService} from '../../../../../../_service/user/place/wishlist/wishlist/wish-list.service';
-import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
 
 @Component({
   selector: 'app-wish-list-form',
@@ -27,20 +26,11 @@ export class WishListFormComponent implements OnInit {
 
   submit() {
     console.debug("WishListFormComponent.submit()", this.form);
-
-    if(!this.form.validate())
-      return;
-
-    this.wishListService.addNew(this.form)
-      .then( (res: WishList) => {
-        this.newWishList.emit(res);
-       } )
-      .catch((e: ErrorMessage) => {
-        this.form.errors = e;
-      });
-
+    if(this.form.validate())
+      this.wishListService.addNew(this.form)
+        .then( res => this.newWishList.emit(res) )
+        .catch(e => this.form.errors = e);
   }
-
 
 
 }

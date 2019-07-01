@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RightSideBarComponent } from './right-side-bar.component';
+import {RightSideBarComponent} from './right-side-bar.component';
 
 describe('RightSideBarComponent', () => {
   let component: RightSideBarComponent;

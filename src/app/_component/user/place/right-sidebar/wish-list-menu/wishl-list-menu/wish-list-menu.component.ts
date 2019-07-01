@@ -1,16 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PlaceDetails} from '../../../../../../_models/request/PlaceDetails';
+import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
 import {WishListService} from '../../../../../../_service/user/place/wishlist/wishlist/wish-list.service';
-import {KeyName} from '../../../../../../_models/request/KeyName';
+import {KeyName} from '../../../../../../_models/response/KeyName';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {WishListFormComponent} from '../wish-list-form/wish-list-form.component';
-import {WishList} from '../../../../../../_models/request/WishList';
+import {WishList} from '../../../../../../_models/response/WishList';
 import {PlaceService} from '../../../../../../_service/user/place/place/place.service';
-import {Entity} from '../../../../../../_models/request/Entity';
+import {Entity} from '../../../../../../_models/response/Entity';
 import {CookieDataService} from '../../../../../../_service/auth/cookieDatas/cookie-datas.service';
-import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
 import {ErrorHandlerService} from '../../../../../../_service/utils/errorhanler/error-handler.service';
-import {Size, WindowService} from '../../../../../../_service/utils/window.service';
 
 @Component({
   selector: 'app-wish-list-menu',
@@ -31,18 +29,8 @@ export class WishListMenuComponent implements OnInit {
 
   _place: PlaceDetails;
   @Input() set place(place: PlaceDetails) {
-    console.log("WishListMenuComponent.setPlace()", place);
     this._place = place;
-
-    this.wishListService.getByPlace(this._place.id)
-      .then( (res: WishList[]) => {
-        if(res == null) return;
-        this.list = res;
-      })
-      .catch( (e: ErrorMessage) => {
-        this.errorHandler.sendErrors(e);
-      });
-
+    this.list   = place.wishLists;
   }
 
 
@@ -62,9 +50,8 @@ export class WishListMenuComponent implements OnInit {
 
   openForm() {
     const modalRef = this.modalService.open(WishListFormComponent);
-    modalRef.componentInstance.placeId = this._place;
-    modalRef.componentInstance.newWishList
-      .subscribe((res: WishList) => {
+    modalRef.componentInstance.place = this._place;
+    modalRef.componentInstance.newWishList.subscribe((res: WishList) => {
         this.list.push(res);
         this.selectedWishList.emit(res);
         modalRef.close();
@@ -87,7 +74,6 @@ export class WishListMenuComponent implements OnInit {
     }
     else
       element = list;
-
   }
 
 

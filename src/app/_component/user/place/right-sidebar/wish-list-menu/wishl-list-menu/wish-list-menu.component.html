@@ -1,10 +1,8 @@
-
-  <li [ngClass]="wishListId.equals(_selectedWishList) ? 'list-group-item list-group-item-secondary' : 'list-group-item'"
-      *ngFor="let wishListId of list" (click)="select(wishListId)" name="wishListMenu">
-    {{wishListId.name}}
+  <li [ngClass]="wish_list_id.equals(_selectedWishList) ? 'list-group-item list-group-item-secondary' : 'list-group-item'"
+      *ngFor="let wish_list_id of list" (click)="select(wish_list_id)" name="wishListMenu">
+    {{wish_list_id.name}}
   </li>
 
   <li class="list-group-item" name="wishListMenu">
     <button type="button" class="btn btn-dark" (click)="openForm()">Add new wishlist</button>
   </li>
-
