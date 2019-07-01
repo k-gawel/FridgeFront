@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {AccountForm} from '../../../../_models/request/AccountForm';
+import {AccountService} from '../../../../_service/user/user/account.service';
 
 @Component({
   selector: 'app-account-managment',
@@ -7,7 +9,9 @@ import {Component, OnInit} from '@angular/core';
 })
 export class AccountManagmentComponent implements OnInit {
 
-  constructor() { }
+  constructor(private accountService: AccountService) { }
+
+  form: AccountForm = new AccountForm();
 
   ngOnInit() {
   }

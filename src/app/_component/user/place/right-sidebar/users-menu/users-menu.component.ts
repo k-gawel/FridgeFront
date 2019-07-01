@@ -6,7 +6,7 @@ import {KeyName, KeyNameList} from '../../../../../_models/response/KeyName';
 import {PlaceService} from '../../../../../_service/user/place/place/place.service';
 import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
-import {UserService} from '../../../../../_service/user/user/user.service';
+import {AccountService} from '../../../../../_service/user/user/account.service';
 import {PlaceUserStats, PlaceUserStatsList} from '../../../../../_models/response/place-user/PlaceUserStats';
 import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
 import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
@@ -27,7 +27,7 @@ export class UsersMenuComponent implements OnInit {
   usersStats: PlaceUserStatsList;
 
 
-  constructor(private userService: UserService,
+  constructor(private userService: AccountService,
               private cookieDatas: CookieDataService,
               private placeService: PlaceService,
               private errorHandler: ErrorHandlerService,

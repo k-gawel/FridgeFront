@@ -3,7 +3,7 @@ import {ContainersList} from '../../../../../../_models/response/Container';
 import {ItemInstanceForm} from '../../../../../../_models/request/ItemInstanceForm';
 import {Item} from '../../../../../../_models/response/item/Item';
 import {ItemInstance} from '../../../../../../_models/response/item/ItemInstance';
-import {UserService} from '../../../../../../_service/user/user/user.service';
+import {AccountService} from '../../../../../../_service/user/user/account.service';
 import {PlaceService} from '../../../../../../_service/user/place/place/place.service';
 import {InstanceService} from '../../../../../../_service/user/instance/instance.service';
 import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
@@ -24,7 +24,7 @@ export class NewInstanceFormComponent implements OnInit, OnDestroy {
   selectedDate: NgbDateStruct;
   form: ItemInstanceForm = new ItemInstanceForm();
 
-  constructor(private userService: UserService,
+  constructor(private userService: AccountService,
               private placeService: PlaceService,
               private instanceSerice: InstanceService) {
    }

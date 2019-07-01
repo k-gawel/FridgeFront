@@ -3,8 +3,14 @@ import {Form} from './Form';
 export class AccountForm extends Form {
 
   name: string;
+  nameError: string;
+
   email: string;
+  emailError: string;
+
   password1: string;
+  passwordError: string;
+
   password2: string;
 
   validate(): boolean {
@@ -12,6 +18,11 @@ export class AccountForm extends Form {
     return this.validateName() && this.validateEmail() && this.validatePasswords();
   }
 
+  private cleanErrors() {
+    this.nameError = null;
+    this.emailError = null;
+    this.passwordError = null;
+  }
 
   validateName(): boolean {
     if(this.name == null) {
