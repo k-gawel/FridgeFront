@@ -1,11 +1,15 @@
-<div *ngIf="_accountDatas != null">
+<div class="container-fluid" *ngIf="_accountDatas != null">
 
-  <app-navbar [accountDatas]="_accountDatas" (chosenPlace)="setPlace($event)"></app-navbar>
+  <div class="row">
 
-  <main role="main">
-    <app-place *ngIf="_userContent === 'PLACE'" [place]="_contentParams" (leavedPlace)="removePlace($event)"></app-place>
-    <app-account-managment *ngIf="_userContent === 'ACCOUNT'"></app-account-managment>
-  </main>
+    <app-navbar class="col-md-1 col-lg-2" style="background-color: black" [accountDatas]="_accountDatas" (chosenPlace)="setPlace($event)"></app-navbar>
+
+    <main role="main" class="p-0 my-5 col-sm-12  col-md-11 col-lg-10" >
+      <app-place *ngIf="_userContent === 'PLACE'" [place]="_contentParams" (leavedPlace)="removePlace($event)"></app-place>
+      <app-account-managment *ngIf="_userContent === 'ACCOUNT'"></app-account-managment>
+    </main>
+
+  </div>
 
 </div>
 

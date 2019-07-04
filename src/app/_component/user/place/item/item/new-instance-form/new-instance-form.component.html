@@ -1,24 +1,24 @@
 <ng-container *ngIf="containers != null && item != null">
 
-  <div class="col" style="margin: 20px; width: calc(100% - 40px)">
+  <div class="container" style="margin: 20px; width: calc(100% - 40px)">
 
     <div class="row">
       <input type="text" style="width: 100%" class="form-control" name="comment" [(ngModel)]="form.comment" placeholder="Your comment">
     </div>
 
     <div class="row">
-      <div class="col" style="width: 100%; padding: 0">
-        <ngb-datepicker #dp [(ngModel)]="selectedDate" (select)="onDateChange()" (navigate)="date = $event.next"></ngb-datepicker>
+      <div class="col-sm-12 col-lg-6" style="padding: 0">
+        <ngb-datepicker style="width: 100%" #dp [(ngModel)]="selectedDate" (select)="onDateChange()" (navigate)="date = $event.next"></ngb-datepicker>
       </div>
 
-      <div class="col" style="padding: 0;">
+      <div class="col-sm-12 col-lg-6" style="padding: 0;">
         <select class="custom-select" size="5" [(ngModel)]="form.containerId" style="height: 50%;">
           <option value="" selected disabled>Choose container</option>
           <option *ngFor="let container of containers.list" value="{{container.id}}">{{container.name}}</option>
         </select>
 
 
-        <button type="button" class="btn btn-outline-primary"
+        <button type="button" class="btn btn-block btn-outline-primary"
                 style="height: 50%; width: 100%;" (click)="submit()">
           Submit
         </button>

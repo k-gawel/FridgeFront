@@ -1,9 +1,9 @@
 <div class="card mb-3">
 
-  <div class="card-header" style="display: flex; justify-content: space-between">
+  <div class="card-header" style="display: flex; justify-content: space-between" [ngClass]="{'background-color': item.addedInstance != null ? '#86cfda' : ''}">
     {{item.author.name + ' on ' + (item.createdOn | date: 'dd/MM')}}
 
-    <button *ngIf="item.addedInstance != null" class="btn" disabled><i class="fas fa-check-circle"></i></button>
+    <button *ngIf="item.addedInstance != null" class="btn" disabled><i style="color: #28a745" class="fas fa-check-circle"></i></button>
     <button *ngIf="item.addedInstance == null" class="btn" (click)="openForm()"><i class="fas fa-plus"></i></button>
   </div>
 

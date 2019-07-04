@@ -15,7 +15,6 @@ export class ItemDescriptionComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.debug("ItemDescriptionComponent.ngOnInit()");
   }
 
 }

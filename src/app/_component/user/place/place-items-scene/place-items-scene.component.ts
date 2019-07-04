@@ -1,19 +1,15 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {PlaceDetails, PlaceDetailsList} from '../../../../_models/response/PlaceDetails';
+import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
 import {PlaceUsersList} from '../../../../_models/response/place-user/PlaceUsersList';
 import {ContainersList} from '../../../../_models/response/Container';
 import {Category} from '../../../../_models/response/Category';
 import {Item} from '../../../../_models/response/item/Item';
-import {Observable, Subscription} from 'rxjs';
 import {KeyNameList} from '../../../../_models/response/KeyName';
 import {ItemService} from '../../../../_service/user/item/item/item.service';
-import {InstanceService, ItemInstanceQuery} from '../../../../_service/user/instance/instance.service';
+import {InstanceService} from '../../../../_service/user/instance/instance.service';
 import {InstanceChangeList} from '../../../../_models/response/InstanceChange';
 import {LoggerServiceService} from '../../../../_service/user/user/logger/logger-service.service';
-import {IdSelector} from '../../../../_service/utils/EntitySelector';
-import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
-import {ItemsList} from '../../../../_models/response/item/ItemsList';
 import {ItemInstancesList} from '../../../../_models/response/item/ItemInstancesList';
 import {ItemInstance} from '../../../../_models/response/item/ItemInstance';
 

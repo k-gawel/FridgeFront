@@ -13,7 +13,6 @@ export class ItemInstancesComponent implements OnInit {
 
   _instances: ItemInstancesList;
   @Input() set instances(instances: ItemInstancesList) {
-    console.debug("ItemInstancesComponent.setInstances()", instances);
     this._instances = instances;
   }
 

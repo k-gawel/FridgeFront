@@ -30,17 +30,12 @@ export class NewInstanceFormComponent implements OnInit, OnDestroy {
    }
 
    ngOnInit() {
-     console.debug("new NewInstanceFormComponent() itemId: {}, containers: {}", this.item, this.containers);
      this.form.itemId = this.item.id;
    }
 
    submit() {
-      console.debug("NewInstanceFormComponent.submit()");
-
-      if(!this.form.validate()) {
-        console.debug("NewInstanceFormComponent.submit() form not valid", this.form.errors);
+      if(!this.form.validate())
         return;
-      }
 
       this.instanceSerice.addInstance(this.form)
         .then( (res: ItemInstance) => {

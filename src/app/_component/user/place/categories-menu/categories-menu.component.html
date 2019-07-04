@@ -1,4 +1,4 @@
-<div *ngIf="rootCategory != null" style="max-height: 380px">
+<ng-container *ngIf="rootCategory != null">
 
   <button class="btn" style="height: 40px; width: 100%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
           (click)="chooseCategory(rootCategory.isFinal() ? rootCategory.parent : rootCategory)">
@@ -7,7 +7,7 @@
   </button>
 
 
-  <div class="ctg-menu-btn-group" name="categoriesMenu" style="max-height: 340px; overflow-y: auto;">
+  <div class="ctg-menu-btn-group" name="categoriesMenu" style="max-height: 340px; max-width: 100%; overflow-y: auto;">
 
     <button *ngFor="let category of rootCategory.isFinal() ? rootCategory.parent.children : rootCategory.children"
             [ngClass]="'button' + (rootCategory.isFinal() && rootCategory.equals(category) ? ' active' : '')"
@@ -17,5 +17,6 @@
 
   </div>
 
-</div>
+</ng-container>
 
+<app-loader *ngIf="rootCategory == null"></app-loader>

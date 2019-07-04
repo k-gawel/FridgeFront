@@ -37,3 +37,10 @@
 .ctg-menu-btn-group .button:hover {
   background-color: grey;
 }
+
+
+@media (max-width: var(--breakpoint-sm)) {
+  :host {
+    max-height: 300px;
+  }
+}

@@ -10,7 +10,6 @@ import {Item} from '../../../../../_models/response/item/Item';
 import {ErrorHandlerService} from '../../../../utils/errorhanler/error-handler.service';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
 import {WishListItemForm} from '../../../../../_models/request/WishListItemForm';
-import {ItemInstanceForm} from '../../../../../_models/request/ItemInstanceForm';
 import {HttpErrorResponse} from '@angular/common/http';
 import {CookieDataService} from '../../../../auth/cookieDatas/cookie-datas.service';
 import {ItemInstance} from '../../../../../_models/response/item/ItemInstance';

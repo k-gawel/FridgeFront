@@ -1,27 +1,47 @@
-<div class="body-box">
-  <div class="login-box">
-    <img src="http://3.bp.blogspot.com/_7U3SWB4tHEY/S6GD9iYdOAI/AAAAAAAAAUk/6P1M0dQY_TE/s400/Harry-Potter-Avatar-3%5B1%5D.jpg" class="avatar">
-    <div class="h1-box">Login Here</div>
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <form class="login100-form validate-form">
+					<span class="login100-form-title p-b-34">
+						Account Login
+					</span>
 
-    <form>
-      <ng-container *ngIf="loginForm.errors != null">
-        <p style="color: red" *ngFor="let e of loginForm.errors.messages">{{e}}</p>
-      </ng-container>
+        <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" [ngClass]="form.nameError != null ? 'alert-validate' : ''"
+             [attr.data-validate]="form.nameError">
+          <input id="first-name" class="input100" type="text" name="name" [(ngModel)]="form.name" placeholder="User name">
+          <span class="focus-input100"></span>
+        </div>
 
-      <p>Username</p>
-      <input type="text" name="username" [(ngModel)]="loginForm.name" placeholder="Enter Username">
+        <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" [ngClass]="form.passwordError != null ? 'alert-validate' : ''"
+             [attr.data-validate]="form.passwordError">
+          <input class="input100" type="password" name="pass" [(ngModel)]="form.password" placeholder="Password">
+          <span class="focus-input100"></span>
+        </div>
 
-      <p>Password</p>
-      <input type="password" name="password" [(ngModel)]="loginForm.password" placeholder="Enter Password">
-      <input type="submit" name="submit" (click)="submit()" value="SIGN IN">
+        <div class="container-login100-form-btn">
+          <button class="login100-form-btn" (click)="submit()">
+            Sign in
+          </button>
+        </div>
 
-      <div style="display: flex; justify-content: space-between">
-        <a>Forget Password</a>
-        <a (click)="switchToRegister()">Sign up</a>
-      </div>
-    </form>
+        <div class="w-full text-center p-t-27 p-b-239">
+						<span class="txt1">
+							Forgot
+						</span>
 
+          <a href="#" class="txt2">
+            User name / password?
+          </a>
+        </div>
+
+        <div class="w-full text-center">
+          <a href="#" class="txt3" (click)="switchToRegister()">
+            Sign Up
+          </a>
+        </div>
+      </form>
+
+      <div class="login100-more" style="background-image: url('images/bg-01.jpg');"></div>
+    </div>
   </div>
 </div>
-
-

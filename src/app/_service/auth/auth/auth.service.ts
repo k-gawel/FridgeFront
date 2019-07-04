@@ -32,8 +32,6 @@ export class AuthService {
 
 
   public login(form?: LoginForm): Promise<AccountDatas> {
-    console.log("LOGIN FORM: ", form);
-
     let initialResponse = form != undefined ?
       this.authApi.loginWithForm(form.name, form.password) : this.authApi.loginWithToken();
 

@@ -3,6 +3,7 @@ import {WishListForm} from '../../../../../../_models/request/WishList';
 import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
 import {WishList} from '../../../../../../_models/response/WishList';
 import {WishListService} from '../../../../../../_service/user/place/wishlist/wishlist/wish-list.service';
+import {CookieDataService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
 
 @Component({
   selector: 'app-wish-list-form',
@@ -15,17 +16,17 @@ export class WishListFormComponent implements OnInit {
 
   @Output() newWishList = new EventEmitter<WishList>();
 
-  constructor(private wishListService: WishListService) { }
+  constructor(private wishListService: WishListService,
+              private sessionService: CookieDataService) { }
 
   form: WishListForm = new WishListForm();
 
   ngOnInit() {
-    console.debug("WishListFormComponent.ngOnInit() placeId:", this.place.id);
     this.form.place = this.place.id;
+    this.form.author = this.sessionService.getUserId();
   }
 
   submit() {
-    console.debug("WishListFormComponent.submit()", this.form);
     if(this.form.validate())
       this.wishListService.addNew(this.form)
         .then( res => this.newWishList.emit(res) )

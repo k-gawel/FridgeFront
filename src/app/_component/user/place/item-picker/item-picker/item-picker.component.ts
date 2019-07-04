@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ItemService} from '../../../../../_service/user/item/item/item.service';
 import {RelatedItemsService} from '../../../../../_service/user/item/relatedItems/related-items.service';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
@@ -10,6 +10,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NewItemComponent} from '../new_item/new_item.component';
 import {Size, WindowService} from '../../../../../_service/utils/window.service';
 import {BarcodeScannerComponent} from '../barcode-scanner/barcode-scanner.component';
+import {IdSelector} from "../../../../../_service/utils/EntitySelector";
 
 
 @Component({
@@ -17,7 +18,7 @@ import {BarcodeScannerComponent} from '../barcode-scanner/barcode-scanner.compon
   templateUrl: './item-picker.component.html',
   styleUrls: ['./item-picker.component.css']
 })
-export class ItemPickerComponent implements OnInit {
+export class ItemPickerComponent  {
 
   constructor(private itemService: ItemService,
               private relatedItemsService: RelatedItemsService,
@@ -26,100 +27,40 @@ export class ItemPickerComponent implements OnInit {
   }
 
   errorMessage: ErrorMessage;
+  textSearch: string | number = '';
+
 
   _category: Category = new Category();
   @Input() set category(category: Category) {
-    console.debug("ItemPickerComponent.setCategory()", category);
     if(this._category.equals(category) || category == null)
       return;
+    else
+      this._category = category;
 
-    this._category = category;
-    this.onTextSearchChange();
+    if(this._category.isFinal() && this.textSearch == "")
+      this.getRelatedItems();
+    else
+      this.onTextSearchChange();
   }
-
-  _place: PlaceDetails = new PlaceDetails();
-  @Input()
-  set place(place: PlaceDetails) {
-    this._place = place;
-  }
+  
+  @Input() place: PlaceDetails = new PlaceDetails();
 
   @Output() selectedItem = new EventEmitter<Item>();
-
-  ngOnInit(): void {
+  selectItem(item: Item) {
+    this.selectedItem.emit(item);
+    if (this.windowService.$resize.value <= Size.MD)
+      document.getElementById("item-picker-" + this.place.id).scrollIntoView({behavior: 'smooth', block: 'center'});
   }
 
+  
 
-  textSearch: string | number = '';
-
-  showRelatedItems: boolean = false;
-  relatedItems: ItemsList;
-
+  related: boolean = true;
   items: ItemsList;
-
-  // PICKER FORM METHODS
-
-  searchByBarcode(barcode: number) {
-    this.itemService.searchItemsByBarcode(barcode, this._place)
-      .then((items: ItemsList) => this.items = items )
-      .catch((e: ErrorMessage) => this.errorMessage = e )
+  setItems(items: ItemsList, related: boolean) {
+    this.items = items;
+    this.related = related;
   }
-
-
-  searchByName(name: string) {
-    this.itemService.searchItemByName(name, this._place, this._category)
-      .then(items => this.items = items )
-      .catch(e => this.errorMessage = e );
-  }
-
-
-  getRelatedItems() {
-    console.debug("ItemPicker.getRelatedItems()", this._category);
-    this.relatedItemsService.getMostPopular(this._category, this._place)
-      .then( (items: ItemsList) => {
-        console.debug("ItemPicker.getRelatedItems().then()", items);
-        this.relatedItems = items;
-        console.debug("AFTER INITIALIZATION");
-      } )
-      .catch( (e: ErrorMessage) => {
-        this.errorMessage = e;
-        console.error(e);
-      });
-
-  }
-
-
-  onTextSearchChange() {
-    console.debug("ItemPicker.onTextSearchChange()");
-    if(this.textSearch.toString().length <= 4) {
-      console.debug("ItemPicker.onTextSearchChange() <=4");
-        this.getRelatedItems();
-        this.showRelatedItems = true;
-    } else if(!isNaN(Number(this.textSearch))) {
-      console.debug("ItemPicker.onTextSearchChange() number");
-        let barcode = Number(this.textSearch);
-        this.searchByBarcode(barcode);
-        this.showRelatedItems = false;
-    } else if(isNaN(Number(this.textSearch))) {
-      console.debug("ItemPicker.onTextSearchChange() barcode")
-        let name = String(this.textSearch);
-        this.searchByName(name);
-        this.showRelatedItems = false;
-    }
-  }
-
-  createNewItem() {
-    if(!this._category.isFinal())
-      return;
-
-    const modalRef = this.modalService.open(NewItemComponent);
-    modalRef.componentInstance.chosenCategory = this._category;
-    modalRef.componentInstance.place = this._place;
-    if(this.textSearch != null && typeof this.textSearch == 'number')
-      modalRef.componentInstance.barcode = this.textSearch;
-    if(this.textSearch != null && typeof this.textSearch == 'string')
-      modalRef.componentInstance.name = this.textSearch;
-  }
-
+  
   scanBarcode() {
     const modalRef = this.modalService.open(BarcodeScannerComponent);
     modalRef.componentInstance.barcode.subscribe(res => {
@@ -130,6 +71,60 @@ export class ItemPickerComponent implements OnInit {
     modalRef.componentInstance.close.subscribe(() => modalRef.close())
   }
 
+
+  searchByBarcode(barcode: number) {
+    this.itemService.searchItemsByBarcode(barcode, this.place)
+      .then((items: ItemsList) => this.setItems(items, false) )
+      .catch((e: ErrorMessage) => this.errorMessage = e )
+  }
+
+
+  searchByName(name: string) {
+    this.itemService.searchItemByName(name, this.place, this._category)
+      .then(items => this.setItems(items, false) )
+      .catch(e => this.errorMessage = e );
+  }
+
+
+  getRelatedItems() {
+    this.items = null;
+
+    if(this._category.isFinal())
+      this.relatedItemsService.getAll(new IdSelector(this._category), new IdSelector(this.place), 100)
+        .then(items => this.setItems(items, false));
+    else
+      this.relatedItemsService.getMostPopular(this._category, this.place)
+        .then( (items: ItemsList) => this.setItems(items, true) )
+        .catch( (e: ErrorMessage) => this.errorMessage = e );
+  }
+
+  
+  onTextSearchChange() {
+    this.items = null;
+
+    if(this.textSearch.toString().length <= 4)
+        this.getRelatedItems();
+    else if(!isNaN(Number(this.textSearch)))
+        this.searchByBarcode(Number(this.textSearch));
+    else if(isNaN(Number(this.textSearch)))
+        this.searchByName(String(this.textSearch));
+  }
+
+  
+  createNewItem() {
+    if(!this._category.isFinal())
+      return;
+
+    const modalRef = this.modalService.open(NewItemComponent);
+    modalRef.componentInstance.chosenCategory = this._category;
+    modalRef.componentInstance.place = this.place;
+    if(this.textSearch != null && typeof this.textSearch == 'number')
+      modalRef.componentInstance.barcode = this.textSearch;
+    if(this.textSearch != null && typeof this.textSearch == 'string')
+      modalRef.componentInstance.name = this.textSearch;
+  }
+
+  
   closeErrors() {
     this.errorMessage = null;
   }

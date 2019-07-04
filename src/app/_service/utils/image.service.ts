@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Item} from '../../_models/response/item/Item';
 import {HttpClient} from '@angular/common/http';
 import {Category} from '../../_models/response/Category';

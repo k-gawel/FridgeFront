@@ -1,0 +1,13 @@
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" *ngIf="size <= 2" class="closebtn" (click)="collapse()">&times;</a>
+  <li ngbDropdown>
+    <a class="nav-link" id="placesMenuDropdown" ngbDropdownToggle aria-expanded="false">
+      PLACES
+    </a>
+    <app-place-menu ngbDropdownMenu aria-labelledby="placesMenuDropdown" [places]="accountDatas.places" [removedPlace]="removedPlace"
+                    (chosenPlace)="chosenPlace.emit($event); collapse()"></app-place-menu>
+  </li>
+</div>
+
+<i *ngIf="size <= 2" class="fas fa-bars fixed-bottom fa-3x" (click)="expand()" id="navbar-icon" >
+</i>

@@ -23,4 +23,15 @@ export class RelatedItemsApiService {
 
     return this.api.get(url, headers, params);
   }
+
+  getAll(placeID: number, categoryID: number) {
+    let url = this.url;
+    let headers = this.api.getHeaderWithToken();
+    let params = new HttpParams();
+    params = params.append("place_ids", ApiService.numbersArrayToString(placeID));
+    params = params.append("category_id", categoryID.toString());
+    params = params.append("params", "all");
+
+    return this.api.get(url, headers, params);
+  }
 }

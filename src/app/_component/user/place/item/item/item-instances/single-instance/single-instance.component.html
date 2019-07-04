@@ -11,7 +11,7 @@
   <!--EXPIRE-->
   <td>
     <span>
-      expires on {{_instance.expireOn != null ? _instance.expireOn.toString() : '--'}}
+      {{_instance.expireOn != null ? _instance.expireOn.toString() : '--'}}
     </span>
   </td>
 
@@ -36,7 +36,7 @@
     <div class="dropdown" style="float: left;">
 
       <!--ICON-->
-      <i class="fas fa-ellipsis-v fa-sm" [attr.id]="_instance.id + '_instance_options'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+      <i class="fas fa-ellipsis-v fa-lg" [attr.id]="_instance.id + '_instance_options'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 
       <!--MENU-->
       <div class="dropdown-menu" [attr.aria-labelledby]="_instance.id + '_instance_options'">
@@ -56,6 +56,7 @@
       </div>
 
     </div>
+
   </td>
 
 </ng-container>

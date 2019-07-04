@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
 import {WishListItemForm} from '../../../_models/request/WishListItemForm';
-import {ItemInstanceForm} from '../../../_models/request/ItemInstanceForm';
 import {HttpParams} from '@angular/common/http';
 
 @Injectable({
@@ -23,7 +22,7 @@ export class WishListItemApiService {
   }
 
   public addInstance(wishListItemId: number, instanceId: number) {
-    let url = this.url + "/" + wishListItemId + "/instanes/" + instanceId;
+    let url = this.url + "/" + wishListItemId + "/instances/" + instanceId;
     let header = this.api.getHeaderWithToken();
 
     return this.api.post(url, null, header);

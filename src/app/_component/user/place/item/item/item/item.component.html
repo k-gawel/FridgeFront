@@ -1,15 +1,15 @@
-<div class="card">
+<div class="card item-card" style="border-top: 1px solid darkblue; border-bottom: 1px solid black">
 
   <!--AFTER LOADED-->
   <ng-container *ngIf="_item != null">
 
 
     <!--NAME, IMAGE, CATEGORIES-->
-    <div class="card-header" style="padding: 10px;">
+    <div class="card-header item-header" [attr.id]="'item-header-' + componentId">
 
-      <div class="row">
+      <div class="row w-100">
 
-        <div class="col-10">
+        <div class="col-10" style="padding-right: 0">
 
           <!--CATEGORIES-->
           <div class="row" style="margin: 0;">
@@ -31,8 +31,9 @@
         </div>
 
         <!--IMAGE-->
-        <div class="col-2" style="padding: 0">
-          <img [attr.src]="'http://91.134.142.39:8080/fridgeapi/images/' + _item.id + '.jpg'" class="rounded-circle" style="max-width: 100%; height: auto;">
+        <div class="col-2" style="padding: 0; padding-right: 7px">
+          <img [src]="'images/' + _item.id + '.jpg'" onerror="this.src = 'assets/icons/2.svg'"
+               class="rounded-circle" style="max-width: 100%; height: auto;">
         </div>
 
       </div>
@@ -41,22 +42,22 @@
 
 
     <!--BUTTONS-->
-    <div class="btn-group" role="group">
+    <div class="btn-group item-button-group" role="group">
 
        <!--NEW INSTANCE BUTTON-->
-       <button type="button" class="btn btn-secondary text-nowrap" style="width: calc(100% / 3)"
+       <button type="button" class="btn btn-outline-secondary text-nowrap item-button" style="border-left: none; border-top-left-radius: 0"
                (click)="expand('NEW_INSTANCE')">
          + instance
        </button>
 
        <!--INSTANCES ALL BUTTON-->
-       <button type="button" class="btn btn-secondary text-nowrap" style="width: calc(100% / 3)"
+       <button type="button" class="btn btn-outline-secondary text-nowrap item-button"
                (click)="expand('INSTANCES')">
          {{_instances.size()}} instances
        </button>
 
        <!--DETAILS BUTTON-->
-       <button type="button" class="btn btn-secondary text-nowrap" style="width: calc(100% / 3)"
+       <button type="button" class="btn btn-outline-secondary text-nowrap item-button" style="border-right: none; border-top-right-radius: 0"
                (click)="expand('DETAILS')">
          Show details
        </button>
@@ -73,7 +74,7 @@
 
       <app-new-instance-form *ngIf="_content === 'NEW_INSTANCE'"
                              [containers]="containers" [item]="_item"
-                             (newInstance)="newItemInstance.emit($event)"
+                             (newInstance)="newItemInstance.emit($event); expand('INSTANCES')"
       ></app-new-instance-form>
 
       <app-item-description *ngIf="_content === 'DETAILS'"

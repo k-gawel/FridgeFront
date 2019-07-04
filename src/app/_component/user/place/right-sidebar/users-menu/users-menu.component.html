@@ -4,13 +4,13 @@
         *ngFor="let user of _users.getByStatus(true).list">
 
       <!--USER NAME-->
-      <span class="username" popoverTitle="User stats" [ngbPopover]="statsPopoverContent" placement="bottom">
+      <span class="username" popoverTitle="User stats" [ngbPopover]="statsPopoverContent" data-container="body" placement="bottom">
         {{user.name}}
       </span>
 
       <!-- STATS POPOVER -->
       <ng-template #statsPopoverContent>
-        <ul class="list-group list-group-flush" *ngIf="usersStats != null">
+        <ul class="list-group list-group-flush">
           <li class="list-group-item"> Added:   <b>{{user.stats.instancesAdded}}</b> </li>
           <li class="list-group-item"> Opened:  <b>{{user.stats.instancesOpened}}</b> </li>
           <li class="list-group-item"> Deleted: <b>{{user.stats.instancesDeleted}}</b> </li>
@@ -53,6 +53,8 @@
     </li>
 
 </ng-container>
+
+
 
 <ng-container *ngIf="!(_place != null && _users != null)">
   WAAAAAAAAIAIAIAIAIIAIIAIIAIAAT

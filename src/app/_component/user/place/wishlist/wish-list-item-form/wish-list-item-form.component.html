@@ -1,6 +1,6 @@
 <div class="container" *ngIf="_wishList != null">
 
-  <div class="row">
+  <div class="row pb-4">
     <button class="col btn btn-outline-info btn-lg btn-block"
             style="border: none" disabled>
       Add new item to wishlist
@@ -11,25 +11,21 @@
     </button>
   </div>
 
-  <div class="row">
+  <div class="row pb-4">
     <categories-menu (chosenCategory)="selectCategory($event)"></categories-menu>
   </div>
 
-  <div class="row">
+  <div class="row pb-4">
+    <button *ngIf="form.item_id == null" style="width: 100%; height: 100%"
+            type="button" class="btn btn-secondary btn-lg" disabled>
+      {{activeElement.name}}
+    </button>
+  </div>
 
-    <div class="col-6">
-      <button *ngIf="form.item_id == null" style="width: 100%; height: 100%"
-              type="button" class="btn btn-secondary btn-lg" disabled>
-        {{activeElement.name}}
-      </button>
-    </div>
-
-    <div class="col-6">
-      <textarea name="comment" id="comment" style="width: 100%" rows="3"
-                [(ngModel)]="form.comment" placeholder="Type your comment here..." >
-      </textarea>
-    </div>
-
+  <div class="row pb-4">
+    <textarea name="comment" id="comment" style="width: 100%" rows="3"
+              [(ngModel)]="form.comment" placeholder="Type your comment here..." >
+    </textarea>
   </div>
 
   <div class="row">

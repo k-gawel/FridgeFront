@@ -3,6 +3,7 @@ import {Form} from './Form';
 export class WishListForm extends Form {
 
     name: string;
+    author: number;
     place: number;
     description: string;
 

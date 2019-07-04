@@ -24,14 +24,10 @@ export class SingleInstanceComponent implements OnInit {
 
 
   @Input() set instance(value: ItemInstance) {
-    console.log("SingleInstanceComponent.setInstance()", value);
 
     this._instance = value;
 
     this.addedUser = PlaceUsersList.ALL.getById(value.addedById);
-    console.log("SingleInstanceComponent.setInstance() addedUser:", this.addedUser);
-    console.log("SingleInstanceComponent.setInstance() PlaceUsersList.ALL", PlaceUsersList.ALL);
-
 
     this.openUser = PlaceUsersList.ALL.getById(value.openById);
 

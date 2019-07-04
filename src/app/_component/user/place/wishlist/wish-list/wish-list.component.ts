@@ -36,7 +36,6 @@ export class WishListComponent implements OnInit {
 
   @Input()
   set wishList(wishList: WishList) {
-    console.debug("WishListComponent.setWishList()", wishList);
     if (wishList === null)
       return;
 
@@ -52,7 +51,6 @@ export class WishListComponent implements OnInit {
 
 
   newWishListItem(item: WishListItem) {
-    console.debug("WishListComponent.newWishListItem()", item);
     this.wishListItemService.get(item)
       .then((res: WishListItem) => {
         this._wishList.pushNewItem(res);
@@ -109,7 +107,6 @@ export class WishListComponent implements OnInit {
         modalRef.close();
       });
     modalRef.componentInstance.close.subscribe(() => modalRef.close());
-
   }
 
 

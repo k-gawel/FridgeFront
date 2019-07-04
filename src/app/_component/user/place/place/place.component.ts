@@ -71,7 +71,7 @@ export class PlaceComponent  {
   @Output() leavedPlace = new EventEmitter<PlaceDetails>();
 
   canLeavePlace(): boolean {
-    return !this.isAdmin() || this._place.users.size() === 1
+    return !this.isAdmin() || this._place.users.list.filter(u => u.status).length === 1
   }
 
   leavePlace() {

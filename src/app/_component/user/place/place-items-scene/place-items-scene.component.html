@@ -2,7 +2,7 @@
 
   <div class="row">
 
-    <div class="col-lg-6" style="margin-right: 0; margin-left: 0;"> <!-- ITEM PICKER -->
+    <div class="col-lg-6" style="margin-right: 0; margin-left: 0;" [attr.id]="'item-picker-' + _place.id"> <!-- ITEM PICKER -->
       <app-item-picker [category]="_category"
                        [place]="_place"
                        (selectedItem)="setSelectedItem($event)">
@@ -10,7 +10,7 @@
     </div>
 
 
-    <div class="col-lg-6" style="margin-right: 0; margin-left: 0;"> <!-- COMPONENT OF ITEM CHOSEM FROM ITEM-PICKER OR RELATED ITEMS -->
+    <div class="col-lg-6" style="margin-right: 0; margin-left: 0;" [attr.id]="'chosen-item-' + _place.id"> <!-- COMPONENT OF ITEM CHOSEN FROM ITEM-PICKER OR RELATED ITEMS -->
       <app-item *ngIf="selectedItem != null"
                 [chosenContainers]="_containers"
                 [item]="selectedItem"
@@ -34,7 +34,7 @@
   <div class="row" style="margin-top: 30px;">
 
     <div class="col-sm-12 col-md-6 items-row">
-      <div class="row" style="margin-right: 0; margin-left: 0;" *ngFor="let item of items; let i = index" >
+      <div class="row " style="margin-right: 0; margin-left: 0;" *ngFor="let item of items; let i = index" >
         <app-item *ngIf="i%2 == 0"
                   [item]="item"
                   [instances]="getVisibleInstances().getByItems(item)"
@@ -45,6 +45,9 @@
         >
         </app-item>
       </div>
+
+      <div class="mat-divider"></div>
+
     </div>
 
     <div class="col-sm-12 col-md-6 items-row" style="">
@@ -60,6 +63,7 @@
       </div>
     </div>
 
+    <div class="mat-divider"></div>
 
   </div>
 

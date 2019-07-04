@@ -3,16 +3,19 @@ import {Form} from './Form';
 export class LoginForm extends Form {
     name: string;
     password: string;
+    nameError: string;
+    passwordError: string;
 
     validate(): boolean {
       super.validate();
+      this.passwordError = null;
+      this.nameError = null;
       return this.validateName() && this.validatePassword();
     }
 
     validateName(): boolean {
-
       if(this.name == null || this.name.length == 0) {
-        this.sendMessage("Name must not be empty");
+        this.nameError = "Name must not be empty";
         return false;
       }
 
@@ -20,9 +23,8 @@ export class LoginForm extends Form {
     }
 
     validatePassword(): boolean {
-
-      if(this.password == null || this.name.length == 0) {
-        this.sendMessage("Password must not be empty");
+      if(this.password == null || this.password.length == 0) {
+        this.passwordError = "Password must not be empty";
         return false;
       }
 

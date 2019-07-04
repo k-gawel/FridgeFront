@@ -1,17 +1,25 @@
-<span (click)="close.emit()">CLOSE</span>
-
 <div class="tab" *ngIf="currentStage == 'CATEGORY'">
-  Choose category | <span (click)="goToPicker()">PICK ITEM</span>
+  <div class="btn-group" role="group" aria-label="choose-category-bar" style="width: 100%">
+    <button type="button" class="btn btn-lg btn-info" (click)="close.emit()"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-lg btn-block btn-outline-info" disabled>Choose category</button>
+    <button type="button" class="btn btn-lg btn-info" (click)="goToPicker()"><i class="fas fa-arrow-right"></i></button>
+  </div>
   <categories-menu [rootCategory]="rootCategory" (chosenCategory)="rootCatgory = ($event)"></categories-menu>
 </div>
 
 <div class="tab" *ngIf="currentStage == 'PICKER'">
-  Pick item
+  <div class="btn-group" role="group" aria-label="pick-item-bar" style="width: 100%;">
+    <button type="button" class="btn btn-lg btn-info" (click)="close.emit()"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-lg btn-block btn-outline-info" disabled>Pick item</button>
+  </div>
   <app-item-picker [place]="place" [category]="rootCatgory" (selectedItem)="chosenItem = ($event); goToItem()"></app-item-picker>
 </div>
 
 <div class="tab" *ngIf="currentStage == 'ITEM'">
-  Add instance
+  <div class="btn-group" role="group" aria-label="add-instance-bar" style="width: 100%;">
+    <button type="button" class="btn btn-lg btn-info" (click)="close.emit()"><i class="fas fa-times"></i></button>
+    <button type="button" class="btn btn-lg btn-block btn-outline-info" disabled>Add instance</button>
+  </div>
   <app-item (newItemInstance)="addInstance($event)"
             [item]="chosenItem" [chosenContainers]="place.containers"
             [instances]="place.containers.getAllInstances().getByItems(chosenItem)"></app-item>

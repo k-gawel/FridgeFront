@@ -1,12 +1,11 @@
 <ng-container *ngIf="_place != null">
-  <div class="container-fluid">
-    <div id="place-header" class="row">
-      <h1 class="col-6">
+  <div class="container-fluid place-container">
+    <div style="max-width: 100vw; display: flex; justify-content: space-between; font-size: 3em;">
+      <button style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border: none; background: none">
         {{_place.name}}
-      </h1>
-      <button class="col-6"
-        *ngIf="canLeavePlace()" (click)="leavePlace()">
-        LEAVE PLACE
+      </button>
+      <button class="leave-button" *ngIf="canLeavePlace()" (click)="leavePlace()">
+        <i class="fas fa-sign-out-alt fa-lg"></i>
       </button>
     </div>
 

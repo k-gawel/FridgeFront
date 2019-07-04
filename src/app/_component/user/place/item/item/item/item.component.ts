@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ItemContent} from '../../../../../../_models/util/Content';
 import {KeyNameList} from '../../../../../../_models/response/KeyName';
 import {ContainersList} from '../../../../../../_models/response/Container';
@@ -7,8 +7,6 @@ import {ItemInstancesList} from '../../../../../../_models/response/item/ItemIns
 import {ItemInstance} from '../../../../../../_models/response/item/ItemInstance';
 import {Item} from '../../../../../../_models/response/item/Item';
 import {PlaceUsersList} from '../../../../../../_models/response/place-user/PlaceUsersList';
-import {ImageService} from '../../../../../../_service/utils/image.service';
-import {Category} from '../../../../../../_models/response/Category';
 
 @Component({
   selector: 'app-item',
@@ -17,13 +15,13 @@ import {Category} from '../../../../../../_models/response/Category';
 })
 export class ItemComponent implements OnInit {
 
+  componentId = Math.random();
 
   wrapWS: boolean = false;
 
   _content: ItemContent;
   _collapsed: boolean = true;
   expand(content: ItemContent) {
-
     if(this._content == content) {
       this._collapsed = true;
       this._content = null;
@@ -33,7 +31,6 @@ export class ItemComponent implements OnInit {
     } else {
       this._content = content;
     }
-
   }
 
 
@@ -47,9 +44,6 @@ export class ItemComponent implements OnInit {
   }
 
 
-  componentId: number;
-
-
   // FORM DETAILS
   users: KeyNameList;
 
@@ -58,8 +52,6 @@ export class ItemComponent implements OnInit {
   containers: ContainersList = new ContainersList();
   visibleContainers: ContainersList = new ContainersList();
   @Input() set chosenContainers(containers: ContainersList) {
-    console.debug(this.componentId, "ItemComponent.setChosenContainers()", containers);
-
     if(containers == null && containers.size() === 0)
       return;
 
@@ -74,8 +66,6 @@ export class ItemComponent implements OnInit {
   currentInstances: ItemInstancesList = new ItemInstancesList();
   _instances: ItemInstancesList = new ItemInstancesList(); // ALL PLACES INSTANCES
   @Input() set instances(instances: ItemInstancesList) {
-    console.debug(this.componentId, "ItemComponent.setInstances()", instances);
-
     if(this._instances == null)
       return;
 
@@ -90,14 +80,14 @@ export class ItemComponent implements OnInit {
 
   _item: Item = null;
   @Input() set item(item: Item) {
-    console.debug(this.componentId, "ItemComponent.setItem()", item);
     if(item == null)
       return;
     else if(this._item === null) {
       this._item = item;
-      return;
+    } else {
+      this._item = item;
     }
-    this._item = item;
+
   }
 
   private getItemId(): number {
@@ -105,18 +95,12 @@ export class ItemComponent implements OnInit {
   }
 
 
-  constructor(private imageService: ImageService) {
-    this.componentId = Math.random();
+  constructor(private eL: ElementRef) {
     this.users = PlaceUsersList.ALL;
   }
 
-
   ngOnInit() {
   }
-
-
-
-
 
 
 }

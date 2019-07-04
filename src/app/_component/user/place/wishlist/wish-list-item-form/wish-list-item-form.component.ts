@@ -21,7 +21,6 @@ export class WishListItemFormComponent implements OnInit {
 
   @Input()
   set wishList(wishList: WishList) {
-    console.log("WishListItemFormComponent.setWishList()", wishList);
     this.form.wish_list_id = wishList.id;
     this._place.id = wishList.placeId;
     this._wishList = wishList;
@@ -44,7 +43,6 @@ export class WishListItemFormComponent implements OnInit {
   }
 
   selectCategory(category: Category) {
-    console.debug("WishListItemFormComponent.selectCategory()", category);
     this.chosenCategory = category;
     this.form.item_id = null;
     this.form.category_id = category.id;
@@ -52,7 +50,6 @@ export class WishListItemFormComponent implements OnInit {
   }
 
   selectItem(item: Item) {
-    console.debug("WishListItemFormComponent.selectItem()", item);
     this.chosenCategory = item.category;
     this.form.item_id = item.id;
     this.form.category_id = null;
@@ -60,21 +57,15 @@ export class WishListItemFormComponent implements OnInit {
   }
 
   submit() {
-    console.debug("WishListItemFormComponent.submit()");
-
     this.wishLisstItemService.newItem(this.form)
       .then( (res: WishListItem) => {
         if(res == null) {
-          console.debug("WishListItemFormComponent.submit() res is null");
           return;
+          console.log("WISHLISTITEMFORMRESULT IS NULL");
         }
-        else {
-          console.debug("WishListItemFormComponent.submit() res is'nt null", res);
+        else
           this.newItem.emit(res);
-        }
-      }).catch((e: Error) => {
-        console.debug("WishListItemFormComponent.submit() error", e);
-    })
+      });
   }
 
 }
