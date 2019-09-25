@@ -7,11 +7,11 @@ import {ShopListForm} from "../../../_models/request/ShopListForm";
 })
 export class ShopListApiService extends ApiService {
 
-  private url = super.url + "shoplists/";
+  public surl = this.url + "shoplists/";
 
 
   public create(form: ShopListForm) {
-    let url = this.url;
+    let url = this.surl;
     let body = form;
     let headers = this.getHeaderWithToken();
 
@@ -20,7 +20,7 @@ export class ShopListApiService extends ApiService {
 
 
   public addInstance(shopListId: number, instanceId: number) {
-    let url = this.url + shopListId + "/instances/" + instanceId;
+    let url = this.surl + shopListId + "/instances/" + instanceId;
     let headers = this.getHeaderWithToken();
 
     return this.post(url, null, headers);
@@ -28,7 +28,7 @@ export class ShopListApiService extends ApiService {
 
 
   public deleteInstance(shopListId: number, instanceId: number) {
-    let url = this.url + shopListId + "/instances/" + instanceId;
+    let url = this.surl + shopListId + "/instances/" + instanceId;
     let headers = this.getHeaderWithToken();
 
     return this.delete(url, null);

@@ -25,6 +25,11 @@ import {ScrollStrategy} from "@angular/cdk/overlay";
 import {WishListItem} from "../../_models/response/WishListItem";
 import {WishList} from "../../_models/response/WishList";
 import {Item} from "../../_models/response/item/Item";
+import {
+  ShopListFormDialog,
+  ShopListFormDialogData
+} from "../../_component/user/place/elements/shoplist/shop-list-form/shop-list-form.component";
+import {ShopList} from "../../_models/response/ShopList";
 
 @Injectable({
   providedIn: 'root'
@@ -119,6 +124,10 @@ export class DialogService {
 
   public static createWishListItemFromComponent(dialog: MatDialog, data: WishListItemFormComponentData): MatDialogRef<WishListItemFormComponent, WishListItem | undefined> {
     return <MatDialogRef<WishListItemFormComponent, WishListItem | undefined>> this.createFullWidthComponent(dialog, WishListItemFormComponent, data);
+  }
+
+  public static createShopListForm(dialog: MatDialog, data: ShopListFormDialogData): MatDialogRef<ShopListFormDialog, ShopList | void> {
+    return this.createFullWidthComponent(dialog, ShopListFormDialog, data);
   }
 
 }

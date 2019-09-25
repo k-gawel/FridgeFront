@@ -1,1 +1,22 @@
-<p>shop-list-menu works!</p>
+<mat-action-list>
+
+  <button *ngFor="let shopList of list.getByStatus(true) | entityList"
+          mat-list-item>
+    {{shopList.shopName}}
+  </button>
+
+  <button mat-list-item>
+    Show archived
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </button>
+
+</mat-action-list>
+
+<div class="option-buttons ob-right">
+
+  <button mat-fab aria-label="New WishList" *ngIf="place != null"
+          (click)="openForm()">
+    <mat-icon aria-hidden="false" aria-label="Search item">add_new</mat-icon>
+  </button>
+
+</div>

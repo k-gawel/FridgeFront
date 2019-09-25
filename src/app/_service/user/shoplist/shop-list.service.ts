@@ -8,7 +8,7 @@ import {ItemInstance} from "../../../_models/response/item/ItemInstance";
 @Injectable({
   providedIn: 'root'
 })
-export class ShopListServiceService {
+export class ShopListService {
 
   constructor(private api: ShopListApiService) {
   }
@@ -19,6 +19,7 @@ export class ShopListServiceService {
       .then((j: JSON) => new ShopList(j))
       .catch((e: HttpErrorResponse) => this.manageFormErrors(form, e));
   }
+
 
   private manageFormErrors(form: ShopListForm, e: HttpErrorResponse): ShopListForm {
     return form;

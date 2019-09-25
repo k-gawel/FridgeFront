@@ -1,11 +1,9 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {Component, Inject, Input} from '@angular/core';
 import {WishListForm} from '../../../../../../_models/request/WishListForm';
 import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
-import {WishList} from '../../../../../../_models/response/WishList';
 import {WishListService} from '../../../../../../_service/user/wishlist/wishlist/wish-list.service';
 import {CookieDataService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {NewItemDatas} from "../../item/new-item-form/new_item.component";
 
 export interface WishListFormDatas {
   place: PlaceDetails

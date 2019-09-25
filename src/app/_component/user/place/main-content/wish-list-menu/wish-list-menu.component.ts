@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
 import {WishListService} from '../../../../../_service/user/wishlist/wishlist/wish-list.service';
 import {KeyName} from '../../../../../_models/response/KeyName';
@@ -15,7 +15,14 @@ import {PlaceService} from "../../../../../_service/user/place/place/place.servi
   templateUrl: './wish-list-menu.component.html',
   styleUrls: ['./wish-list-menu.component.css']
 })
-export class WishListMenuComponent {
+export class WishListMenuComponent implements OnInit {
+
+
+  @Input() list: WishListList;
+  @Output() selectedWishList = new EventEmitter<KeyName>();
+
+  place: PlaceDetails;
+  _selectedWishList: WishList = null;
 
   constructor(private wishListService: WishListService,
               private modalService: NgbModal,
@@ -25,26 +32,19 @@ export class WishListMenuComponent {
   }
 
 
-  @Input() list: WishListList;
-  @Input() place: PlaceDetails;
-
-  _selectedWishList: WishList = null;
-  @Output() selectedWishList = new EventEmitter<KeyName>();
-
+  ngOnInit() {
+    this.place = this.list.getPlace();
+  }
 
   openForm() {
-    const formDatas = {
-      place: this.place
-    };
+    const formDatas = {place: this.place};
 
     const dialogRef = DialogService.createWishListForm(this.dialog, formDatas);
   }
 
 
   select(wishList: WishList) {
-    const datas = {
-      wishList: wishList
-    };
+    const datas = {wishList: wishList};
 
     const dialogRef = DialogService.createWishListComponent(this.dialog, datas);
   }

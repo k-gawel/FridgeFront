@@ -66,6 +66,7 @@ import {CloseDialogButtonComponent} from './_component/utils/close-dialog-button
 import {InstanceActionInfoComponent} from './_component/user/place/elements/item-instance/item-instance/instance-action-info.component';
 import {ProducersMenuComponent} from './_component/user/place/main-content/producers-menu/producers-menu.component';
 import {ShopListMenuComponent} from './_component/user/place/main-content/shop-list-menu/shop-list-menu.component';
+import {ShopListFormComponent} from './_component/user/place/elements/shoplist/shop-list-form/shop-list-form.component';
 
 
 const appRoutes: Routes = [];
@@ -107,7 +108,8 @@ const appRoutes: Routes = [];
     InstanceActionInfoComponent,
     ProducersMenuComponent,
     UserStatComponent,
-    ShopListMenuComponent
+    ShopListMenuComponent,
+    ShopListFormComponent
   ],
   entryComponents: [
     NewInstanceFormComponent,
