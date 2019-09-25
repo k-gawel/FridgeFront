@@ -28,3 +28,14 @@
     content: 'LEAVE ';
   }
 }
+
+.content-tabs {
+
+}
+
+.content-tab {
+  width: 100vw;
+  height: 100vh;
+  display: inline;
+  margin: 0;
+}

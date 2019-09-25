@@ -37,7 +37,7 @@ export class  ItemService {
     let result: Item | ErrorMessage = null;
 
     if(!refresh)
-      result = ItemsList.ALL.getById(id);
+      result = ItemsList.ALL[id];
 
     if(result === null) {
 
@@ -70,9 +70,9 @@ export class  ItemService {
 
     if(!refresh) {
       for(let id of ids) {
-        let item = ItemsList.ALL.getById(id);
+        let item = ItemsList.ALL[id];
         if(item != null) {
-          result.push(item);
+          result.add(item);
           idsToFind.splice(idsToFind.indexOf(id), 1);
         }
       }
@@ -82,8 +82,8 @@ export class  ItemService {
       let query = new ItemQuery(this.itemApi);
       query.itemIds = idsToFind;
       await query.execute()
-        .then((r: JSON[])=> new ItemsList(r))
-        .then(r => <ItemsList> result.pushAll(r))
+        .then((r: JSON[]) => new ItemsList(r))
+        .then(r => <ItemsList> result.addAll(r))
     }
 
     return result;
@@ -122,7 +122,7 @@ export class  ItemService {
     if(place !== undefined)
       query.placeIds = (new IdSelector(place)).id;
     if(category !== undefined)
-      query.category = category.id;
+      query.categoryId = category.id;
 
 
     let cacheResult = this.cacheResults.get(query.asKey());
@@ -146,7 +146,7 @@ export class  ItemService {
   public async getByCategory(category: IdSelector, place?: IdSelector, limit?: number): Promise<ItemsList> {
 
     let query = new ItemQuery(this.itemApi);
-    query.category = category.id[0];
+    query.categoryId = category.id[0];
     if(place != undefined)
       query.placeIds = place.id;
 
@@ -177,15 +177,15 @@ export class ItemQuery {
   private _placeIds: number | number[] = null;
   private _name: string = null;
   private _barcode: number = null;
-  private _category: number = null;
+  private _categoryId: number = null;
 
   public asKey(): string {
     return 'placeIds' + this._placeIds + 'itemIds' + this._itemIds + "name" + this._name
-          +'barcode' + this._category + 'category' + this._category;
+      + 'barcode' + this._categoryId + 'categoryId' + this._categoryId;
   }
 
   execute() {
-    return this.itemApi.search(this._itemIds, this._placeIds, this._name, this._barcode, this._category);
+    return this.itemApi.search(this._itemIds, this._placeIds, this._name, this._barcode, this._categoryId);
   }
 
   constructor(private itemApi: ItemApiService) {
@@ -223,11 +223,11 @@ export class ItemQuery {
     this._barcode = value;
   }
 
-  get category(): number {
-    return this._category;
+  get categoryId(): number {
+    return this._categoryId;
   }
 
-  set category(value: number) {
-    this._category = value;
+  set categoryId(value: number) {
+    this._categoryId = value;
   }
 }

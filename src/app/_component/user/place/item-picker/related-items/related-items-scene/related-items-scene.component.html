@@ -1,6 +1,6 @@
 <ngb-carousel *ngIf="items != null" showNavigationArrows="true">
 
-  <ng-template ngbSlide *ngFor="let item of items.list" >
+  <ng-template ngbSlide *ngFor="let item of items">
 
     <div class="card">
       <img style="opacity: 0.6" class="card-img related-image" [src]="'images/' + item.id + '.jpg'" onerror="this.src = 'assets/icons/2.svg'">

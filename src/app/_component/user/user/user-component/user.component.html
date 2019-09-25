@@ -1,16 +1,37 @@
-<div class="container-fluid" *ngIf="_accountDatas != null">
+<mat-drawer-container hasBackdrop="true" *ngIf="_accountDatas != null" class="full-screen">
 
-  <div class="row">
+  <mat-drawer #drawer mode="over" style="width: 55vw">
 
-    <app-navbar class="col-md-1 col-lg-2" style="background-color: black" [accountDatas]="_accountDatas" (chosenPlace)="setPlace($event)"></app-navbar>
+    <mat-toolbar color="primary">
+      PLACES
+    </mat-toolbar>
 
-    <main role="main" class="p-0 my-5 col-sm-12  col-md-11 col-lg-10" >
+    <mat-action-list>
+
+      <app-place-menu [places]="_accountDatas.places" (chosenPlace)="setPlace($event); drawer.toggle()">
+      </app-place-menu>
+
+    </mat-action-list>
+
+  </mat-drawer>
+
+  <mat-drawer-content>
+
+    <main role="main" class="m-0 p-0">
       <app-place *ngIf="_userContent === 'PLACE'" [place]="_contentParams" (leavedPlace)="removePlace($event)"></app-place>
       <app-account-managment *ngIf="_userContent === 'ACCOUNT'"></app-account-managment>
     </main>
 
-  </div>
 
-</div>
+    <div class="option-buttons ob-left">
 
-<app-loader *ngIf="_accountDatas == null"></app-loader>
+      <button mat-fab aria-label="Open menu"
+              (click)="drawer.toggle()">
+        <mat-icon aria-hidden="false" aria-label="Open menu">menu</mat-icon>
+      </button>
+
+    </div>
+
+  </mat-drawer-content>
+
+</mat-drawer-container>

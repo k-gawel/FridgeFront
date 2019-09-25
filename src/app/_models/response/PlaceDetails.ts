@@ -1,37 +1,36 @@
 import {KeyName, KeyNameList} from './KeyName';
 import {PlaceUsersList} from './place-user/PlaceUsersList';
-import {ContainersList} from './Container';
+import {Container, ContainersList} from './Container';
 import {PlaceUser} from './place-user/PlaceUser';
-import {WishList} from './WishList';
+import {WishList, WishListList} from './WishList';
+import {Entity} from "./Entity";
 
-export class PlaceDetails extends KeyName{
+export class PlaceDetails extends KeyName {
 
     adminId: number;
 
-    containers: ContainersList;
-    users: PlaceUsersList;
-    wishLists: WishList[];
+  containers: ContainersList = new ContainersList();
+  users: PlaceUsersList = new PlaceUsersList();
+  wishLists: WishListList = new WishListList();
 
     constructor(json?: JSON) {
       super();
-
-      if(json == undefined)
-        return;
+      if (json == undefined) return;
 
       this.id = json['id'];
+      PlaceDetailsList.ALL.add(this);
+
       this.name = json['name'];
       this.adminId = json['adminId'];
 
-      this.containers = new ContainersList(json['containers']);
-      this.users = new PlaceUsersList(json['users']);
-      this.wishLists = (<JSON[]> json['wish_lists']).map(j => new WishList(j));
-
-      PlaceDetailsList.ALL.push(this);
+      this.users.addAll(new PlaceUsersList(json['users']));
+      (<JSON[]> json['containers']).forEach(j => new Container(j));
+      (<JSON[]> json['wish_lists']).forEach(j => new WishList(j));
     }
 
 
     public addUser(user: KeyName): PlaceUser {
-      let placeUser: PlaceUser = this.users.getById(user.id);
+      let placeUser: PlaceUser = this.users[user.id];
       if(placeUser != null) {
         placeUser.status = true;
       } else {
@@ -43,18 +42,19 @@ export class PlaceDetails extends KeyName{
       return placeUser;
     }
 
+
     public removeUser(user: KeyName | number) {
-      let placeUser: PlaceUser = this.users.getById(user instanceof KeyName ? user.id : user);
+      let placeUser: PlaceUser = this.users[user instanceof KeyName ? user.id : user];
       if(placeUser != null)
         placeUser.status = false;
     }
 
 }
 
-export class PlaceDetailsList extends KeyNameList {
+export class PlaceDetailsList extends KeyNameList<PlaceDetails> {
 
-    public list: PlaceDetails[];
-    public static ALL: PlaceDetailsList = new PlaceDetailsList();
+  public static readonly ALL: PlaceDetailsList = new PlaceDetailsList();
+
 
     constructor(json?: JSON[]) {
       super();
@@ -62,16 +62,14 @@ export class PlaceDetailsList extends KeyNameList {
       if(json == undefined)
         return;
 
-      json.forEach((element: JSON) => {
-        this.list.push(new PlaceDetails(element));
-      });
-
-    }
-
-    public getById(id: number): PlaceDetails {
-      return <PlaceDetails> super.getById(id);
+      json.forEach((element: JSON) => this.add(new PlaceDetails(element)));
     }
 
 
+  public getContainers(): ContainersList {
+    const result = new ContainersList();
+    this.forEach(p => result.addAll(p.containers));
+    return result;
+  }
 
 }

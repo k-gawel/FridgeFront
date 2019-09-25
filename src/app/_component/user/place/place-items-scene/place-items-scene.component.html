@@ -1,74 +1,51 @@
-<ng-container *ngIf="_place != null && _category != null && _containers != null">
-
-  <div class="row">
-
-    <div class="col-lg-6" style="margin-right: 0; margin-left: 0;" [attr.id]="'item-picker-' + _place.id"> <!-- ITEM PICKER -->
-      <app-item-picker [category]="_category"
-                       [place]="_place"
-                       (selectedItem)="setSelectedItem($event)">
-      </app-item-picker>
-    </div>
+<ng-container *ngIf="_category != null">
 
 
-    <div class="col-lg-6" style="margin-right: 0; margin-left: 0;" [attr.id]="'chosen-item-' + _place.id"> <!-- COMPONENT OF ITEM CHOSEN FROM ITEM-PICKER OR RELATED ITEMS -->
-      <app-item *ngIf="selectedItem != null"
-                [chosenContainers]="_containers"
-                [item]="selectedItem"
-                [instances]="baseInstances.getByItems(selectedItem)"
-                [fullScreen]="true"
-                [chosen]="true"
-                (closeChosen)="selectedItem = null"
-                (newItemInstance)="newInstance($event)">
-      </app-item>
-
-      <ul *ngIf="instancesLogs != null && selectedItem == null">
-        <li *ngFor="let log of instancesLogs.list;">
-          {{instancesLogs.toString(log.id)}}
-        </li>p
-      </ul>
-    </div>
-
+  <div class="input-group-prepend" style="display: flex; width: 100%">
+        <span class="input-group-text" style="flex-grow: 1">
+          {{_category.name}}
+        </span>
+    <span class="input-group-text" style="flex-grow: 1">
+          Producer
+        </span>
   </div>
 
-   <!-- ALL OF ITEMS WITH (defaultly) UNDELETED INSTANCES -->
-  <div class="row" style="margin-top: 30px;">
+  <mat-action-list *ngIf="items != null && content == 'LIST'">
+    <button mat-list-item *ngFor="let item of items | entityList" (click)="openItem(item)">
 
-    <div class="col-sm-12 col-md-6 items-row">
-      <div class="row " style="margin-right: 0; margin-left: 0;" *ngFor="let item of items; let i = index" >
-        <app-item *ngIf="i%2 == 0"
-                  [item]="item"
-                  [instances]="getVisibleInstances().getByItems(item)"
-                  [chosenContainers]="_containers"
-                  [fullScreen]="true"
-                  (visible)="$event ? items.push(item): items.remove(item)"
-                  (newItemInstance)="newInstance($event)"
-        >
-        </app-item>
-      </div>
+      <h4 mat-line>NAME: {{item.name}}</h4>
 
-      <div class="mat-divider"></div>
+      <p mat-line>
+        <span>CATEGORY: </span>
+        <span *ngFor="let category of item.category.getTrack()">
+            {{category.name}} /
+          </span>
+      </p>
 
-    </div>
+      <img src="https://image.flaticon.com/icons/svg/99/99518.svg" class="rounded" width="50px" height="50px">
+    </button>
+  </mat-action-list>
 
-    <div class="col-sm-12 col-md-6 items-row" style="">
-      <div  class="row" style="margin-right: 0; margin-left: 0" *ngFor="let item of items; let i = index">
-        <app-item *ngIf="i%2 == 1"
-                  [item]="item"
-                  [instances]="getVisibleInstances().getByItems(item)"
-                  [chosenContainers]="_containers"
-                  [fullScreen]="true"
-                  (visible)="$event ? items.push(item): items.remove(item)"
-                  (newItemInstance)="newInstance($event)">
-        </app-item>
-      </div>
-    </div>
+  <div style="height: calc(100vh - 88px)" *ngIf="content == 'PICKER'">
 
-    <div class="mat-divider"></div>
+    <app-item-picker (close)="content = 'LIST'" (selectedItem)="openItem($event)"
+                     [category]="_category" [place]="_place" [closeable]="true">
+    </app-item-picker>
 
   </div>
 
 </ng-container>
 
 
-<app-loader *ngIf="!(_place != null && _category != null && _containers != null)"></app-loader>
+<div class="option-buttons ob-right" *ngIf="content == 'LIST'">
 
+  <button mat-fab aria-label="Search item"
+          (click)="content = 'PICKER'">
+    <mat-icon aria-hidden="false" aria-label="Search item">search</mat-icon>
+  </button>
+
+  <button mat-fab aria-label="Filtr items">
+    <mat-icon aria-hidden="false" aria-label="Search item">filter_list</mat-icon>
+  </button>
+
+</div>

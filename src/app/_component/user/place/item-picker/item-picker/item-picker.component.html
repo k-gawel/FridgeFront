@@ -1,75 +1,60 @@
 <ng-container *ngIf="place != null && _category != null">
 
-  <div class="card" style="padding-left: 0; padding-right: 0">
+  <div class="card" style="width: 100%; height: 100%;">
 
-    <div class="input-group" style="margin: 0">
+    <div class="header" style="display: flex">
 
-      <div class="input-group-prepend" style="display: flex; width: 100%">
-        <span class="input-group-text" style="flex-grow: 1">
-          {{_category.name}}
+      <mat-form-field style="width: 100%; padding: 0 1em">
+        <span matPrefix>
+          <i class="fas fa-barcode"></i>&nbsp;
         </span>
-        <span class="input-group-text" style="flex-grow: 1">
-          Producer
+        <input type="text" matInput placeholder="Search your item" (keyup.ENTER)="searchByName($event.target.value)">
+        <span matSuffix>
+          &nbsp;<i class="fas fa-times"></i>
         </span>
-      </div>
+      </mat-form-field>
 
-      <div style="width: 100%; display: flex">
-
-        <input type="text" class="form-control" placeholder="Search by name..."
-               name="name" [(ngModel)]="textSearch" (keyup)="onTextSearchChange()">
-
-        <div class="input-group-append">
-          <span class="input-group-text" style="border-left: none; background-color: white">
-            <i class="fas fa-times" (click)="textSearch = ''; onTextSearchChange()"></i>
-          </span>
-
-          <button type="button" class="btn btn-secondary"
-                  (click)="scanBarcode()">
-            <i class="fas fa-barcode"></i>
-          </button>
-
-          <button type="button" class="btn btn-primary"
-                  [disabled]="_category.isFinal() ? 0 : 1"
-                  (click)="createNewItem()">
-            <i class="fas fa-plus-square"></i>
-          </button>
-        </div>
-
-      </div>
+      <button mat-icon-button *ngIf="closeable" style="height: 100%" (click)="close.emit()">
+        <mat-icon aria-hidden="false" aria-label="Back">arrow_back_ios</mat-icon>
+      </button>
 
     </div>
 
     <!-- SEARCH RESULTS -->
-    <div class="row" style="margin: 0; height: 350px; overflow: auto; -webkit-overflow-scrolling: touch;">
 
-      <app-loader *ngIf="items == null"></app-loader>
+    <mat-action-list *ngIf="items != null">
+      <button mat-list-item *ngFor="let item of items | entityList" (click)="selectedItem.emit(item)">
 
-      <ul *ngIf="items != null && !related" class="list-group" style="height: 350px; overflow-y: scroll; width: 100%">
+        <h4 mat-line>NAME: {{item.name}}</h4>
+        <p mat-line>
+          <span>CATEGORY: </span>
+          <span *ngFor="let category of item.category.getTrack()">
+            {{category.name}} /
+          </span>
+        </p>
 
-        <a class="list-group-item list-group-item-action" style="cursor: default" *ngFor="let item of items.list" (click)="selectItem(item)">
-          <div style="white-space: nowrap; text-overflow: ellipsis ;overflow: hidden;">{{item.name}}</div>
-        </a>
-        <li *ngIf="items.list.length == 0" class="list-group-item">
-          No results...
-        </li>
+        <img src="https://image.flaticon.com/icons/svg/99/99518.svg"
+             class="rounded" width="50px" height="50px">
 
-      </ul>
+      </button>
+    </mat-action-list>
 
-      <app-related-items-scene *ngIf = "items != null && related"
-                               [items]="items"
-                               (chosen)="selectItem($event)">
-      </app-related-items-scene>
 
-      <p class="border border-danger" *ngIf="errorMessage != null" (click)="errorMessage = null">
-        <span *ngFor="let e of errorMessage.messages">
-          {{e}}
-        </span>
-      </p>
+  </div>
 
-    </div>
+  <!--ADD NEW ITEM-->
+  <div class="option-buttons ob-right" *ngIf="_category.isFinal()">
+
+    <button mat-fab aria-label="Add item"
+            (click)="createNewItem()">
+      <mat-icon aria-hidden="false" aria-label="Add item">plus</mat-icon>
+    </button>
 
   </div>
 
 </ng-container>
 
-<app-loader *ngIf="!(place != null && _category != null)"></app-loader>
+<app-loader *ngIf="!(place != null && _category != null)">
+  {{'PLACE' + place == null}}
+  {{'CATEGORY' + _category == null}}
+</app-loader>

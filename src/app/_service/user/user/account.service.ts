@@ -20,7 +20,7 @@ export class AccountService {
     let result;
 
     if(refresh == undefined || refresh == false) {
-      result = PlaceUsersList.ALL.getById(id);
+      result = PlaceUsersList.ALL[id];
       if(result != undefined)
         return result;
     }

@@ -2,7 +2,7 @@ import {KeyName, KeyNameList} from './KeyName';
 
 export class AccountDatas extends KeyName {
 
-  places: KeyNameList;
+  places: KeyNameList<KeyName>;
 
   constructor(json?: JSON) {
     super();
@@ -12,7 +12,7 @@ export class AccountDatas extends KeyName {
 
     this.id = json['id'];
     this.name = json['name'];
-    this.places = new KeyNameList(json['places']);
+    this.places = new KeyNameList<KeyName>(json['places']);
 
   }
 

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {Item} from '../../../../../_models/response/item/Item';
 import {Category} from '../../../../../_models/response/Category';
 import {ItemService} from '../../../../../_service/user/item/item/item.service';
@@ -8,26 +8,21 @@ import {WishList} from '../../../../../_models/response/WishList';
 import {WishListItemForm} from '../../../../../_models/request/WishListItemForm';
 import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
 import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
+import {WishListComponent, WishListComponentData} from "../wish-list/wish-list.component";
+
+export interface WishListItemFormComponentData {
+  wishList: WishList,
+}
 
 @Component({
   selector: 'app-wish-list-item-form',
   templateUrl: './wish-list-item-form.component.html',
   styleUrls: ['./wish-list-item-form.component.css']
 })
-export class WishListItemFormComponent implements OnInit {
+export class WishListItemFormComponent {
 
   _wishList: WishList;
-  _place: PlaceDetails = new PlaceDetails();
-
-  @Input()
-  set wishList(wishList: WishList) {
-    this.form.wish_list_id = wishList.id;
-    this._place.id = wishList.placeId;
-    this._wishList = wishList;
-  }
-
-  @Output() newItem = new EventEmitter<WishListItem>();
-  @Output() close = new EventEmitter<void>();
 
   activeElement: Item | Category = null;
   chosenCategory: Category = Category.rootCategory;
@@ -36,36 +31,40 @@ export class WishListItemFormComponent implements OnInit {
 
   constructor(private itemService: ItemService,
               private wishLisstItemService: WishListItemService,
-              private cookieDatas: CookieDataService) { }
-
-  ngOnInit() {
-    this.form.author_id = this.cookieDatas.getUserId();
+              private cookieDatas: CookieDataService,
+              public dialogRef: MatDialogRef<WishListItemFormComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: WishListItemFormComponentData) {
+    this._wishList = data.wishList;
+    this.form.authorId = this.cookieDatas.getUserId();
+    this.form.wishListId = this._wishList.id;
   }
+
 
   selectCategory(category: Category) {
     this.chosenCategory = category;
-    this.form.item_id = null;
-    this.form.category_id = category.id;
+    this.form.itemId = null;
+    this.form.categoryId = category.id;
     this.activeElement = category;
   }
 
+
   selectItem(item: Item) {
     this.chosenCategory = item.category;
-    this.form.item_id = item.id;
-    this.form.category_id = null;
+    this.form.itemId = item.id;
+    this.form.categoryId = null;
     this.activeElement = item;
   }
+
 
   submit() {
     this.wishLisstItemService.newItem(this.form)
       .then( (res: WishListItem) => {
-        if(res == null) {
+        if (res == null)
           return;
-          console.log("WISHLISTITEMFORMRESULT IS NULL");
-        }
         else
-          this.newItem.emit(res);
+          this.dialogRef.close(res);
       });
   }
+
 
 }

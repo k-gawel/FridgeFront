@@ -1,38 +1,103 @@
-<ng-container *ngIf="containers != null && item != null">
+<form>
 
-  <div class="container" style="margin: 20px; width: calc(100% - 40px)">
+  <div>
 
-    <div class="row">
-      <input type="text" style="width: 100%" class="form-control" name="comment" [(ngModel)]="form.comment" placeholder="Your comment">
+    <div class="instance-form-row">
+
+      <mat-form-field style="width: 50%;">
+
+        <input matInput [matDatepicker]="picker" placeholder="Expiration date" [(ngModel)]="form.expireDate"
+               name="expireDate">
+
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+      </mat-form-field>
+
+      <mat-form-field style="width: 25%;">
+
+        <mat-label>Price</mat-label>
+
+        <input matInput type="number" name="price" [(ngModel)]="form.price.amount">
+
+      </mat-form-field>
+
+      <mat-form-field style="width: 25%">
+
+        <mat-label>Currency</mat-label>
+
+        <mat-select name="currency" [(ngModel)]="form.price.currency">
+          <mat-option *ngFor="let currency of currencies"
+                      [value]="currency.code">
+            {{currency.code}}
+          </mat-option>
+        </mat-select>
+
+      </mat-form-field>
+
     </div>
 
-    <div class="row">
-      <div class="col-sm-12 col-lg-6" style="padding: 0">
-        <ngb-datepicker style="width: 100%" #dp [(ngModel)]="selectedDate" (select)="onDateChange()" (navigate)="date = $event.next"></ngb-datepicker>
-      </div>
+    <div class="instance-form-row">
 
-      <div class="col-sm-12 col-lg-6" style="padding: 0;">
-        <select class="custom-select" size="5" [(ngModel)]="form.containerId" style="height: 50%;">
-          <option value="" selected disabled>Choose container</option>
-          <option *ngFor="let container of containers.list" value="{{container.id}}">{{container.name}}</option>
-        </select>
+      <mat-form-field>
+
+        <mat-label>Comment</mat-label>
+
+        <input matInput type="text" placeholder="Comment" name="comment" [(ngModel)]="form.comment">
+
+      </mat-form-field>
 
 
-        <button type="button" class="btn btn-block btn-outline-primary"
-                style="height: 50%; width: 100%;" (click)="submit()">
-          Submit
-        </button>
-      </div>
+      <mat-form-field>
+
+        <mat-label>Container</mat-label>
+
+        <mat-select name="containerId" [(ngModel)]="form.containerId">
+          <mat-optgroup *ngFor="let place of places | entityList" [label]="place.name">
+            <mat-option *ngFor="let container of place.containers | entityList" [value]="container.id">
+              {{container.name}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+
+      </mat-form-field>
+
     </div>
 
-    <div class="row" *ngIf="form.errors != null" style="color: red">
-      <span *ngFor="let error of form.errors.messages">
-        {{error}}
-      </span>
+    <div class="instance-form-row">
+
+      <mat-form-field>
+
+        <mat-label>WishList item</mat-label>
+
+        <mat-select name="wishListItem" [(ngModel)]="form.wishListItemId">
+          <mat-optgroup *ngFor="let WL of getWishLists() | entityList" [label]="WL.name">
+            <mat-option *ngFor="let WLI of getItems(WL)  | entityList" [value]="WLI.id">
+              {{WLI.category.name}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field>
+
+        <mat-label>ShopList</mat-label>
+
+        <mat-select name="shopListId" [(ngModel)]="form.shopListId">
+          <mat-option *ngFor="let shopList of []" [value]="0">
+          </mat-option>
+        </mat-select>
+
+      </mat-form-field>
+
     </div>
 
   </div>
 
-</ng-container>
 
-<app-loader *ngIf="!(containers != null && item != null)"></app-loader>
+  <button mat-raised-button style="width: 100%;" [color]="primary" (click)="submit()">
+    Add
+  </button>
+
+</form>

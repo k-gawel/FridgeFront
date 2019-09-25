@@ -12,6 +12,8 @@ import {CookieDataService} from '../../../../_service/auth/cookieDatas/cookie-da
 })
 export class UserComponent implements OnInit, OnDestroy {
 
+  console = console;
+
   @Input()
   set accountDatas(value: AccountDatas) {
     this._accountDatas = value;

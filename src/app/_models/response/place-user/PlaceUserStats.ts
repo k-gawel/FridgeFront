@@ -28,7 +28,7 @@ export class PlaceUserStats extends Entity {
 
 }
 
-export class PlaceUserStatsList extends EntityList {
+export class PlaceUserStatsList extends EntityList<PlaceUserStats> {
 
   public list: PlaceUserStats[] = [];
 
@@ -36,11 +36,8 @@ export class PlaceUserStatsList extends EntityList {
     super();
 
     if(json != undefined)
-      this.list = json.map(j => new PlaceUserStats(j));
+      super(json.map(j => new PlaceUserStats(j)));
   }
 
-  public getById(id: number): PlaceUserStats {
-    return <PlaceUserStats> super.getById(id);
-  }
 
 }

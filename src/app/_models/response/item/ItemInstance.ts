@@ -1,68 +1,65 @@
 import {Entity} from '../Entity';
 import {LocalDate} from '../../../_util/date/JavaLocalDate';
 import {ItemInstancesList} from './ItemInstancesList';
+import {WishListItem} from "../WishListItem";
+import {Container, ContainersList} from "../Container";
+import {PlaceUsersList} from "../place-user/PlaceUsersList";
+import {KeyName} from "../KeyName";
+import {Money} from "ts-money";
+import {UserDate} from "../../util/UserDate";
 
 export class ItemInstance extends Entity {
+
+  price: Money;
 
     comment: string;
     expireOn: LocalDate;
 
     itemId: number;
-    containerId: number;
+  container: Container;
 
-    addedById: number;
-    addedOn: LocalDate;
+  added: UserDate;
+  opened: UserDate;
+  frozen: UserDate;
+  deleted: UserDate;
 
-    openById: number;
-    openOn: LocalDate;
-
-    frozenById: number;
-    frozenOn: LocalDate;
-
-    deletedById: number;
-    deletedOn: LocalDate;
-
+  wishListItem: WishListItem;
+  shopList: any;
 
     constructor(json?: JSON) {
       super();
 
-      if (json == undefined)
-        return;
+      if (json == undefined) return;
 
       this.id = json['id'];
+      ItemInstancesList.ALL.add(this);
+
+      if (json['price'])
+        this.price = Money.fromDecimal(json['price']['amount'], json['price']['currency']);
+
       this.comment = json['comment'];
+
       if(json['expireOn'])
         this.expireOn = new LocalDate(json['expireOn']);
 
       this.itemId = json['itemId'];
 
-      this.containerId = json['containerId'];
+      this.container = ContainersList.ALL[json['containerId']];
+      this.container.instances.add(this);
 
-      this.addedById = json['addedById'];
-      if(json['addedOn'])
-        this.addedOn = new LocalDate(json['addedOn']);
+      this.added = new UserDate(json['added']);
+      this.opened = new UserDate(json['opened']);
+      this.frozen = new UserDate(json['frozened']);
+      this.deleted = new UserDate(json['deleted']);
 
-      this.openById = json['openById'];
-      if(json['openOn'])
-        this.openOn = new LocalDate(json['openOn']);
-
-      this.frozenById = json['frozenById'];
-      if(json['frozenOn'])
-        this.frozenOn = new LocalDate(json['frozenOn']);
-
-      this.deletedById = json['deletedById'];
-      if(json['deletedOn'])
-        this.deletedOn = new LocalDate(json['deletedOn']);
-
-      ItemInstancesList.ALL.push(this);
     }
 
     public isOpen(): boolean {
-      return this.openOn != null;
+      return !this.opened.isEmpty();
     }
 
     public isDeleted(): boolean {
-      return this.deletedOn != null;
+      return !this.deleted.isEmpty();
     }
 
 

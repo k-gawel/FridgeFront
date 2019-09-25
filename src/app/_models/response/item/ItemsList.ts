@@ -2,25 +2,17 @@ import {KeyNameList} from '../KeyName';
 import {Category} from '../Category';
 import {Item} from './Item';
 import {IdSelector} from '../../../_service/utils/EntitySelector';
+import {Entity} from "../Entity";
 
-export class ItemsList extends KeyNameList {
+export class ItemsList extends KeyNameList<Item> {
 
   public static readonly ALL: ItemsList = new ItemsList();
-  list: Item[] = [];
 
   constructor(json?: JSON[]) {
     super();
+    if (json == undefined) return;
 
-    if (json == undefined)
-      return;
-
-    console.log("JSON", json);
-
-    this.list = json.map(j => new Item(j));
-  }
-
-  public getById(id: number): Item {
-    return <Item> super.getById(id);
+    json.forEach(j => this.add(new Item(j)));
   }
 
   public getByIds(ids: number[]): ItemsList {
@@ -28,12 +20,18 @@ export class ItemsList extends KeyNameList {
   }
 
   public getByCategory(category: number | Category): ItemsList {
+    if (category == null)
+      return new ItemsList();
+
     category = typeof category === 'number' ? Category.getById(category) : category;
 
     let finalCategories: Category[] = category.getFinalCategories();
     let ids = new IdSelector(finalCategories).id;
-    const result = new ItemsList();
-    result.list = this.list.filter(i => ids.includes(i.category.id));
+
+    let result = <ItemsList>  this.filter(i => ids.includes(i.category.id));
+    Object.setPrototypeOf(result, ItemsList.prototype);
+
+
     return result;
   }
 

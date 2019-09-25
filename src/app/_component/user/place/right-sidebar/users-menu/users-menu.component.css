@@ -17,3 +17,14 @@
   padding: inherit;
 }
 
+.user-icon {
+  display: inline;
+}
+
+.user-icons {
+  width: 100%;
+  background-color: lightgrey;
+  height: 70px;
+  list-style: none;
+  padding: 7px;
+}

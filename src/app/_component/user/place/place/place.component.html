@@ -1,31 +1,69 @@
 <ng-container *ngIf="_place != null">
-  <div class="container-fluid place-container">
-    <div style="max-width: 100vw; display: flex; justify-content: space-between; font-size: 3em;">
-      <button style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border: none; background: none">
-        {{_place.name}}
-      </button>
-      <button class="leave-button" *ngIf="canLeavePlace()" (click)="leavePlace()">
-        <i class="fas fa-sign-out-alt fa-lg"></i>
-      </button>
-    </div>
 
-    <div id="place-body" class="row" style="margin-left: 0; margin-right: 0">
+  <mat-tab-group class="full-screen">
 
-      <div id="place-details" class="col-sm-12 col-md-12 col-lg-3 order-lg-12">
-        <app-right-side-bar [place]="_place" class="sidebar"
-          (chosenContainers)="setChosenContainers($event)"
-          (selectedWishList)="setWishList($event)"
-          (chosenCategory)="setChosenCategory($event)"
-        >
-        </app-right-side-bar>
-      </div>
+    <mat-tab>
 
-      <div id="place-main" class="col-sm-12 col-md-12 col-lg-9 order-lg-2">
-          <app-wish-list *ngIf="content == 'WISHLIST'" [wishList]="contentParams" (closeWishList)="setItems()"></app-wish-list>
-          <app-place-items-scene *ngIf="content === 'ITEMS' && _chosenCategory != null && _chosenContainers != null" [category]="_chosenCategory" [containers]="_chosenContainers"></app-place-items-scene>
-      </div>
-    </div>
+      <ng-template mat-tab-label>
+        <mat-icon aria-label="Filter">filter_list</mat-icon>
+      </ng-template>
 
-  </div>
+      <mat-tab-group>
+
+        <mat-tab label="Containers">
+          <app-containers-menu [place]="_place" (chosenContainers)="setChosenContainers($event)">
+          </app-containers-menu>
+        </mat-tab>
+
+        <mat-tab label="Categories">
+          <categories-menu (chosenCategory)="setChosenCategory($event)">
+          </categories-menu>
+        </mat-tab>
+
+      </mat-tab-group>
+
+    </mat-tab>
+
+    <mat-tab>
+
+      <ng-template mat-tab-label>
+        <mat-icon aria-label="Items">view_list</mat-icon>
+      </ng-template>
+
+      <app-place-items-scene [category]="_chosenCategory" [containers]="_chosenContainers">
+      </app-place-items-scene>
+    </mat-tab>
+
+    <mat-tab>
+
+      <ng-template mat-tab-label="WishLists">
+        <mat-icon aria-label="WishLists">playlist_add</mat-icon>
+      </ng-template>
+
+      <app-wish-list-menu [place]="_place" [list]="_place.wishLists" style="height: 50%">
+      </app-wish-list-menu>
+
+    </mat-tab>
+
+    <mat-tab>
+
+      <ng-template mat-tab-label="ShopLists">
+        <mat-icon aria-label="ShopLists">playlist_add_check</mat-icon>
+      </ng-template>
+
+    </mat-tab>
+
+    <mat-tab>
+
+      <ng-template mat-tab-label="Users">
+        <mat-icon aria-label="Users" aria-hidden="false">people_alt</mat-icon>
+      </ng-template>
+
+      <app-users-menu [place]="_place">
+      </app-users-menu>
+
+    </mat-tab>
+
+  </mat-tab-group>
 
 </ng-container>

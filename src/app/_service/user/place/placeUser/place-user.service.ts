@@ -53,10 +53,10 @@ export class PlaceUserService {
   }
 
   private static addUserToPlace(user: KeyName, place: PlaceDetails) {
-    let placeUser = place.users.getById(user.id);
+    let placeUser = place.users[user.id];
     if(placeUser == undefined)
       placeUser = PlaceUser.clone(user, true);
-    place.users.push(placeUser);
+    place.users.add(placeUser);
   }
 
 

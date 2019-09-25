@@ -18,7 +18,7 @@ export class RelatedItemsApiService {
     let headers = this.api.getHeaderWithToken();
     let params = new HttpParams();
     params = params.append("place_ids", ApiService.numbersArrayToString(place));
-    params = params.append("category_id", category.toString());
+    params = params.append("categoryId", category.toString());
     params = params.append("params", "most_popular");
 
     return this.api.get(url, headers, params);
@@ -29,7 +29,7 @@ export class RelatedItemsApiService {
     let headers = this.api.getHeaderWithToken();
     let params = new HttpParams();
     params = params.append("place_ids", ApiService.numbersArrayToString(placeID));
-    params = params.append("category_id", categoryID.toString());
+    params = params.append("categoryId", categoryID.toString());
     params = params.append("params", "all");
 
     return this.api.get(url, headers, params);

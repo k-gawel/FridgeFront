@@ -23,7 +23,7 @@ export class ItemInstanceApiService {
 
   public get(ids: number | number[], items: number | number[], places: number | number[],
              containers: number | number[], owners: number | number[], deleted: Boolean,
-             open: Boolean, frozen: Boolean, limit: Number) {
+             open: Boolean, frozen: Boolean, limit: number, offset: number) {
     let idsString = ApiService.numbersArrayToString(ids);
     let itemsString = ApiService.numbersArrayToString(items);
     let placesString = ApiService.numbersArrayToString(places);
@@ -50,6 +50,8 @@ export class ItemInstanceApiService {
       params = params.append("frozen", frozen.toString());
     if(limit != null)
       params = params.append("limit", limit.toString());
+    if (offset != null)
+      params = params.append("offset", offset.toString());
 
     let header = this.api.getHeaderWithToken();
 

@@ -23,7 +23,7 @@ export class PlaceComponent  {
   set place(value: KeyName) {
     this.placeService.getById(new IdSelector(value))
       .then((result: PlaceDetails) => this._place = result )
-      .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e) );
+      .catch(e => console.log(e));
   }
 
   _place: PlaceDetails;
@@ -52,7 +52,6 @@ export class PlaceComponent  {
 
 
   setChosenCategory(category: Category) {
-    console.debug("PlaceComponent.setChosenCategory()", category);
     this._chosenCategory = category;
   }
 
@@ -68,11 +67,14 @@ export class PlaceComponent  {
     this.content = PlaceContent.ITEMS;
   }
 
+
   @Output() leavedPlace = new EventEmitter<PlaceDetails>();
 
+
   canLeavePlace(): boolean {
-    return !this.isAdmin() || this._place.users.list.filter(u => u.status).length === 1
+    return !this.isAdmin() || this._place.users.filter(u => u.status).size() === 1
   }
+
 
   leavePlace() {
     if (!this.canLeavePlace()) {

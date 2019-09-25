@@ -5,7 +5,7 @@ import {WishListItem} from '../../../../../_models/response/WishListItem';
 import {UserDetailsList} from '../../../../../_models/response/UserDetails';
 import {KeyName} from '../../../../../_models/response/KeyName';
 import {Category} from '../../../../../_models/response/Category';
-import {InstanceService} from '../../../instance/instance.service';
+import {ItemInstanceService} from '../../../instance/item-instance.service';
 import {Item} from '../../../../../_models/response/item/Item';
 import {ErrorHandlerService} from '../../../../utils/errorhanler/error-handler.service';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
@@ -22,10 +22,9 @@ import {WishListService} from '../wishlist/wish-list.service';
 export class WishListItemService {
 
   constructor(private wishListItemApi: WishListItemApiService,
-              private wishListService: WishListService,
               private cookiesData: CookieDataService,
               private itemService: ItemService,
-              private itemInstanceService: InstanceService,
+              private itemInstanceService: ItemInstanceService,
               private errorHandler: ErrorHandlerService) { }
 
 
@@ -44,16 +43,8 @@ export class WishListItemService {
       result = wishListItem;
 
     if (typeof result.author === 'number')
-      result.author = <KeyName> PlaceUsersList.ALL.getById(result.author);
+      result.author = PlaceUsersList.ALL[result.author];
 
-    if (typeof result.item === 'number')
-      await this.itemService.getItemById(result.item)
-        .then((res: Item) => {
-          result.item = res;
-        })
-        .catch((error: Error) => {
-          this.errorHandler.sendErrors(error)
-        });
 
     if (typeof result.category === 'number')
       result.category = Category.getById(result.category);
@@ -66,12 +57,6 @@ export class WishListItemService {
         .catch((error: Error) => {
           this.errorHandler.sendErrors(error)
         });
-
-    if (typeof result.addedBy === 'number')
-      result.addedBy = <KeyName> UserDetailsList.USERS.getById(result.addedBy);
-
-    if (typeof result.wishList === 'number')
-      result.wishList = await this.wishListService.getWishList(result.wishList);
 
     return <WishListItem> result;
   }
@@ -104,6 +89,9 @@ export class WishListItemService {
     return this.wishListItemApi.addInstance(item.id, instance.id)
       .then((response: JSON) => {
         item.addedInstance = instance;
+        item.addedBy = PlaceUsersList.ALL[this.cookiesData.getUserId()];
+        item.addedOn = new Date();
+        instance.wishListItem = item;
       })
       .catch((error: HttpErrorResponse) => this.errorHandler.sendErrors(new ErrorMessage(error.message)) );
 

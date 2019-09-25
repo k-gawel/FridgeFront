@@ -1,106 +1,104 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ItemContent} from '../../../../../../_models/util/Content';
-import {KeyNameList} from '../../../../../../_models/response/KeyName';
-import {ContainersList} from '../../../../../../_models/response/Container';
-import {EntityList} from '../../../../../../_models/response/Entity';
-import {ItemInstancesList} from '../../../../../../_models/response/item/ItemInstancesList';
-import {ItemInstance} from '../../../../../../_models/response/item/ItemInstance';
-import {Item} from '../../../../../../_models/response/item/Item';
-import {PlaceUsersList} from '../../../../../../_models/response/place-user/PlaceUsersList';
+import {Component, Inject, Output} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
+import {Item} from "../../../../../../_models/response/item/Item";
+import {PlaceDetails, PlaceDetailsList} from "../../../../../../_models/response/PlaceDetails";
+import {WishList, WishListList} from "../../../../../../_models/response/WishList";
+import {ItemInstance} from "../../../../../../_models/response/item/ItemInstance";
+import {WishListItem, WishListItemList} from "../../../../../../_models/response/WishListItem";
+import {ItemInstanceQuery, ItemInstanceService} from "../../../../../../_service/user/instance/item-instance.service";
+import {WishListItemService} from "../../../../../../_service/user/place/wishlist/wishListItem/wish-list-item.service";
+import {EntityList} from "../../../../../../_models/response/Entity";
+import {Container} from "../../../../../../_models/response/Container";
+import {ItemInstancesList} from "../../../../../../_models/response/item/ItemInstancesList";
+
+export interface ItemComponentData {
+  item: Item;
+  places: PlaceDetails[]
+}
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.css']
 })
-export class ItemComponent implements OnInit {
+export class ItemComponent {
 
-  componentId = Math.random();
+  content: string = 'INSTANCES';
+  item: Item;
+  places: PlaceDetailsList = new PlaceDetailsList();
+  wishListItem: any;
 
-  wrapWS: boolean = false;
 
-  _content: ItemContent;
-  _collapsed: boolean = true;
-  expand(content: ItemContent) {
-    if(this._content == content) {
-      this._collapsed = true;
-      this._content = null;
-    } else if(this._content == null) {
-      this._collapsed = false;
-      this._content = content;
-    } else {
-      this._content = content;
-    }
+  constructor(private itemInstanceService: ItemInstanceService,
+              private wishListItemService: WishListItemService,
+              public dialogRef: MatDialogRef<ItemComponent>,
+              private dialog: MatDialog,
+              @Inject(MAT_DIALOG_DATA) public data: ItemComponentData) {
+    this.item = data.item;
+    this.places.addAll(data.places);
   }
 
 
+  deletedInstances: ItemInstancesList[] = [];
+  private deletedInstancesFetches: number = 0;
 
-  // SETTINGS
-  @Input() fullScreen: boolean = true;
-  @Input() chosen: boolean = false;
-  @Output() closed = new EventEmitter<boolean>();
-  close() {
-    this.closed.emit(true);
+  getDeletedInstances() {
+    let query = new ItemInstanceQuery();
+    query.containers = this.places.getContainers().map(c => c.id);
+    query.items = this.item.id;
+    query.deleted = true;
+    query.limit = 20;
+    query.offset = this.deletedInstancesFetches * 20;
+    this.itemInstanceService.get(query).then(ii => {
+      this.deletedInstances.push(ii);
+      this.deletedInstancesFetches = ii.size() != 0 ? this.deletedInstancesFetches + 1 : null;
+    });
   }
 
 
-  // FORM DETAILS
-  users: KeyNameList;
+  addNewInstance() {
+    const formDatas = {
+      item: this.item,
+      places: this.places
+    };
 
-
-  // CONTAINERS
-  containers: ContainersList = new ContainersList();
-  visibleContainers: ContainersList = new ContainersList();
-  @Input() set chosenContainers(containers: ContainersList) {
-    if(containers == null && containers.size() === 0)
-      return;
-
-    if(this.containers == null || this.containers.size() === 0)
-      this.containers = containers;
-
-    this.visibleContainers = <ContainersList> EntityList.intersect(this.visibleContainers, containers);
+    const dialogRef = this.dialog.open(NewInstanceFormDialog, {
+      maxWidth: "100vw",
+      width: "100%",
+      data: formDatas
+    });
   }
 
 
-  // INSTANCES
-  currentInstances: ItemInstancesList = new ItemInstancesList();
-  _instances: ItemInstancesList = new ItemInstancesList(); // ALL PLACES INSTANCES
-  @Input() set instances(instances: ItemInstancesList) {
-    if(this._instances == null)
-      return;
-
-    this._instances = instances;
-    this.currentInstances = instances.filterByDeleted(false);
-    this.visibleContainers = this._instances.getContainers();
+  getContainers(itemInstances?: ItemInstancesList): EntityList<Container> {
+    return this.places.getContainers()
+      .filter(c => c.instances.filterByDeleted(false).size() != 0);
   }
 
+}
 
-  @Output() newItemInstance = new EventEmitter<ItemInstance>();
+@Component({
+  template: `
+    <mat-toolbar class="dialog-full-screen-toolbar">
+      <mat-toolbar-row>
+        <span>Add instance</span>
 
+        <close-dialog-button [dialogRef]="dialogRef"></close-dialog-button>
+      </mat-toolbar-row>
+    </mat-toolbar>
 
-  _item: Item = null;
-  @Input() set item(item: Item) {
-    if(item == null)
-      return;
-    else if(this._item === null) {
-      this._item = item;
-    } else {
-      this._item = item;
-    }
+    <app-new-instance-form [item]="data.item" [places]="data.places" (newInstance)="instanceAdded($event)">
+    </app-new-instance-form>
+  `
+})
+export class NewInstanceFormDialog {
 
+  constructor(public dialogRef: MatDialogRef<NewInstanceFormDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
-  private getItemId(): number {
-    return this._item !== null ? this._item.id : null;
+  instanceAdded(instance: ItemInstance) {
+    this.dialogRef.close();
   }
-
-
-  constructor(private eL: ElementRef) {
-    this.users = PlaceUsersList.ALL;
-  }
-
-  ngOnInit() {
-  }
-
 
 }

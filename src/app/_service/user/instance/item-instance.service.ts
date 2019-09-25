@@ -8,45 +8,37 @@ import {IdSelector} from '../../utils/EntitySelector';
 import {CookieDataService} from '../../auth/cookieDatas/cookie-datas.service';
 import {ItemInstanceForm} from '../../../_models/request/ItemInstanceForm';
 import {ItemInstancesList} from '../../../_models/response/item/ItemInstancesList';
-import {Subject} from 'rxjs/Subject';
 import {LocalDate} from '../../../_util/date/JavaLocalDate';
+import {UserDate} from "../../../_models/util/UserDate";
 
 @Injectable({
   providedIn: 'root'
 })
-export class InstanceService {
+export class ItemInstanceService {
 
-
-  public $deletedInstance = new Subject<ItemInstance>();
 
   constructor(private instanceApi: ItemInstanceApiService,
               private cookieDatas: CookieDataService) {
   }
 
+
   public addInstance(form: ItemInstanceForm): Promise<ItemInstance> {
-
-    if(!form.validate())
-      throw form.errors;
-
     return this.instanceApi.newItemInstance(form)
-      .then((res: JSON) => {
-        return new ItemInstance(res);
-      })
+      .then((res: JSON) => new ItemInstance(res))
       .catch((error: HttpErrorResponse) => {
-        throw new ErrorMessage(error.message);
-      })
-
+        throw new ErrorMessage(error.message)
+      });
   }
 
-  public async get(query: ItemInstanceQuery, list?: ItemInstancesList): Promise<ItemInstancesList> {
 
+  public async get(query: ItemInstanceQuery, list?: ItemInstancesList): Promise<ItemInstancesList> {
     let result: ItemInstancesList;
     result = new ItemInstancesList();
     query.api = this.instanceApi;
 
     if(list != undefined) {
 
-      result.pushAll(list);
+      result.addAll(list);
 
       if(query.open != undefined)
         result = result.filterByOpen(<boolean> query.open);
@@ -72,11 +64,12 @@ export class InstanceService {
     return result;
   }
 
+
   public async getById(id: number, refresh?: boolean): Promise<ItemInstance | ErrorMessage> {
     let result: ItemInstance | ErrorMessage = null;
 
     if(!refresh) {
-      result = ItemInstancesList.ALL.getById(id);
+      result = ItemInstancesList.ALL[id];
     }
 
     if(result === null) {
@@ -95,6 +88,7 @@ export class InstanceService {
     return result;
   }
 
+
   public async getBydIds(ids: number[], refresh?: boolean): Promise<ItemInstancesList | ErrorMessage> {
     let result: ItemInstancesList | ErrorMessage = new ItemInstancesList();
     let idsToFind: number[] = [];
@@ -102,10 +96,10 @@ export class InstanceService {
 
     if(!refresh) {
       for(let singleId of ids) {
-        let instance = ItemInstancesList.ALL.getById(singleId);
+        let instance = ItemInstancesList.ALL[singleId];
         if(instance != null) {
           idsToFind.splice(idsToFind.indexOf(singleId), 1);
-          result.push(instance);
+          result.add(instance);
         }
       }
     }
@@ -117,7 +111,7 @@ export class InstanceService {
       await query.execute().then(
         (response: JSON[]) => {
           if(result instanceof ItemInstancesList)
-            result.pushAll(new ItemInstancesList(response));
+            result.addAll(new ItemInstancesList(response));
         },
         (error: HttpErrorResponse) => {
           throw new ErrorMessage(error.message);
@@ -129,6 +123,7 @@ export class InstanceService {
     return result;
 
   }
+
 
   public async getByItemsAndPlaces(items: IdSelector, places: IdSelector): Promise<ItemInstancesList | ErrorMessage> {
     let query = new ItemInstanceQuery(this.instanceApi);
@@ -148,6 +143,7 @@ export class InstanceService {
 
     return result;
   }
+
 
   private async updateInstance(instanceId: number, method: string): Promise<Boolean | ErrorMessage> {
     let result: Boolean | ErrorMessage;
@@ -169,15 +165,15 @@ export class InstanceService {
 
   }
 
+
   public deleteInstance(instance: Entity | number) {
-    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL.getById(instance) : <ItemInstance> instance;
+    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL[instance] : <ItemInstance> instance;
+
     return this.updateInstance(instanceEntity.id, 'delete').then(
-      (result: Boolean) => {
-        if(result) {
-          instanceEntity.deletedById = this.cookieDatas.getUserId();
-          instanceEntity.deletedOn = new LocalDate();
-          this.$deletedInstance.next(instanceEntity);
-        } else {
+      (result: boolean) => {
+        if (result)
+          instanceEntity.deleted = new UserDate(this.cookieDatas.getUserId());
+        else {
           throw new ErrorMessage("instancedelete.unable");
         }
       },
@@ -187,16 +183,16 @@ export class InstanceService {
     )
   }
 
+
   public openInstance(instance: Entity | number) {
-    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL.getById(instance) : <ItemInstance> instance;
+    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL[instance] : <ItemInstance> instance;
 
     return this.updateInstance(instanceEntity.id, 'open')
       .then((result: Boolean) => {
-        if(result) {
-          instanceEntity.openById = this.cookieDatas.getUserId();
-          instanceEntity.openOn = new LocalDate();
-        }
-        else throw new ErrorMessage("instanceopen.unable");
+        if (result)
+          instanceEntity.opened = new UserDate(this.cookieDatas.getUserId(), new LocalDate());
+        else
+          throw new ErrorMessage("instanceopen.unable");
         }
        )
       .catch((error: ErrorMessage) => {
@@ -204,8 +200,9 @@ export class InstanceService {
       });
   }
 
+
   public frozeOrUnfrozeInstance(instance: Entity | number) {
-    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL.getById(instance) : <ItemInstance> instance;
+    let instanceEntity: ItemInstance = typeof instance === 'number' ? ItemInstancesList.ALL[instance] : <ItemInstance> instance;
     return this.updateInstance(instanceEntity.id, 'frozeOrUnfroze')
       .then((result: Boolean) => {
         if(result) {
@@ -222,6 +219,7 @@ export class InstanceService {
 
 export class ItemInstanceQuery {
 
+
   private _ids: number | number[] = [];
   private _items: number | number[] = [];
   private _places: number | number[] = [];
@@ -230,7 +228,8 @@ export class ItemInstanceQuery {
   private _deleted: Boolean = null;
   private _open: Boolean = null;
   private _frozen: Boolean = null;
-  private _limit: Number = null;
+  private _limit: number = 0;
+  private _offset: number = 0;
 
   api: ItemInstanceApiService;
 
@@ -240,7 +239,7 @@ export class ItemInstanceQuery {
 
   execute() {
     return this.api.get(this._ids, this._items, this._places, this._containers,
-                        this._owners, this._deleted, this._open, this._frozen, this._limit)
+      this._owners, this._deleted, this._open, this._frozen, this._limit, this._offset)
   }
 
   get ids(): number | number[] {
@@ -307,11 +306,20 @@ export class ItemInstanceQuery {
     this._frozen = value;
   }
 
-  get limit(): Number {
+  get limit(): number {
     return this._limit;
   }
 
-  set limit(value: Number) {
+  set limit(value: number) {
     this._limit = value;
   }
+
+  get offset(): number {
+    return this._offset;
+  }
+
+  set offset(value: number) {
+    this._offset = value;
+  }
+
 }

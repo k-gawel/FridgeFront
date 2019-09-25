@@ -1,4 +1,5 @@
 import {Form} from './Form';
+import {Capacity} from "../response/item/Item";
 
 export class ItemForm extends Form {
 
@@ -7,14 +8,14 @@ export class ItemForm extends Form {
 
   placeId: number;
   categoryId: number;
-  producer: ProducerForm = new ProducerForm();
+  producer: string;
 
   description: string;
   storage: string;
-  netWeight: number;
+  capacity: Capacity = new Capacity();
 
-  ingredients: IngredientForm[] = [];
-  allergens: AllergenForm[] = [];
+  ingredients: Set<string> = new Set();
+  allergens: Map<string, boolean> = new Map();
   nutrition: NutritionForm = new NutritionForm();
 
     validate(): boolean {
@@ -43,29 +44,6 @@ export class AllergenForm extends Form {
     }
 
 }
-
-
-export class ProducerForm extends Form {
-
-    name: string;
-
-    validate(): boolean {
-      return true;
-    }
-
-}
-
-
-export class IngredientForm extends Form {
-
-    name: string;
-
-    validate(): boolean {
-      return true;
-    }
-
-}
-
 
 export class NutritionForm extends Form {
 

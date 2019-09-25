@@ -1,8 +1,22 @@
-  <li [ngClass]="wish_list_id.equals(_selectedWishList) ? 'list-group-item list-group-item-secondary' : 'list-group-item'"
-      *ngFor="let wish_list_id of list" (click)="select(wish_list_id)" name="wishListMenu">
-    {{wish_list_id.name}}
-  </li>
+<mat-action-list>
 
-  <li class="list-group-item" name="wishListMenu">
-    <button type="button" class="btn btn-dark btn-block" (click)="openForm()">Add new wishlist</button>
-  </li>
+  <button *ngFor="let wishList of list.getByStatus(true) | entityList"
+          mat-list-item (click)="select(wishList)">
+    {{wishList.name}}
+  </button>
+
+  <button mat-list-item>
+    Show archived
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </button>
+
+</mat-action-list>
+
+<div class="option-buttons ob-right">
+
+  <button mat-fab aria-label="New WishList" *ngIf="place != null"
+          (click)="openForm()">
+    <mat-icon aria-hidden="false" aria-label="Search item">add_new</mat-icon>
+  </button>
+
+</div>

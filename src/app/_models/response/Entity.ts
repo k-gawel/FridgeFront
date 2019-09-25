@@ -1,86 +1,118 @@
 export class Entity {
 
-    public id: number;
+  public id: number;
 
-    constructor(json?: JSON) {
-        if(json == undefined)
-          return;
-        else if (json['id'] != undefined)
-          this.id = json['id'];
-        else if (json['key'] != undefined)
-          this.id = json['key'];
-    }
+  constructor(entry?: JSON | number) {
+    if (entry == undefined)
+      return;
+    else if (typeof entry == 'number')
+      this.id = entry;
+    else if (entry['id'] != undefined)
+      this.id = entry['id'];
+    else if (entry['key'] != undefined)
+      this.id = entry['key'];
+  }
 
-    public isEmpty(): boolean {
-      return this.id != null;
-    }
+  public isEmpty(): boolean {
+    return this.id != null;
+  }
 
-    public equals(entity: Entity): boolean {
-        if(entity == null) return false;
-        return entity.id == this.id;
-    }
+  public equals(entity: Entity): boolean {
+    if (entity == null) return false;
+    return entity.id == this.id;
+  }
 
 }
 
-export class EntityList {
+export class EntityList<T extends Entity> implements Iterable<T> {
 
-    public list: Entity[];
+  [id: number]: T;
 
-    public constructor() { this.list = [] }
+  public constructor(items?: T[]) {
+    if (items != null)
+      items.forEach(e => this.add(e));
+  }
 
-    public toArray() {
-        return this.list
-    }
 
-    public getByIds(ids: number[]): EntityList {
-      const result: EntityList = new EntityList();
-      result.list = this.list.filter(e => ids.includes(e.id));
-      return result;
-    }
+  public getByIds(ids: number[]): EntityList<T> {
+    let result = new EntityList<T>();
+    result.addAll(ids.map(id => this[id]));
+    return result;
+  }
 
-    public getById(id: number): Entity {
-      return this.list.find(e => e.id === id);
-    }
 
-    public static intersect(listA: EntityList, listB: EntityList): EntityList {
-      const result: EntityList = new EntityList();
-      result.list = listA.list.filter(e => listB.contains(e));
-      return result;
-    }
+  public contains(entity: T): boolean {
+    return entity != undefined && this[entity.id] != undefined;
+  }
 
-    public contains(entity: Entity): boolean {
-      return this.list.find(e => e.equals(entity)) != undefined;
-    }
 
-    public push(entity: Entity): EntityList {
-      if(!this.contains(entity))
-        this.list.push(entity);
-      else
-        return this;
+  public add(entity: T): EntityList<T> {
+    this[entity.id] = entity;
+    return this;
+  }
+
+
+  public addAll(list: EntityList<T> | T[]): EntityList<T> {
+    if (list == null) return;
+    list.forEach(e => this.add(e));
+    return this;
+  }
+
+
+  public getAllIds(): number[] {
+    return <number[]> this.map(e => e.id);
+  }
+
+
+  public remove(entity: Entity | number): EntityList<T> {
+    let id = typeof entity === "number" ? entity : entity.id;
+    this[id] = undefined;
       return this;
+  }
+
+
+  public size(): number {
+    return Object.keys(this).length;
+  }
+
+
+  public toArray(): T[] {
+    return Object.values(this);
+  }
+
+
+  [Symbol.iterator]() {
+    let pointer = 0;
+    let ids = Object.keys(this);
+
+    return {
+      next(): IteratorResult<T> {
+        return pointer < ids.length ?
+          {done: false, value: this[ids[pointer++]]} : {done: true, value: null};
+      }
     }
 
-    public pushAll(list: EntityList): EntityList {
-        list.list.forEach(element => this.push(element) );
-        return this;
-    }
+  }
 
-    public getAllIds(): number[] {
-      return this.list.map(e => e.id);
-    }
 
-    public remove(entity: Entity | number): EntityList {
-      let en: Entity = typeof entity === 'number' ? this.getById(entity) : entity;
-      this.list.filter(e => !e.equals(en));
-      return this;
-    }
+  public first(): T {
+    return Object.values(this)[0];
+  }
 
-    public removeAll() {
-        this.list = [];
-    }
+  public map<U>(callbackfn: (value: T) => U): U[] {
+    return Object.values(this).map(o => callbackfn(o));
+  }
 
-    public size(): number {
-        return this.list.length;
-    }
+
+  public forEach(callbackfn: (value: T) => any): void {
+    Object.values(this).forEach(o => callbackfn(o));
+  }
+
+
+  public filter(callbackfn: (value: T) => boolean): EntityList<T> {
+    let values = Object.values(this).filter(o => callbackfn(o));
+    return new EntityList<T>(values);
+  }
+
 
 }

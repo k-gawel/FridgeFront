@@ -18,52 +18,40 @@ export class KeyName extends Entity {
     }
 }
 
-export class KeyNameList extends EntityList {
+export class KeyNameList<T extends KeyName = KeyName> extends EntityList<T> {
 
-    list: KeyName[] = [];
+  constructor(json?: JSON | JSON[]) {
+    super();
 
-    constructor(json?: JSON | JSON[]) {
-        super();
+    if (json == undefined)
+      return;
+    else if (json instanceof Array)
+      this.fromJSONArray(json);
+    else
+      this.fromJSONObject(json);
+  }
 
-        if(json == undefined)
-          return;
-        else if (json instanceof Array)
-          this.fromJSONArray(json);
-        else
-            this.fromJSONObject(json);
-    }
 
-    private fromJSONObject(json: JSON) {
-      let keys = Object.keys(json);
-      this.list = keys.map(k => {
-        let result = new KeyName();
-        result.id = Number.parseInt(k);
-        result.name = json[k];
-        return result;
-      });
-    }
+  private fromJSONObject(json: JSON) {
+    Object.keys(json).map(k => {
+      let result = new KeyName();
+      result.id = Number.parseInt(k);
+      result.name = json[k];
+      return result;
+    })
+      .forEach(v => this.add(<T> v));
+  }
 
-    private fromJSONArray(jsonArr: JSON[]) {
-      this.list = jsonArr.map(j => new KeyName(j));
-    }
 
-    public getById(id: number): KeyName {
-      return <KeyName> super.getById(id);
-    }
+  private fromJSONArray(jsonArr: JSON[]) {
+    jsonArr.map(j => new KeyName(j))
+      .forEach(k => this.add(<T> k));
+  }
 
-    public getByIds(ids: number[]): KeyNameList {
-      return <KeyNameList> super.getByIds(ids);
-    }
 
-    public toArray(): KeyName[] {
-        return this.list;
-    }
+  public searchByName(text: string): KeyNameList {
+    return <KeyNameList> <unknown> this.filter(kn => kn.name == text);
+  }
 
-    public searchByName(text: string): KeyNameList {
-        const result = new KeyNameList();
-        result.list = this.list
-          .filter(kn => kn.name.toUpperCase().includes(text.toUpperCase()));
-        return result;
-    }
 
 }

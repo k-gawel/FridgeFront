@@ -1,3 +1,10 @@
 .nutrtition-form input {
   border: none;
 }
+
+.double-column-form {
+}
+
+.double-column-form > div > .mat-form-field {
+  width: 50%;
+}

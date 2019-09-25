@@ -38,27 +38,12 @@ export class PlaceService {
   }
 
 
-  public getById(id: IdSelector): Promise<PlaceDetails> {
+  public getById(ids: IdSelector): Promise<PlaceDetails> {
+    let id = ids.id[0];
 
-    return this.placeApi.get(id.id)
-      .then((response: JSON[]) => {
-        let placesList = new PlaceDetailsList(response);
-        console.log("PLACES",placesList);
-        if(placesList.size() !== 1)
-          throw new ErrorMessage("placegetbyid.size!=1");
-        else
-          return placesList.list[0];
-      })
-      .catch((e: ErrorMessage) => {
-        throw new ErrorMessage(e.message);
-      })
-
+    return this.placeApi.get(id)
+      .then((response: JSON[]) => new PlaceDetailsList(response)[id]);
   }
-
-
-
-
-
 
 
 }

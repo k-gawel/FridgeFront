@@ -25,12 +25,12 @@ export class InstanceChange extends Entity {
   
 }
 
-export class InstanceChangeList extends EntityList {
+export class InstanceChangeList extends EntityList<InstanceChange> {
 
   list: InstanceChange[] = [];
   items: ItemsList;
-  users: KeyNameList;
-  containers: KeyNameList;
+  users: KeyNameList<KeyName>;
+  containers: KeyNameList<KeyName>;
 
   constructor(json?: JSON[]) {
     super();
@@ -38,19 +38,21 @@ export class InstanceChangeList extends EntityList {
     this.users = new KeyNameList(json['users']);
     this.containers = new KeyNameList(json['_containers']);
     this.items = new ItemsList(json['items']);
-    this.list = (<JSON[]> json['changes']).map(j => new InstanceChange(j));
+    (<JSON[]> json['changes']).forEach(j => this.add(new InstanceChange(j)));
   }
 
-  public toString(id: number): string {
+  public toString(id?: number): string {
+    if (id == null)
+      return "";
 
     let result: string = '';
-    let change: InstanceChange = <InstanceChange> this.getById(id);
+    let change: InstanceChange = this[id];
 
-    result = result + (<KeyName> this.users.getById(change.accountId)).name + " ";
+    result = result + this.users[change.accountId].name + " ";
     result = result + change.changeType + " ";
-    result = result + (<Item> this.items.getById(change.instance.itemId)).name + " ";
+    result = result + this.items[change.instance.itemId].name + " ";
     result = result + "on " + change.changeDate + " ";
-    result = result + "(" + (<KeyName> this.containers.getById(change.instance.containerId)).name + ")";
+    result = result + "(" + change.instance.container.name + ")";
 
     return result;
   }

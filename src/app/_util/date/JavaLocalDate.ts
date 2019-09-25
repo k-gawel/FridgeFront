@@ -83,4 +83,8 @@ export class LocalDate implements JavaLocalDate {
     return this.dayOfMonth.toString() + "-" + this.monthValue.toString() + "-" + this.year.toString();
   }
 
+  toSimpleString() {
+    return this.dayOfMonth.toString() + "/" + this.monthValue.toString();
+  }
+
 }

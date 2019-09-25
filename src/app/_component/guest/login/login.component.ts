@@ -20,14 +20,13 @@ export class LoginComponent implements OnInit {
 
 
   submit() {
-    if(!this.form.validate()) {
-      console.log("ERROR", this.form);
+    if (!this.form.validate())
       return;
-    }
 
     this.authService.login(this.form)
       .then((result: AccountDatas) => this.account.emit(result) )
       .catch((e: HttpErrorResponse) => {
+        console.log("ERROR", e);
         let msg = e.error.localizedMessage;
         let target = msg.split(".")[0];
         let type = msg.split(".")[1];

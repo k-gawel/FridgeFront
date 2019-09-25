@@ -78,7 +78,7 @@
   margin-left: 50px;
 }
 
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+/* Style page content - use this if you want to add the page content to the right when you open the side navigation */
 #main {
   transition: margin-left .5s;
   padding: 20px;
@@ -88,4 +88,10 @@
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+}
+
+.navbar-icon {
+  position: fixed;
+  bottom: 0.5rem;
+  left: 0.5rem;
 }

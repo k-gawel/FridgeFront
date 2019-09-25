@@ -33,12 +33,12 @@ export class WishListApiService {
     return this.api.get(this.url, header, params);
   }
 
-  public archivize(id: number) {
-    let header = this.api.getHeaderWithToken();
-    let params = new HttpParams();
-    params.set("id", id.toString());
 
-    return this.api.delete(this.url, header, params);
+  public archive(id: number) {
+    let url = this.url + "/" + id;
+    let header = this.api.getHeaderWithToken();
+
+    return this.api.delete(url, header, null);
   }
 
 

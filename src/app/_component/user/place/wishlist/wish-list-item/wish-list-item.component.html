@@ -1,19 +1,147 @@
-<div class="card mb-3">
+<!--<mat-toolbar *ngIf="dialogRef != null" class="dialog-full-screen-toolbar">-->
 
-  <div class="card-header" style="display: flex; justify-content: space-between" [ngClass]="{'background-color': item.addedInstance != null ? '#86cfda' : ''}">
-    {{item.author.name + ' on ' + (item.createdOn | date: 'dd/MM')}}
+<!--<mat-toolbar-row class="space-between">-->
 
-    <button *ngIf="item.addedInstance != null" class="btn" disabled><i style="color: #28a745" class="fas fa-check-circle"></i></button>
-    <button *ngIf="item.addedInstance == null" class="btn" (click)="openForm()"><i class="fas fa-plus"></i></button>
-  </div>
+<!--<span>-->
+<!--{{item.categoryId.name}}-->
+<!--</span>-->
 
-  <div class="card-body">
-    <h5 class="card-title">
-      {{addedInstanceItem != null ? addedInstanceItem.name : item.category.name}}
-    </h5>
-    <p class="card-text">
+<!--<close-dialog-button [dialogRef]="dialogRef">-->
+<!--</close-dialog-button>-->
+
+<!--</mat-toolbar-row>-->
+
+<!--</mat-toolbar>-->
+
+
+<div [ngStyle]="{'display': steps == null ? '' : 'none' }">
+
+  <div>
+
+    <h4 class="space-between">
+        <span>
+          <i class="fa fa-user"></i> {{item.author.name}}
+        </span>
+
+      <span>
+          <i class="fa fa-calendar"></i> {{item.createdOn | date: 'dd/MM'}}
+        </span>
+    </h4>
+
+    <h6 style="color: lightgrey">
       {{item.comment}}
-    </p>
+    </h6>
+
   </div>
+
+  <mat-divider></mat-divider>
+
+
+  <div *ngIf="item.addedInstance != null" style="margin-top: 1em">
+
+    <h5 class="space-between">
+
+        <span>
+          <i class="fa fa-user-plus"></i> {{item.addedBy.name}}
+        </span>
+
+      <span>
+          <i class="fa fa-calendar-plus"></i> {{item.addedOn | date: 'd/M'}}
+        </span>
+
+    </h5>
+
+    <h5 class="space-between">
+
+        <span style="color: grey">
+          {{item.addedInstance.container.name}}
+        </span>
+
+      <span
+        *ngIf="!item.addedInstance.isOpen() && !item.addedInstance.isDeleted() && item.addedInstance.expireOn != null">
+          <i class="fas fa-hourglass-end"></i> {{item.addedInstance.expireOn.toSimpleString()}}
+        </span>
+
+      <span *ngIf="item.addedInstance.isOpen() && !item.addedInstance.isDeleted()">
+          <i class="fas fa-box-open"></i> {{item.addedInstance.opened.dateToSimpleString}}
+        </span>
+
+      <span *ngIf="item.addedInstance.isDeleted()">
+          <i class="fas fa-trash"></i> {{item.addedInstance.deleted.dateToSimpleString}}
+        </span>
+
+    </h5>
+
+    <h6>
+        <span>
+          <i class="fas fa-comment-alt"></i> {{item.addedInstance.comment}}
+        </span>
+    </h6>
+
+  </div>
+
+  <div *ngIf="item.addedInstance == null">
+
+    <button mat-raised-button style="width: 100%" (click)="openForm()">
+      <mat-icon>add</mat-icon>
+      Add instance
+    </button>
+
+  </div>
+
 
 </div>
+
+
+<mat-horizontal-stepper linear #stepper *ngIf="steps != null" class="dialog-full-width-element">
+
+  <mat-step>
+
+    <ng-template matStepLabel>
+      Category
+    </ng-template>
+
+    <categories-menu (chosenCategory)="steps.category = $event">
+    </categories-menu>
+
+    <button mat-raised-button style="width: 100%" matStepperNext>
+      Next
+    </button>
+
+  </mat-step>
+
+  <mat-step>
+
+    <ng-template matStepLabel>
+      Item
+    </ng-template>
+
+    <app-item-picker [place]="item.wishList.place" [category]="steps.category" [closeable]="false"
+                     (selectedItem)="selectInstanceItem($event); stepper.next()">
+    </app-item-picker>
+
+    <button style="width: 100%" mat-raised-button matStepperNext>
+      Next
+    </button>
+
+  </mat-step>
+  >
+
+  <mat-step>
+
+    <ng-template matStepLabel>
+      Instance
+    </ng-template>
+
+    <app-new-wish-list-item-instance-item *ngIf="instanceItem != null"
+                                          [item]="instanceItem" [wishListItem]="item" (ready)="steps = null">
+    </app-new-wish-list-item-instance-item>
+
+    <div>
+      <button style="width: 50%" mat-raised-button matStepperPrevious>Back</button>
+      <button style="width: 50%" mat-raised-button (click)="stepper.reset()">Reset</button>
+    </div>
+
+  </mat-step>
+
+</mat-horizontal-stepper>

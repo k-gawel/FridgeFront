@@ -14,10 +14,14 @@ import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 })
 export class PlaceMenuComponent implements OnInit {
 
+  @Input() places: KeyNameList<KeyName>;
+
   @Output() chosenPlace = new EventEmitter<KeyName>();
-  @Input()  places: KeyNameList;
+  _chosenPlace: KeyName;
+
 
   form: PlaceForm = new PlaceForm();
+
   errorMatcher: PlaceFormErrorStateMatcher;
 
   constructor(private errorHandler: ErrorHandlerService,
@@ -29,29 +33,28 @@ export class PlaceMenuComponent implements OnInit {
   }
 
 
-
-  addNewPlace() {
-    if(!this.form.validate())
-      this.errorHandler.sendErrors(this.form.errors);
-    else {
-      this.placeService.newPlace(this.form)
-        .then(p => {
-          this.places.push(p);
-          this.setPlace(p);
-        })
-        .catch(e => this.form.errors = e);
-    }
-  }
-
-
   @Input() set removedPlace(place: PlaceDetails) {
-    if(place != null)
+    if (place != null)
       this.places.remove(place)
   }
 
 
   setPlace(place: KeyName) {
-      this.chosenPlace.emit(place);
+    this._chosenPlace = place;
+    this.chosenPlace.emit(place);
+  }
+
+
+  addNewPlace() {
+    if(!this.form.validate())
+      this.errorHandler.sendErrors(this.form.errors);
+    else
+      this.placeService.newPlace(this.form)
+        .then(p => {
+          this.places.add(p);
+          this.setPlace(p);
+        })
+        .catch(e => this.form.errors = e);
   }
 
 

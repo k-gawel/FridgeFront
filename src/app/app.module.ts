@@ -15,7 +15,7 @@ import {ErrorHandlerComponent} from './_component/utils/error-handler/error-hand
 import {PlaceMenuComponent} from './_component/user/user/place-menu/place-menu.component';
 import {PlaceComponent} from './_component/user/place/place/place.component';
 import {AccountManagmentComponent} from './_component/user/account/account-managment/account-managment.component';
-import {ItemComponent} from './_component/user/place/item/item/item/item.component';
+import {ItemComponent, NewInstanceFormDialog} from './_component/user/place/item/item/item/item.component';
 import {RelatedItemComponent} from './_component/user/place/item-picker/related-items/related-item/related-item.component';
 import {CategoriesMenu} from './_component/user/place/categories-menu/categories-menu.component';
 import {NewInstanceFormComponent} from './_component/user/place/item/item/new-instance-form/new-instance-form.component';
@@ -24,33 +24,47 @@ import {NewItemComponent} from './_component/user/place/item-picker/new_item/new
 import {WishListComponent} from './_component/user/place/wishlist/wish-list/wish-list.component';
 import {WishListFormComponent} from './_component/user/place/right-sidebar/wish-list-menu/wish-list-form/wish-list-form.component';
 import {WishListMenuComponent} from './_component/user/place/right-sidebar/wish-list-menu/wishl-list-menu/wish-list-menu.component';
-import {
-  NewInstanceForm,
-  WishListItemComponent
-} from './_component/user/place/wishlist/wish-list-item/wish-list-item.component';
+import {WishListItemComponent} from './_component/user/place/wishlist/wish-list-item/wish-list-item.component';
 import {WishListItemFormComponent} from './_component/user/place/wishlist/wish-list-item-form/wish-list-item-form.component';
 import {ItemPickerComponent} from './_component/user/place/item-picker/item-picker/item-picker.component';
 import {PlaceItemsSceneComponent} from './_component/user/place/place-items-scene/place-items-scene.component';
-import {ItemInstancesComponent} from './_component/user/place/item/item/item-instances/item-instances-list/item-instances.component';
-import {SingleInstanceComponent} from './_component/user/place/item/item/item-instances/single-instance/single-instance.component';
 import {ItemDescriptionComponent} from './_component/user/place/item/item/item-description/item-description.component';
-import {UsersMenuComponent} from './_component/user/place/right-sidebar/users-menu/users-menu.component';
+import {
+  UsersMenuComponent,
+  UserStatComponent
+} from './_component/user/place/right-sidebar/users-menu/users-menu.component';
 import {WishListItemService} from './_service/user/place/wishlist/wishListItem/wish-list-item.service';
 import {WishListService} from './_service/user/place/wishlist/wishlist/wish-list.service';
 import {
-  MatButtonModule,
+  MatAutocompleteModule,
+  MatButtonModule, MatButtonToggleModule, MatCardModule,
   MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDialogRef, MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
+  MatListModule,
   MatMenuModule,
+  MatNativeDateModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSlideToggleModule,
+  MatStepperModule,
+  MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
-import {CollapsableListDirective} from './_component/user/place/right-sidebar/right-side-bar/collapsable-list.directive';
-import {RightSideBarComponent} from './_component/user/place/right-sidebar/right-side-bar/right-side-bar.component';
 import {LoaderComponent} from './_component/utils/loader/loader.component';
 import {BarcodeScannerComponent} from './_component/user/place/item-picker/barcode-scanner/barcode-scanner.component';
 import {NavbarComponent} from './_component/user/user/navbar/navbar.component';
+import {EntityListPipe} from './_service/utils/entity-list.pipe';
+import {NewWishListItemInstanceItemComponent} from './_component/user/place/item/item/new-wish-list-item-instance-item/new-wish-list-item-instance-item.component';
+import {ItemInstanceComponent} from './_component/user/place/item/item/item/item-instance/item-instance.component';
+import {CloseDialogButtonComponent} from './_component/utils/close-dialog-button/close-dialog-button.component';
+import {InstanceActionInfoComponent} from './_component/user/place/item/item/item/item-instance/instance-action-info/instance-action-info.component';
+import {ProducersMenuComponent} from './_component/user/place/right-sidebar/producers-menu/producers-menu.component';
 
 
 const appRoutes: Routes = [];
@@ -77,28 +91,36 @@ const appRoutes: Routes = [];
     PlaceItemsSceneComponent,
     ContainersMenuComponent,
     ErrorHandlerComponent,
-    ItemInstancesComponent,
-    SingleInstanceComponent,
     PlaceMenuComponent,
     ItemDescriptionComponent,
     AccountManagmentComponent,
     UsersMenuComponent,
-    CollapsableListDirective,
-    RightSideBarComponent,
     LoaderComponent,
-    NewInstanceForm,
     BarcodeScannerComponent,
-    NavbarComponent
+    NavbarComponent,
+    NewInstanceFormDialog,
+    EntityListPipe,
+    NewWishListItemInstanceItemComponent,
+    ItemInstanceComponent,
+    CloseDialogButtonComponent,
+    InstanceActionInfoComponent,
+    ProducersMenuComponent,
+    UserStatComponent
   ],
   entryComponents: [
     NewInstanceFormComponent,
     WishListFormComponent,
     WishListItemFormComponent,
     NewItemComponent,
-    NewInstanceForm,
-    BarcodeScannerComponent
+    BarcodeScannerComponent,
+    ItemComponent,
+    NewInstanceFormDialog,
+    WishListFormComponent,
+    WishListComponent,
+    WishListItemComponent
   ],
   imports: [
+    MatTabsModule,
     BrowserModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
@@ -106,18 +128,33 @@ const appRoutes: Routes = [];
     ReactiveFormsModule,
     NgbModule,
     BrowserAnimationsModule,
+
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatMenuModule,
     MatToolbarModule,
     MatIconModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule,
+    MatListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatStepperModule,
+    MatChipsModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatButtonToggleModule,
+    MatExpansionModule,
+    MatAutocompleteModule
   ],
   providers: [
     CookieService,
     WishListItemService,
     WishListService,
+    {provide: MatDialogRef, useValue: {}},
   ],
   bootstrap: [AppComponent]
 })

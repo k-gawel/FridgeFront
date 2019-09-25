@@ -13,20 +13,16 @@ import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
 })
 export class ContainersMenuComponent implements OnInit {
 
-
-
-
   _containers: ContainersList;
   _chosenContainers: ContainersList;
   _place: PlaceDetails;
   @Input() set place(value: PlaceDetails) {
-    console.debug("ContainersMenuComponent.setPlace()", value);
     this._place = value;
     this.containerForm.placeId = this._place.id;
 
     this._containers = this._place.containers;
     this._chosenContainers = new ContainersList();
-    this._chosenContainers.pushAll(this._containers);
+    this._chosenContainers.addAll(this._containers);
     this.chosenContainers.emit(this._chosenContainers);
   }
 
@@ -49,15 +45,13 @@ export class ContainersMenuComponent implements OnInit {
 
 
   addContainer() {
-
     if(!this.containerForm.validate())
       return;
 
     this.containersService.addNewContainer(this.containerForm)
       .then((result: Container) => {
-        this._containers.push(result);
-        this._chosenContainers.push(result);
-        this.chosenContainers.emit(this._chosenContainers);
+        this._containers.add(result);
+        this.addToChosen(result);
       })
       .catch((e: ErrorMessage) => {
         this.containerForm.errors = e;
@@ -67,21 +61,23 @@ export class ContainersMenuComponent implements OnInit {
 
 
   clickOnContainer(container: Container) {
-
     if(this._chosenContainers.contains(container))
-      this._chosenContainers.remove(container);
+      this.removeFromChosen(container);
     else
-      this._chosenContainers.push(container);
-
-    this.chosenContainers.emit(this._chosenContainers);
-
+      this.addToChosen(container);
   }
 
 
-  removeContainer(container: Container) {
-    this._containers.remove(container);
+  private addToChosen(container: Container): void {
+    this._chosenContainers.add(container);
+    this.chosenContainers.emit(this._chosenContainers);
+  }
+
+
+  private removeFromChosen(container: Container): void {
     this._chosenContainers.remove(container);
     this.chosenContainers.emit(this._chosenContainers);
   }
+
 
 }

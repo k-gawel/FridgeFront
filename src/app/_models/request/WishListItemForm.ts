@@ -2,10 +2,10 @@ import {Form} from './Form';
 
 export class WishListItemForm extends Form{
 
-  wish_list_id: number = null;
-  author_id: number;
-  category_id: number;
-  item_id: number;
+  wishListId: number = null;
+  authorId: number;
+  categoryId: number;
+  itemId: number;
   comment: string;
 
 
@@ -16,10 +16,10 @@ export class WishListItemForm extends Form{
 
 
     validateCategory(): boolean {
-      if(this.category_id == null && this.item_id == null) {
-        this.sendMessage("category_id.null|item_id.null");
+      if (this.categoryId == null && this.itemId == null) {
+        this.sendMessage("categoryId.null|itemId.null");
         return false;
-      } else if(this.category_id != null && this.item_id != null) {
+      } else if (this.categoryId != null && this.itemId != null) {
         this.sendMessage("category_and_item.not_null");
         return false;
       } else
@@ -28,10 +28,10 @@ export class WishListItemForm extends Form{
 
 
     validateItem(): boolean {
-      if(this.category_id == null && this.item_id == null) {
-        this.sendMessage("category_id.null|item_id.null");
+      if (this.categoryId == null && this.itemId == null) {
+        this.sendMessage("categoryId.null|itemId.null");
         return false;
-      } else if(this.category_id != null && this.item_id != null) {
+      } else if (this.categoryId != null && this.itemId != null) {
         this.sendMessage("category_and_item.not_null");
         return false;
       } else
@@ -49,8 +49,8 @@ export class WishListItemForm extends Form{
 
 
     validateAuthor(): boolean {
-      if(this.author_id == null) {
-        this.sendMessage("author_id.null");
+      if (this.authorId == null) {
+        this.sendMessage("authorId.null");
         return false;
       }
       return true;
@@ -58,7 +58,7 @@ export class WishListItemForm extends Form{
 
 
     validateWishList(): boolean {
-      if(this.wish_list_id == null) {
+      if (this.wishListId == null) {
         this.sendMessage("wish_list.null");
         return false;
       }

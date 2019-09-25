@@ -1,46 +1,57 @@
-<div class="card" *ngIf="_wishList != null">
+<mat-toolbar color="primary" class="dialog-full-screen-toolbar">
 
-  <div class="card-header">
+  <mat-toolbar-row>
 
-    <div class="row">
-      <div class="col-sm-12 col-md-9">
-        <h5>
-          {{_wishList.name}}
-        </h5>
-        <h6>
-          {{_wishList.description}}
-        </h6>
-      </div>
+    <span>
+      {{_wishList.name}}
+    </span>
 
-      <div class="col-sm-12 col-md-3">
-        <div class="row">
-          <div class="col-sm-4 col-md-12">
-            <button class="btn menu-button" title="Add item" (click)="openForm()"><i class="fas fa-plus"></i></button>
-          </div>
+    <span>
 
-          <div class="col-sm-4 col-md-12">
-            <button class="btn menu-button" title="Delete" (click)="archive()"><i class="fas fa-trash-alt"></i></button>
-          </div>
+      <button mat-icon-button (click)="archive()">
+        <i class="fas fa-trash-alt"></i>
+      </button>
 
-          <div class="col-sm-4 col-md-12">
-            <button class="btn menu-button" title="Close" (click)="close()"><i class="fas fa-times"></i> </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+      <close-dialog-button [dialogRef]="dialogRef">
+      </close-dialog-button>
+      
+    </span>
+
+  </mat-toolbar-row>
+
+</mat-toolbar>
+
+<!--<mat-icon *ngIf="item.addedInstance == null">add_box</mat-icon>-->
+<!--<mat-icon *ngIf="item.addedInstance != null" style="color: #00ad5f">check_box</mat-icon>-->
 
 
+<mat-accordion>
 
-  <div class="card-body">
+  <mat-expansion-panel class="dialog-full-width-element"
+                       *ngFor="let item of _wishList.wishListItems | entityList">
 
-    <div class="card-columns">
-      <app-wish-list-item *ngFor="let i of _wishList.wishListItems" [item]="i"></app-wish-list-item>
-    </div>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="text-nowrap">
+        {{item.category.name}}
+      </mat-panel-title>
 
-  </div>
+      <mat-panel-description class="text-truncate">
+        {{item.comment}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-wish-list-item [item]="item">
+    </app-wish-list-item>
+
+  </mat-expansion-panel>
+
+</mat-accordion>
+
+
+<div class="option-buttons ob-right">
+
+  <button mat-fab aria-label="Add item" (click)="openForm()">
+    <mat-icon>add</mat-icon>
+  </button>
 
 </div>
-
-
-<app-loader *ngIf="_wishList == null"></app-loader>

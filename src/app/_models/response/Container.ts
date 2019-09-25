@@ -1,96 +1,46 @@
-import {KeyName, KeyNameList} from './KeyName';
-import {Entity, EntityList} from './Entity';
 import {ItemInstancesList} from './item/ItemInstancesList';
-import {IdSelector} from '../../_service/utils/EntitySelector';
 import {ItemInstance} from './item/ItemInstance';
-import {PlaceDetails, PlaceDetailsList} from './PlaceDetails';
+import {PlaceDetailsList} from './PlaceDetails';
+import {PlaceElement, PlaceElementList} from "./PlaceElement";
 
-export class Container extends KeyName {
-    place: number;
-    instances: ItemInstancesList;
+export class Container extends PlaceElement {
 
-    constructor(json?: JSON) {
-      super();
+  instances: ItemInstancesList = new ItemInstancesList();
 
-      if(json == undefined)
-        return;
+  constructor(json?: JSON) {
+    super();
+    if (json == undefined) return;
 
-      this.id = json['id'];
-      this.name = json['name'];
-      this.place = json['place_id'];
-      this.instances = new ItemInstancesList(json['instances']);
+    this.id = json['id'];
+    ContainersList.ALL.add(this);
 
-      ContainersList.ALL.push(this);
-    }
+    this.name = json['name'];
+
+    this.place = PlaceDetailsList.ALL[json['place_id']];
+    this.place.containers.add(this);
+
+    (<JSON[]> json['instances']).forEach(j => new ItemInstance(j));
+  }
+
 }
 
-export class ContainersList extends KeyNameList {
+export class ContainersList extends PlaceElementList<Container> {
 
-    public list: Container[] = [];
     public static ALL: ContainersList = new ContainersList();
-
 
     constructor(json?: JSON[]) {
       super();
+      if (json == null) return;
 
-      if(json == null)
-        return;
-
-      this.list = json.map(j => new Container(j));
-    }
-
-
-    public push(container: Container): ContainersList {
-      let existingContainer = this.getById(container.id);
-
-      if(existingContainer == null)
-        this.list.push(container);
-      else {
-        existingContainer.name = container.name;
-        existingContainer.place = container.place;
-        existingContainer.instances = container.instances;
-      }
-
-      return this;
-    }
-
-
-    public getById(id: number): Container {
-      return <Container> super.getById(id);
-    }
-
-
-    public getByIds(ids: number[]): ContainersList {
-      return <ContainersList> super.getByIds(ids);
-    }
-
-
-    public getByPlaces(places: number | Entity | number[] | EntityList): ContainersList {
-      let ids = new IdSelector(places).id;
-
-      const result = new ContainersList();
-      result.list = this.list.filter(e => ids.includes(e.place));
-      return result;
+      json.forEach(j => this.add(new Container(j)));
     }
 
 
     public getAllInstances(): ItemInstancesList {
-      let list: ItemInstance[][] = this.list.map(c => c.instances.toArray());
       let result = new ItemInstancesList();
-      list.forEach(l => l.forEach(ii => result.addInstance(ii)));
+      this.map(c => c.instances).forEach(i => result.addAll(i));
       return result;
     }
 
-
-    public getPlace(): PlaceDetails {
-      if(this.list.length == 0) return null;
-
-      let firstID = this.list[0].place;
-
-      if(this.list.filter(i => i.place == firstID).length == this.list.length)
-        return PlaceDetailsList.ALL.getById(firstID);
-      else
-        return null;
-    }
 
 }

@@ -44,7 +44,7 @@ export class Item extends KeyName {
         this.ingredients = json['ingredients'].map(i => new Ingredient(i));
         this.nutrition = new Nutrition(json['nutrition']);
 
-        ItemsList.ALL.push(this);
+      ItemsList.ALL.add(this);
     }
 
 }
@@ -116,7 +116,7 @@ export class Capacity {
   value: number;
   unit: string;
 
-  constructor(string: string) {
+  constructor(string?: string) {
     if(string == null) return;
 
     this.value = Number.parseFloat(string.split(";")[0]);

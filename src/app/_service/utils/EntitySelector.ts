@@ -7,31 +7,26 @@ export class IdSelector {
 
   private _id: number[];
 
-  constructor(entity: number | number[] | Entity | EntityList | Entity[]) {
-
+  constructor(entity: number | number[] | Entity | EntityList<Entity> | Entity[]) {
     this._id = [];
 
-    if(typeof entity === 'number')
-      this._id.push(entity);
-    if(entity instanceof Entity) {
+    if (entity instanceof Entity)
       this._id.push(entity.id);
-    }
-    if(entity instanceof Array) {
-      for(let singleEntity of entity) {
-        if(singleEntity instanceof Entity)
-          this._id.push(singleEntity.id);
-        if(typeof singleEntity === 'number')
-          this._id.push(singleEntity);
-      }
-    }
-    if(entity instanceof EntityList) {
-      for(let singleEntity of entity.list) {
-        if(singleEntity instanceof Entity)
-          this._id.push(singleEntity.id);
-      }
-    }
+
+    else if (entity instanceof EntityList)
+      this._id = entity.getAllIds();
+
+    else if (typeof entity === "number")
+      this._id.push(entity);
+
+    else
+      for (let e of entity)
+        this.id.push(typeof e === "number" ? e : e.id);
 
   }
+
+
+
 
   public toString(): string {
 

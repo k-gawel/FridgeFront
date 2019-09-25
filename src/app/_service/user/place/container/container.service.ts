@@ -38,7 +38,7 @@ export class ContainerService {
 
 
   public removeContainer(container: KeyName) {
-    //TODO Remove containerId
+    //TODO Remove container
   }
 
 
@@ -49,9 +49,9 @@ export class ContainerService {
     let result: ContainersList = new ContainersList();
 
     ids.forEach( (id: number) => {
-      let foundContainer = ContainersList.ALL.getById(id);
+      let foundContainer = ContainersList.ALL[id];
       if(foundContainer != null)
-        result.push(foundContainer);
+        result.add(foundContainer);
       else
         idsToFind.push(id);
     });

@@ -12,50 +12,28 @@ import {Size, WindowService} from '../../../../_service/utils/window.service';
 })
 export class CategoriesMenu implements OnInit {
 
-    @Input() rootCategory = Category.rootCategory;
-    @Output() chosenCategory = new EventEmitter<Category>();
+  @Input() rootCategory = Category.rootCategory;
+  @Output() chosenCategory = new EventEmitter<Category>();
 
-    isCollapsed: boolean;
-    constructor(private categoryService: CategoryService,
-                private errorHanddler: ErrorHandlerService,
-                windowService: WindowService) {
-      windowService.$resize.subscribe(s => this.isCollapsed = s <= Size.SM);
-    }
+  isCollapsed: boolean;
 
-    ngOnInit() {
-      if(this.rootCategory == null)
-        this.getRootCategory();
-      else
-        this.chosenCategory.emit(this.rootCategory);
-    }
+  constructor(private categoryService: CategoryService,
+              private errorHanddler: ErrorHandlerService,
+              windowService: WindowService) {
+    windowService.$resize.subscribe(s => this.isCollapsed = s <= Size.SM);
+  }
+
+  ngOnInit() {
+    this.chooseCategory(this.rootCategory);
+  }
 
 
-    chooseCategory(category: Category) {
-        if(category == null)
-          return;
+  chooseCategory(category: Category) {
+    if (category == null) return;
 
-        if(this.rootCategory.equals(category) && this.rootCategory.parent != null)
-          this.rootCategory = this.rootCategory.parent;
+    this.rootCategory = category;
 
-        else if(!category.equals(this.rootCategory))
-          this.rootCategory = category;
-
-        else if(this.rootCategory.isFinal() && category.equals(this.rootCategory))
-          return;
-
-        this.chosenCategory.emit(this.rootCategory);
-    }
-
-
-    getRootCategory() {
-      this.categoryService.getRootCategory()
-        .then((res: Category) => {
-          this.rootCategory = res;
-          this.chosenCategory.emit(this.rootCategory);
-        })
-        .catch((e: ErrorMessage) => {
-          this.errorHanddler.sendErrors(e);
-        })
-    }
+    this.chosenCategory.emit(this.rootCategory);
+  }
 
 }

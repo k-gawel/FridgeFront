@@ -1,64 +1,48 @@
-<ng-container *ngIf="_place != null && _users != null">
+<mat-action-list>
 
-    <li class="list-group-item list-group-item-action"
-        *ngFor="let user of _users.getByStatus(true).list">
+  <ng-container *ngFor="let user of users | entityList">
 
-      <!--USER NAME-->
-      <span class="username" popoverTitle="User stats" [ngbPopover]="statsPopoverContent" data-container="body" placement="bottom">
-        {{user.name}}
-      </span>
+    <button mat-list-item [matMenuTriggerFor]="userMenu">
+      {{user.name}}
+    </button>
 
-      <!-- STATS POPOVER -->
-      <ng-template #statsPopoverContent>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"> Added:   <b>{{user.stats.instancesAdded}}</b> </li>
-          <li class="list-group-item"> Opened:  <b>{{user.stats.instancesOpened}}</b> </li>
-          <li class="list-group-item"> Deleted: <b>{{user.stats.instancesDeleted}}</b> </li>
-        </ul>
-      </ng-template>
+    <mat-menu #userMenu="matMenu">
 
+      <user-menu-stat [label]="'Added instances: '" [number]="user.stats.instancesAdded"></user-menu-stat>
+      <user-menu-stat [label]="'Opened instances: '" [number]="user.stats.instancesOpened"></user-menu-stat>
+      <user-menu-stat [label]="'Deleted instances: '" [number]="user.stats.instancesDeleted"></user-menu-stat>
 
-      <span class="icon" popoverTitle="Admin options" [ngbPopover]="adminOptions" placement="left"
-            *ngIf="isAdmin() && !isAdmin(user)">
-        <i class="fas fa-ellipsis-v"></i>
-      </span>
+      <button mat-menu-item [matMenuTriggerFor]="userOptions" *ngIf="canTakeAnyActions(user)">
+        Manage user
+      </button>
 
-      <!--ADMIN OPTIONS POPOVER-->
-      <ng-template #adminOptions>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item" (click)="promoteUser(user)">PROMOTE <i class="fas fa-user-tie">   </i></li>
-          <li class="list-group-item" (click)="removeUser(user)">REMOVE   <i class="fas fa-user-times"> </i></li>
-        </ul>
-      </ng-template>
+      <mat-menu #userOptions="matMenu">
 
+        <button mat-menu-item *ngIf="canRemoveUser(user)" (click)="removeUser(user)">
+          Remove
+        </button>
 
-      <!--HIDDEN non-positionabsoluteelement is required to item_id display properly-->
-      <span style="visibility: hidden">users</span>
+        <button mat-menu-item *ngIf="canPromoteUser(user)" (click)="promoteUser(user)">
+          Promote
+        </button>
 
-    </li>
+      </mat-menu>
 
+    </mat-menu>
 
-    <!--NEW USER FORM-->
-    <li class="list-group-item" ngbDropdown *ngIf="isAdmin()" style="padding: 0; height: 50px">
+  </ng-container>
 
-      <input autocomplete="off" type="text" class="dropdown-toggle" data-toggle="dropdown" [(ngModel)]="form.name" (keyup)="onFormNameChange()" name="name"
-             placeholder="Add new user" style="width: 80%; height: 50px; border: none; padding-left: 10%;" ngbDropdownToggle aria-expanded="false" id="addNewUser"/>
+</mat-action-list>
 
-      <button style="width: 20%; height: 50px;" [disabled]="this.form.id == null" type="submit" (click)="addUser()">+</button>
+<mat-form-field style="width: 100%; padding: 0 0.5em">
+  <input matInput placeholder="New user name" [matAutocomplete]="usersAutocomplete"
+         [formControl]="formCtrl['name']" name="newuser-form-name"/>
 
-      <div ngbDropdownMenu aria-labelledby="addNewUser" style="width: 100%">
-        <button class="dropdown-item" *ngFor="let user of usersList.list" (click)="selectUserToAdd(user)">{{user.name}}</button>
-      </div>
+  <mat-icon matSuffix>add</mat-icon>
 
-    </li>
-
-</ng-container>
-
-
-
-<ng-container *ngIf="!(_place != null && _users != null)">
-  WAAAAAAAAIAIAIAIAIIAIIAIIAIAAT
-</ng-container>
-
-
-
+  <!--<mat-autocomplete #usersAutocomplete="matAutocomplete">-->
+  <!--<mat-option *ngFor="let user of usersList | entityList" [value]="user">-->
+  <!--{{user.name}}-->
+  <!--</mat-option>-->
+  <!--</mat-autocomplete>-->
+</mat-form-field>

@@ -21,15 +21,18 @@ export class PlaceUser extends KeyName {
   }
 
   constructor(json?: JSON) {
-    super(json);
+    super();
 
-    if (json == undefined)
+    if (json == undefined) {
       return;
+    }
 
+    this.id = json['id'];
+    PlaceUsersList.ALL.add(this);
+
+    this.name = json['name'];
     this.status = json['status'];
     this.stats  = new PlaceUserStats(json['stats']);
-
-    PlaceUsersList.ALL.push(this);
   }
 
 }

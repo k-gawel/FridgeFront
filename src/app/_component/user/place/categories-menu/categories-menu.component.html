@@ -1,22 +1,29 @@
-<ng-container *ngIf="rootCategory != null">
+<mat-card>
 
-  <button class="btn" style="height: 40px; width: 100%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
-          (click)="chooseCategory(rootCategory.isFinal() ? rootCategory.parent : rootCategory)">
-    <i class="fas fa-arrow-up"></i>
-    {{rootCategory.isFinal() ? rootCategory.parent.name : rootCategory.name}}
-  </button>
+  <mat-card-header>
+
+    <mat-card-title class="space-between">
+
+      {{rootCategory.name}}
+
+      <button mat-stroked-button *ngIf="rootCategory.parent != null"
+              (click)="chooseCategory(rootCategory.parent)">
+        <mat-icon>keyboard_arrow_up</mat-icon>
+      </button>
+
+    </mat-card-title>
+
+  </mat-card-header>
+
+  <mat-card-content style="padding: 0.8em">
+    <mat-chip-list>
+      <mat-chip (click)="chooseCategory(category)"
+                *ngFor="let category of rootCategory.children">
+        {{category.name}}
+      </mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+
+</mat-card>
 
 
-  <div class="ctg-menu-btn-group" name="categoriesMenu" style="max-height: 340px; max-width: 100%; overflow-y: auto;">
-
-    <button *ngFor="let category of rootCategory.isFinal() ? rootCategory.parent.children : rootCategory.children"
-            [ngClass]="'button' + (rootCategory.isFinal() && rootCategory.equals(category) ? ' active' : '')"
-            (click)="chooseCategory(category)">
-      {{category.name}}
-    </button>
-
-  </div>
-
-</ng-container>
-
-<app-loader *ngIf="rootCategory == null"></app-loader>

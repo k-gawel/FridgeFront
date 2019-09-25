@@ -1,32 +1,29 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
-import {PlaceUsersList} from '../../../../_models/response/place-user/PlaceUsersList';
 import {ContainersList} from '../../../../_models/response/Container';
 import {Category} from '../../../../_models/response/Category';
 import {Item} from '../../../../_models/response/item/Item';
 import {KeyNameList} from '../../../../_models/response/KeyName';
 import {ItemService} from '../../../../_service/user/item/item/item.service';
-import {InstanceService} from '../../../../_service/user/instance/instance.service';
-import {InstanceChangeList} from '../../../../_models/response/InstanceChange';
-import {LoggerServiceService} from '../../../../_service/user/user/logger/logger-service.service';
-import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
 import {ItemInstancesList} from '../../../../_models/response/item/ItemInstancesList';
-import {ItemInstance} from '../../../../_models/response/item/ItemInstance';
+import {MatDialog} from "@angular/material";
+import {DialogService} from "../../../../_service/utils/dialog.service";
+import {ItemsList} from "../../../../_models/response/item/ItemsList";
 
 @Component({
   selector: 'app-place-items-scene',
   templateUrl: './place-items-scene.component.html',
   styleUrls: ['./place-items-scene.component.css']
 })
-export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
+export class PlaceItemsSceneComponent {
 
   constructor(private itemService: ItemService,
-              private instanceService: InstanceService,
-              private loggerService: LoggerServiceService,
-              private errorHandler: ErrorHandlerService) {
+              public  dialog: MatDialog) {
   }
 
   owners:   KeyNameList;
+
+  content: string = 'LIST';
 
   open:    boolean | null = null;
   frozen:  boolean | null = null;
@@ -34,31 +31,26 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
 
   baseInstances: ItemInstancesList = new ItemInstancesList();
 
-  instancesLogs: InstanceChangeList = null;
+  items: ItemsList;
 
-  items: Item[] = [];
-
-
-  selectedItem: Item = null;
-  setSelectedItem(item: Item) {
-    console.debug("PlaceItemsSceneComponent.setSelectedItem()", item);
-    this.selectedItem = item;
-  }
 
   getVisibleInstances(): ItemInstancesList {
-    return this.baseInstances.getByOwners(this.owners)
+    let result = this.baseInstances.getByOwners(this.owners)
                              .filterByOpen(this.open)
                              .filterByDeleted(this.deleted);
+    console.log("Base Instances", this.baseInstances, "Visible instances:", result);
+    return result;
   }
+
 
   getVisibleItems() {
     let ids = this.getVisibleInstances().getItemIds();
     this.itemService.getItemsByIds(ids)
-                    .then(r => r.getByCategory(this._category))
-                    .then(r => r.toArray())
-                    .then(r => this.items = <Item[]> r);
+      .then(r => this.items = r.getByCategory(this._category));
   }
 
+
+  _place: PlaceDetails;
   _containers: ContainersList = new ContainersList();
   @Input() set containers(containers: ContainersList) {
     if(containers == undefined) return;
@@ -66,7 +58,8 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
     this._containers = containers;
     this._place      = containers.getPlace();
     this.owners      = this._place.users;
-    this.baseInstances = containers.getAllInstances();
+    this.baseInstances.addAll(containers.getAllInstances());
+
     this.getVisibleItems();
   }
 
@@ -79,19 +72,12 @@ export class PlaceItemsSceneComponent implements OnInit, OnDestroy {
     this.getVisibleItems();
   }
 
-  _place: PlaceDetails;
-  users: KeyNameList = PlaceUsersList.ALL;
 
+  openItem(item: Item) {
+    const datas = {item: item, places: [this._place]};
 
-  newInstance(instance: ItemInstance) {
-    this.baseInstances.push(instance);
+    const dialogRef = DialogService.createItemComponent(this.dialog, datas);
   }
 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
-    this.instanceService.$deletedInstance.unsubscribe();
-  }
 
 }

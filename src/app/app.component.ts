@@ -15,8 +15,10 @@ export class AppComponent implements OnInit {
 
   text: string;
 
+
   constructor(private authService: AuthService) {
   }
+
 
   ngOnInit() {
     this.authService.$roleContent.subscribe((content: RoleContent) => this.content = content);
@@ -28,9 +30,11 @@ export class AppComponent implements OnInit {
       })
   }
 
+
   setAccount(account: AccountDatas) {
     this.contentParams = account;
     this.content = RoleContent.USER;
   }
+
 
 }

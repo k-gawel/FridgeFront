@@ -20,7 +20,5 @@
     <button type="button" class="btn btn-lg btn-info" (click)="close.emit()"><i class="fas fa-times"></i></button>
     <button type="button" class="btn btn-lg btn-block btn-outline-info" disabled>Add instance</button>
   </div>
-  <app-item (newItemInstance)="addInstance($event)"
-            [item]="chosenItem" [chosenContainers]="place.containers"
-            [instances]="place.containers.getAllInstances().getByItems(chosenItem)"></app-item>
+  <app-item></app-item>
 </div>

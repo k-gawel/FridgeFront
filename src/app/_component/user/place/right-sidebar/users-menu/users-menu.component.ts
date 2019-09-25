@@ -5,10 +5,13 @@ import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie
 import {KeyName, KeyNameList} from '../../../../../_models/response/KeyName';
 import {PlaceService} from '../../../../../_service/user/place/place/place.service';
 import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
-import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
 import {AccountService} from '../../../../../_service/user/user/account.service';
 import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
 import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
+import {FormControl} from "@angular/forms";
+import {BehaviorSubject, Observable} from "rxjs";
+import {startWith} from "rxjs-compat/operator/startWith";
+import {map} from "rxjs/operators";
 
 
 @Component({
@@ -19,10 +22,13 @@ import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
 export class UsersMenuComponent implements OnInit {
 
 
-  _place: PlaceDetails;
-  _users: PlaceUsersList;
+  @Input() place: PlaceDetails;
+  users: PlaceUsersList = new PlaceUsersList();
+
+  formCtrl = new FormControl();
+
   form: KeyName = new KeyName();
-  usersList: KeyNameList = new KeyNameList();
+  usersList: KeyNameList<KeyName> = new KeyNameList<KeyName>();
 
 
   constructor(private userService: AccountService,
@@ -30,27 +36,20 @@ export class UsersMenuComponent implements OnInit {
               private placeService: PlaceService,
               private errorHandler: ErrorHandlerService,
               private placeUserService: PlaceUserService) {
-    this.form.name = '';
+    this.formCtrl.valueChanges.subscribe(e => this.searchByName(e));
   }
 
-
-  ngOnInit() {}
-
-
-  @Input() set place(value: PlaceDetails) {
-    this._place = value;
-    this._users = this._place.users;
+  ngOnInit() {
+    this.users = this.place.users;
   }
 
-
-  onFormNameChange() {
-    if(this.form.name.length < 4)
+  searchByName(name: string) {
+    if (name == null)
       return;
-
-    this.form.id = null;
-    this.userService.searchByName(this.form.name)
-      .then(res=> this.usersList = res )
-      .catch(e => this.errorHandler.sendErrors(e) );
+    if (name.length < 4)
+      this.usersList = new KeyNameList<KeyName>();
+    else
+      this.userService.searchByName(name).then(l => this.usersList = l);
   }
 
 
@@ -59,16 +58,8 @@ export class UsersMenuComponent implements OnInit {
   }
 
 
-  isAdmin(user?: KeyName): boolean {
-    if(user == undefined)
-      return this.cookieDatas.getUserId() === this._place.adminId;
-    else
-      return user.id === this._place.adminId;
-  }
-
-
   addUser() {
-    this.placeUserService.addUser(this._place, this.form)
+    this.placeUserService.addUser(this.place, this.form)
       .catch( e => this.errorHandler.sendErrors(e) )
       .then( () => this.form = new KeyName() );
   }
@@ -76,7 +67,19 @@ export class UsersMenuComponent implements OnInit {
 
   private pushUser(u: KeyName) {
     let user = PlaceUser.clone(u);
-    this._users.push(user);
+    this.users.add(user);
+  }
+
+
+  isAdmin(user?: KeyName): boolean {
+    if (user == undefined)
+      return this.cookieDatas.getUserId() === this.place.adminId;
+    else
+      return user.id === this.place.adminId;
+  }
+
+  canTakeAnyActions(user: PlaceUser): boolean {
+    return this.canPromoteUser(user) || this.canRemoveUser(user);
   }
 
   canRemoveUser(user: PlaceUser): boolean {
@@ -84,22 +87,32 @@ export class UsersMenuComponent implements OnInit {
   }
 
   removeUser(user: PlaceUser) {
-    if(!this.canRemoveUser(user))
-      this.errorHandler.sendErrors(["Can not remove user"]);
-
-    this.placeUserService.removeUser(this._place, user)
-      .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e) );
+    this.placeUserService.removeUser(this.place, user);
   }
 
+  canPromoteUser(user: PlaceUser): boolean {
+    return !this.isAdmin(user) && this.isAdmin();
+  }
 
   promoteUser(user: PlaceUser) {
-    if (this.isAdmin(user) || !this.isAdmin())
-      this.errorHandler.sendErrors(["You can't promote this user!"]);
-    else
-      this.placeUserService.changeAdmin(this._place, user)
-        .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e));
+    this.placeUserService.changeAdmin(this.place, user);
   }
 
 
+}
+
+@Component({
+  selector: 'user-menu-stat',
+  template: `
+    <button mat-menu-item class="space-between" (click)="$event.stopPropagation()">
+      <span> {{label}} </span>
+      <strong> {{number}} </strong>
+    </button>
+  `
+})
+export class UserStatComponent {
+
+  @Input() label: string;
+  @Input() number: number;
 
 }

@@ -15,75 +15,6 @@ ul.cat-breadcrumb li {
   display: inline;
 }
 
-/* Add a slash symbol (/) before/behind each ALL itemId */
-ul.cat-breadcrumb li+li:before {
-  padding: 8px;
-  color: black;
-  content: "/\00a0";
-}
-
-.trapezoid-buttons-line {
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.trapezoid-left{
-  display: inline-block;
-  width: 50%;
-  text-align: center;
-  height: 0;
-  position: relative;
-  box-sizing: content-box;
-  border-right: 50px solid transparent;
-  border-top: 40px solid #2963BD;
-}
-
-.trapezoid-left-add-instance {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  width: 55%;
-  height: 40px;
-}
-
-.trapezoid-left-add-instance span {
-  position: absolute;
-  top: 10px;
-  left: auto;
-  color: black;
-}
-
-.trapezoid-left-instances-amount {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  width: calc(45% - 50px);
-  border-top: 40px solid;
-  border-right: 50px solid;
-  color: white;
-}
-
-.trapezoid-left-instances-amount span {
-  position: absolute;
-  top: -30px;
-  left: auto;
-  color: black;
-}
-
-.trapezoid-right {
-  top: 0;
-  right: 0;
-  position: absolute;
-  display: inline-block;
-  width: 50%;
-  text-align: center;
-  height: 0;
-  box-sizing: content-box;
-  border-left: 50px solid transparent;
-  border-bottom: 40px solid #000000;
-}
-
 .item-header {
   padding: 10px;
   border-bottom: none;
@@ -103,4 +34,29 @@ ul.cat-breadcrumb li+li:before {
   border-radius: 0;
   border-left: none;
   border-right: none;
+}
+
+.instances-list-container {
+  padding-bottom: 0.3em;
+  border-bottom: black 2px solid;
+}
+
+.instances-list-container > h2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.instances-list-container > h2 > span {
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-instance {
+  padding: 1em 0;
+}
+
+.item-instance:not(:last-child) {
+  border-bottom: black 1px solid;
 }

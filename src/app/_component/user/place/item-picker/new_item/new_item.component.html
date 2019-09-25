@@ -1,178 +1,166 @@
-<div class="modal-body">
-  <form>
+<mat-toolbar class="dialog-full-screen-toolbar">
+  <mat-toolbar-row>
+    <span>
+      <mat-icon>plus</mat-icon> {{data.category.name}}
+    </span>
 
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <input type="text" class="form-control" id="name"
-               placeholder="Name"
-               name="name" [(ngModel)]="form.name">
-      </div>
-      <div class="form-group col-md-6">
-        <input type="text" class="form-control" id="barcode"
-               placeholder="Barcode"
-               name="barcode" [(ngModel)]="form.barcode">
-      </div>
-    </div>
+    <close-dialog-button [dialogRef]="dialogRef"></close-dialog-button>
+  </mat-toolbar-row>
+</mat-toolbar>
 
+<form>
 
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <input type="text" class="form-control" id="producerName"
-               placeholder="Producer name"
-               name="producer" [(ngModel)]="form.producer.name">
-      </div>
-      <div class="form-group col-md-6">
-        <input type="text" class="form-control" id="netWeight"
-               placeholder="Net weight"
-               name="netWeight" [(ngModel)]="form.netWeight">
-      </div>
-    </div>
+  <!--NAME & BARCODE-->
+  <div>
+
+    <mat-form-field style="width: 50%;">
+      <input matInput placeholder="Item name" name="item-name" [(ngModel)]="form.name"/>
+    </mat-form-field>
+
+    <mat-form-field style="width: 50%;">
+      <input matInput placeholder="Barcode" name="item-barcode" [(ngModel)]="form.barcode"/>
+    </mat-form-field>
+
+  </div>
 
 
-    <div class="form-group">
-      <input type="text" class="form-control" id="storage"
-             placeholder="Storage rules"
-             name="storage" [(ngModel)]="form.storage">
-    </div>
+  <!--PRODUCER & UNIT-->
+  <div>
+
+    <mat-form-field style="width: 50%">
+      <input matInput placeholder="Producer" name="item-producer" [(ngModel)]="form.producer"/>
+    </mat-form-field>
+
+    <mat-form-field style="width: 25%">
+      <input matInput placeholder="Cp." type="number" name="item-capacity-value" [(ngModel)]="form.capacity.value">
+    </mat-form-field>
+
+    <mat-form-field style="width: 25%">
+
+      <mat-label>Unit</mat-label>
+
+      <mat-select name="item-capacity-unit" [(ngModel)]="form.capacity.unit">
+        <mat-option value="KG">KG</mat-option>
+        <mat-option value="G">g</mat-option>
+        <mat-option value="L">L</mat-option>
+        <mat-option value="ML">ml</mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+  </div>
 
 
-    <div class="form-row">
-      <div class="form-group col-md-6">
+  <!--STORAGE RULES-->
+  <div>
 
-        <ul class="list-unstyled">
+    <mat-form-field style="width: 100%;">
+      <input matInput placeholder="Storage rules" name="item-storage" [(ngModel)]="form.storage"/>
+    </mat-form-field>
 
-          <li *ngFor="let ingredient of form.ingredients">
-            <div class="input-group input-group-sm">
-              <span class="form-control">{{ingredient.name}}</span>
-
-              <div class="input-group-preppend">
-                <button class="btn btn-danger" type="button" (click)="removeIngredient(ingredient)">X</button>
-              </div>
-            </div>
-          </li>
-
-          <li >
-            <div class="input-group mb-3 input-group-sm">
-                <input type="text" class="form-control" name="name"
-                     placeholder="Ingredient" [(ngModel)]="newIngredient.name"
-                     (keyup.enter)="addIngredient()">
-
-                <button class="btn" type="button" (click)="addAllergen()">+</button>
-            </div>
-          </li>
-
-        </ul>
-      </div>
-      <div class="form-group col-md-6">
-
-        <ul class="list-unstyled">
-
-          <li *ngFor="let allergen of form.allergens">
-
-            <div class="input-group input-group-sm">
-              <span class="form-control">{{allergen.name}}</span>
-
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <input type="checkbox" name="allergen-{{allergen.name}}" [checked]="allergen.contains" [(ngModel)]="allergen.contains">
-                </div>
-
-                <button class="btn btn-danger" type="button" (click)="removeAllergen(allergen)">X</button>
-              </div>
-            </div>
-
-          </li>
-
-          <li >
-            <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control" name="name"
-                     placeholder="Allergen" [(ngModel)]="newAllergen.name"
-                     (keyup.enter)="addAllergen()">
-
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <input type="checkbox" name="newAllergen-contains" value="true" [(ngModel)]="newAllergen.contains">
-                </div>
-
-                <button class="btn" type="button" (click)="addAllergen()">+</button>
-              </div>
-            </div>
-          </li>
-        </ul>
-
-      </div>
-    </div>
+  </div>
 
 
-    <div class="row">
+  <!--ALLERGENS-->
+  <div>
 
-      <div class="col-md-6">
+    <mat-form-field style="width: 100%;">
+      <mat-chip-list #allergensChips aria-label="Allergens">
 
-        <table>
-          <thead>
-            Nutrition
-          </thead>
-          <tbody class="nutrtition-form">
-            <tr>
-              <td>Energy: </td>
-              <td>
-                <input type="text" size="4" name="energy_kj" [(ngModel)]="form.nutrition.energy" placeholder="kcal">
-              </td>
-            </tr>
-            <tr>
-              <td>Fat: </td>
-              <td>
-                <input type="text" size="4" name="fat" [(ngModel)]="form.nutrition.fat" placeholder="grams">
-              </td>
-            </tr>
-            <tr>
-              <td>in which Saturated: </td>
-              <td>
-                <input type="text" size="4" name="saturated_fat" [(ngModel)]="form.nutrition.saturatedFat" placeholder="grams">
-              </td>
-            </tr>
-            <tr>
-              <td>Carbohydrate: </td>
-              <td>
-                <input type="text" size="4" name="carbohydrate" [(ngModel)]="form.nutrition.carbohydrate" placeholder="grams">
-              </td>
-            </tr>
-            <tr>
-              <td>in which Sugar: </td>
-              <td>
-                <input type="text" size="4" name="sugar" [(ngModel)]="form.nutrition.sugar" placeholder="grams">
-              </td>
-            </tr>
-            <tr>
-              <td>Protein: </td>
-              <td>
-                <input type="text" size="4" name="protein" [(ngModel)]="form.nutrition.protein" placeholder="grams">
-              </td>
-            </tr>
-            <tr>
-              <td>Salt: </td>
-              <td>
-                <input type="text" size="4" name="salt" [(ngModel)]="form.nutrition.salt" placeholder="grams">
-              </td>
-            </tr>
-          </tbody>
+        <mat-chip *ngFor="let allergen of form.allergens | keyvalue" [selectable]="false"
+                  (removed)="form.allergens.delete(allergen.key)">
+          {{allergen.key}}
+          <mat-checkbox [(ngModel)]="allergen.value"></mat-checkbox>
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
 
-        </table>
+        <input placeholder="New allergen"
+               [matChipInputFor]="allergensChips"
+               [matChipInputSeparatorKeyCodes]="[ENTER, COMMA]"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="addAllergen($event.value)">
+      </mat-chip-list>
+    </mat-form-field>
 
-      </div>
-
-      <div class="col-md-6">
+  </div>
 
 
+  <!--NUTRITION-->
+  <div>
 
-      </div>
+    <mat-card>
 
-    </div>
+      <mat-card-header>
+        <mat-card-title>Nutrition</mat-card-title>
+      </mat-card-header>
 
+      <mat-card-content class="double-column-form">
 
-    <button type="button" class="btn btn-primary btn-lg btn-block" (click)="submit()">Submit</button>
+        <div>
 
-  </form>
+          <mat-form-field>
+            <input matInput type="number" placeholder="Energy (kJ)" name="item-energy"
+                   [(ngModel)]="form.nutrition.energy">
+          </mat-form-field>
 
+          <mat-form-field>
+            <input matInput type="number" placeholder="In" name="item-energy" [(ngModel)]="form.nutrition.energy">
 
-</div>
+            <mat-button-toggle-group matSuffix name="nutrition-unit" aria-label="Unit">
+              <mat-button-toggle value="ML">ml</mat-button-toggle>
+              <mat-button-toggle value="G">g</mat-button-toggle>
+              <mat-button-toggle value="S">s</mat-button-toggle>
+            </mat-button-toggle-group>
+          </mat-form-field>
+
+        </div>
+
+        <div>
+
+          <mat-form-field>
+            <input matInput type="number" placeholder="Fat" name="item-fat" [(ngModel)]="form.nutrition.fat"/>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="number" placeholder="Fat saturated" name="item-fat"
+                   [(ngModel)]="form.nutrition.saturatedFat">
+          </mat-form-field>
+
+        </div>
+
+        <div>
+
+          <mat-form-field>
+            <input matInput type="number" placeholder="Carbohydrate" name="item-carbohydrate"
+                   [(ngModel)]="form.nutrition.carbohydrate"/>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="number" placeholder="in which sugar" name="item-sugar"
+                   [(ngModel)]="form.nutrition.sugar"/>
+          </mat-form-field>
+
+        </div>
+
+        <div>
+
+          <mat-form-field>
+            <input matInput type="number" placeholder="Protein" name="item-protein"
+                   [(ngModel)]="form.nutrition.protein"/>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="number" placeholder="Salt" name="item-salt" [(ngModel)]="form.nutrition.salt"/>
+          </mat-form-field>
+
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
+  </div>
+
+  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="submit()">Submit</button>
+
+</form>

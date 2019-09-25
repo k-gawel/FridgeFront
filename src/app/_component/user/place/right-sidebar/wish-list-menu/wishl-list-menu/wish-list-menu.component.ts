@@ -3,65 +3,51 @@ import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
 import {WishListService} from '../../../../../../_service/user/place/wishlist/wishlist/wish-list.service';
 import {KeyName} from '../../../../../../_models/response/KeyName';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {WishListFormComponent} from '../wish-list-form/wish-list-form.component';
-import {WishList} from '../../../../../../_models/response/WishList';
+import {WishList, WishListList} from '../../../../../../_models/response/WishList';
 import {PlaceService} from '../../../../../../_service/user/place/place/place.service';
 import {Entity} from '../../../../../../_models/response/Entity';
 import {CookieDataService} from '../../../../../../_service/auth/cookieDatas/cookie-datas.service';
-import {ErrorHandlerService} from '../../../../../../_service/utils/errorhanler/error-handler.service';
+import {DialogService} from "../../../../../../_service/utils/dialog.service";
+import {MatDialog} from "@angular/material";
+import {MatListModule} from "@angular/material";
 
 @Component({
   selector: 'app-wish-list-menu',
   templateUrl: './wish-list-menu.component.html',
   styleUrls: ['./wish-list-menu.component.css']
 })
-export class WishListMenuComponent implements OnInit {
+export class WishListMenuComponent {
 
   constructor(private wishListService: WishListService,
               private modalService: NgbModal,
               private placeService: PlaceService,
               private cookiesData: CookieDataService,
-              private errorHandler: ErrorHandlerService) {
+              private dialog: MatDialog) {
   }
 
 
-  list: WishList[] = [];
-
-  _place: PlaceDetails;
-  @Input() set place(place: PlaceDetails) {
-    this._place = place;
-    this.list   = place.wishLists;
-  }
-
+  @Input() list: WishListList;
+  @Input() place: PlaceDetails;
 
   _selectedWishList: WishList = null;
   @Output() selectedWishList = new EventEmitter<KeyName>();
 
 
-  ngOnInit() {
-
-  }
-
-
-  isAdmin(): boolean {
-    return this._place.adminId === this.cookiesData.getUserId();
-  }
-
-
   openForm() {
-    const modalRef = this.modalService.open(WishListFormComponent);
-    modalRef.componentInstance.place = this._place;
-    modalRef.componentInstance.newWishList.subscribe((res: WishList) => {
-        this.list.push(res);
-        this.selectedWishList.emit(res);
-        modalRef.close();
-      });
+    const formDatas = {
+      place: this.place
+    };
+
+    const dialogRef = DialogService.createWishListForm(this.dialog, formDatas);
   }
 
 
   select(wishList: WishList) {
-    this.selectedWishList.emit(wishList);
-    this._selectedWishList = wishList;
+    const datas = {
+      wishList: wishList
+    };
+
+    const dialogRef = DialogService.createWishListComponent(this.dialog, datas);
   }
 
 

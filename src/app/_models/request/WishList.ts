@@ -3,8 +3,8 @@ import {Form} from './Form';
 export class WishListForm extends Form {
 
     name: string;
-    author: number;
-    place: number;
+  authorId: number;
+  placeId: number;
     description: string;
 
     validate(): boolean {
@@ -35,13 +35,13 @@ export class WishListForm extends Form {
 
     validatePlace(): boolean {
 
-      if(this.place == null) {
-        this.sendMessage("place.null");
+      if (this.placeId == null) {
+        this.sendMessage("placeId.null");
         return false;
       }
 
-      if(typeof this.place !== 'number') {
-        this.sendMessage("place.notnumber");
+      if (typeof this.placeId !== 'number') {
+        this.sendMessage("placeId.notnumber");
         return false;
       }
 

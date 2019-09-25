@@ -12,13 +12,29 @@ export class ItemApiService {
 
   constructor(private api: ApiService) {}
 
+
   public newItem(form: ItemForm) {
+    const mapToObject = (map) => {
+      const obj = {};
+      map.forEach((value, key) => obj[key] = value);
+      return obj;
+    };
+
     let url = this.url;
-    let body = form;
+
+    let body = Object.assign({}, form);
+    // @ts-ignore
+    body.allergens = mapToObject(form.allergens);
+    // @ts-ignore
+    body.ingredients = Array.from(form.ingredients);
+    // @ts-ignore
+    body.capacity = form.capacity.toString();
+
     let header = this.api.getHeaderWithToken();
 
     return this.api.post(url, body, header);
   }
+
 
   public search(itemIds: number | number[], placeIds: number | number[], name: string,
                 barcode: Number, category: Number) {

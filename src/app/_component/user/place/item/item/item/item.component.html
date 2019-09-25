@@ -1,96 +1,92 @@
-<div class="card item-card" style="border-top: 1px solid darkblue; border-bottom: 1px solid black">
+<mat-toolbar class="dialog-full-screen-toolbar">
 
-  <!--AFTER LOADED-->
-  <ng-container *ngIf="_item != null">
+  <mat-toolbar-row>
 
+    <span>
+      <mat-icon aria-hidden="false" aria-label="Icon">fastfood</mat-icon>
+      {{item.name}}
+    </span>
 
-    <!--NAME, IMAGE, CATEGORIES-->
-    <div class="card-header item-header" [attr.id]="'item-header-' + componentId">
+    <span>
+      <button mat-icon-button *ngIf="content === 'INSTANCES'" (click)="content = 'INFO'">
+        <mat-icon aria-hidden="false" aria-label="Item info">info</mat-icon>
+      </button>
 
-      <div class="row w-100">
+      <button mat-icon-button *ngIf="content === 'INFO'" (click)="content = 'INSTANCES'">
+        <mat-icon aria-hidden="false" aria-label="Instances">list</mat-icon>
+      </button>
 
-        <div class="col-10" style="padding-right: 0">
+      <close-dialog-button [dialogRef]="dialogRef"></close-dialog-button>
+    </span>
 
-          <!--CATEGORIES-->
-          <div class="row" style="margin: 0;">
-            <ul class="cat-breadcrumb card-subtitle mb-2 text-muted" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">
-              <li *ngFor="let category of _item.category.getTrack()" >{{category.name}}</li>
-            </ul>
-          </div>
+  </mat-toolbar-row>
 
-          <!--NAME-->
-          <div class="row">
-            <h5 class="card-title col-12"
-                style="text-overflow: ellipsis; overflow: hidden"
-                [ngStyle]="{'white-space': wrapWS ? 'normal' : 'nowrap'}"
-                (mousedown)="wrapWS = true" (mouseup)="wrapWS = false" (dblclick)="wrapWS = !wrapWS">
-              {{_item.name}}
-            </h5>
-          </div>
-
-        </div>
-
-        <!--IMAGE-->
-        <div class="col-2" style="padding: 0; padding-right: 7px">
-          <img [src]="'images/' + _item.id + '.jpg'" onerror="this.src = 'assets/icons/2.svg'"
-               class="rounded-circle" style="max-width: 100%; height: auto;">
-        </div>
-
-      </div>
-
-     </div>
+</mat-toolbar>
 
 
-    <!--BUTTONS-->
-    <div class="btn-group item-button-group" role="group">
+<div [ngStyle]="{'display': content === 'INFO' ? '' : 'none'}">
 
-       <!--NEW INSTANCE BUTTON-->
-       <button type="button" class="btn btn-outline-secondary text-nowrap item-button" style="border-left: none; border-top-left-radius: 0"
-               (click)="expand('NEW_INSTANCE')">
-         + instance
-       </button>
+</div>
 
-       <!--INSTANCES ALL BUTTON-->
-       <button type="button" class="btn btn-outline-secondary text-nowrap item-button"
-               (click)="expand('INSTANCES')">
-         {{_instances.size()}} instances
-       </button>
+<mat-action-list class="dialog-full-width-element" [ngStyle]="{'display': content === 'INSTANCES' ? '' : 'none'}">
 
-       <!--DETAILS BUTTON-->
-       <button type="button" class="btn btn-outline-secondary text-nowrap item-button" style="border-right: none; border-top-right-radius: 0"
-               (click)="expand('DETAILS')">
-         Show details
-       </button>
+  <!--CURRENT INSTANCES-->
 
-     </div>
+  <ng-container *ngFor="let container of getContainers() | entityList">
 
+    <h3 mat-subheader class="space-between">
+      <span>
+        {{container.name}}
+      </span>
+      <span>
+        {{container.place.name}}
+      </span>
+    </h3>
 
-    <!--DETAILS-->
-    <div [ngClass]="{'card-body in' : !_collapsed}" style="padding: 0;">
-
-      <app-item-instances *ngIf="_content === 'INSTANCES'"
-                          [instances]="_instances"
-      ></app-item-instances>
-
-      <app-new-instance-form *ngIf="_content === 'NEW_INSTANCE'"
-                             [containers]="containers" [item]="_item"
-                             (newInstance)="newItemInstance.emit($event); expand('INSTANCES')"
-      ></app-new-instance-form>
-
-      <app-item-description *ngIf="_content === 'DETAILS'"
-                            [item]="_item"
-      ></app-item-description>
-
-    </div>
-
+    <app-item-instance *ngFor="let instance of container.instances.getByItems(item).filterByDeleted(false) | entityList"
+                       [instance]="instance">
+    </app-item-instance>
 
   </ng-container>
 
 
-  <!--BEFORE LOADED-->
-  <app-loader *ngIf="_item == null"></app-loader>
+  <mat-divider></mat-divider>
+
+
+  <!--DELTED INSTANCES-->
+
+  <ng-container *ngFor="let dI of deletedInstances" style="background-color: #F8F8F8">
+
+    <ng-container *ngFor="let container of dI.getContainers() | entityList">
+
+      <h3 mat-subheader class="space-between">
+        <span>
+          {{container.name}}
+        </span>
+        <span>
+          {{container.place.name}}
+        </span>
+      </h3>
+
+      <app-item-instance *ngFor="let instance of dI.getByContainers(container) | entityList" [instance]="instance"
+                         [buttonColor]="'#F8F8F8'">
+      </app-item-instance>
+
+    </ng-container>
+
+  </ng-container>
+
+  <button mat-list-item *ngIf="deletedInstancesFetches != null" (click)="getDeletedInstances()"
+          style="background-color: #F8F8F8;">Show more...
+  </button>
+
+</mat-action-list>
+
+
+<div class="option-buttons ob-right">
+
+  <button mat-fab (click)="addNewInstance()">
+    <mat-icon aria-hidden="false" aria-label="Add instance">plus</mat-icon>
+  </button>
 
 </div>
-
-
-

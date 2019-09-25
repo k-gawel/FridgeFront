@@ -20,7 +20,7 @@ export class UserDetails extends KeyName {
         result.id = json['id'];
         result.name = json['name'];
         result.email = json['email'];
-        UserDetailsList.USERS.push(<KeyName> result);
+      UserDetailsList.USERS.add(<KeyName> result);
         return result;
     }
 
@@ -49,7 +49,7 @@ export class UserDetailsList extends KeyNameList {
 
         json.forEach( (element: JSON) => {
             var userDetails = new UserDetails(element);
-            result.push(userDetails);
+          result.add(userDetails);
             let userKeyName = new KeyName();
             userKeyName.id = userDetails.id;
             userKeyName.name = userDetails.name;

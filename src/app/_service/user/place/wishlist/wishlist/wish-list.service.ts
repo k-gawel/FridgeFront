@@ -7,15 +7,17 @@ import {Subject} from 'rxjs';
 import {Entity} from '../../../../../_models/response/Entity';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
 import {HttpErrorResponse} from '@angular/common/http';
+import {WishListItemService} from "../wishListItem/wish-list-item.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WishListService {
 
-  public $archived = new Subject<Entity>();
 
-  constructor(private wishListApiServcie: WishListApiService) { }
+  constructor(private wishListApiServcie: WishListApiService,
+              private wishListItemService: WishListItemService) {
+  }
 
   public getByPlace(place: number | PlaceDetails): Promise<WishList[]> {
 
@@ -63,25 +65,23 @@ export class WishListService {
 
 
   public async getWishList(id: number): Promise<WishList> {
-    let result: WishList | ErrorMessage;
+    let result: WishList;
 
     let placeIds: number[] = null;
     let wishListIds: number[] = [id];
     let active: Boolean = null;
 
-    await this.wishListApiServcie.get(placeIds, wishListIds, active)
+    result = await this.wishListApiServcie.get(placeIds, wishListIds, active)
       .then((response: JSON) => {
         if(response === null)
-          result = new ErrorMessage("get_wish_list.unable");
+          throw new ErrorMessage("get_wish_list.unable");
         else
-          result = new WishList(response);
-      })
-      .catch((error: ErrorMessage) => {
-        result = error;
+          return new WishList(response);
       });
 
-    if(result instanceof Error)
-      throw result;
+    for (let item of result.wishListItems.toArray()) {
+      item = await this.wishListItemService.get(item);
+    }
 
     return result;
   }
@@ -89,13 +89,12 @@ export class WishListService {
 
   public archive(wishList: WishList): Promise<Boolean> {
 
-    return this.wishListApiServcie.archivize(wishList.id)
+    return this.wishListApiServcie.archive(wishList.id)
       .then((r: boolean) => {
+        if (r)
+          wishList.status = false;
         return r;
-      })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e.message);
-      })
+      });
 
   }
 
