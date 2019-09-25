@@ -1,0 +1,5 @@
+<mat-selection-list>
+  <mat-list-option *ngFor="let producer of producers | entityList" [selected]="true">
+    {{producer.name}}
+  </mat-list-option>
+</mat-selection-list>

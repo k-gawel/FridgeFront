@@ -1,0 +1,89 @@
+<button mat-list-item [matMenuTriggerFor]="instanceMenu" [ngStyle]="{'background-color': buttonColor}">
+
+  <span mat-line class="three-column">
+
+    <span>
+      <i class="far fa-calendar-plus"></i> {{instance.added.dateToSimpleString}}
+    </span>
+
+    <span>
+      <i class="fas fa-user-plus"></i> {{instance.added.name}}
+    </span>
+
+    <span>
+      <i class="fas fa-hourglass-end"></i> {{instance.expireOn.toSimpleString()}}
+    </span>
+
+  </span>
+
+  <span mat-line class="space-between">
+
+    <span>
+      <i class="fas fa-comment-alt"></i> {{instance.comment}}
+    </span>
+
+    <span *ngIf="instance.price != null">
+      {{instance.price.getAmount()}} {{instance.price.getCurrencyInfo().symbol_native}}
+    </span>
+
+  </span>
+
+</button>
+
+
+<mat-menu #instanceMenu="matMenu">
+
+  <button mat-menu-item (click)="$event.stopPropagation()">
+    <i class="fas fa-plus-square"></i> Added on {{instance.added.dateToSimpleString}} by {{instance.added.name}}
+  </button>
+
+
+  <button mat-menu-item (click)="$event.stopPropagation()" *ngIf="instance.isOpen()">
+    <i class="fas fa-box-open"></i> Opened on {{instance.opened.dateToSimpleString}} by {{instance.opened.name}}
+  </button>
+
+  <button mat-menu-item *ngIf="!instance.isOpen() && !instance.isDeleted()"
+          (click)="$event.stopPropagation(); openInstance()">
+    <i class="fas fa-box-open"></i> OPEN
+  </button>
+
+
+  <button mat-menu-item (click)="$event.stopPropagation()" *ngIf="instance.isDeleted()">
+    <i class="fas fa-trash"></i> Deleted on {{instance.deleted.dateToSimpleString}} by {{instance.deleted.name}}
+  </button>
+
+  <button mat-menu-item *ngIf="!instance.isDeleted()"
+          (click)="$event.stopPropagation(); deleteInstance()">
+    <i class="fas fa-trash"></i> DELETE
+  </button>
+
+
+  <button mat-menu-item *ngIf="instance.wishListItem != null" (click)="openWishList()">
+    {{instance.wishListItem.wishList.name}}
+  </button>
+
+  <button mat-menu-item *ngIf="instance.wishListItem == null" [matMenuTriggerFor]="wishListItems">
+    Add to WishList
+  </button>
+
+
+</mat-menu>
+
+
+<mat-menu #wishListItems="matMenu">
+
+  <ng-container *ngFor="let WL of getWishLists() | entityList">
+
+    <span class="mat-menu-header">
+      {{WL.name}}
+    </span>
+
+    <button mat-menu-item class="multi-lines-menu-item" *ngFor="let WLitem of getWishListItems(WL) | entityList">
+      <span>{{WLitem.category.name}}</span>
+      <span>{{WLitem.comment}}</span>
+    </button>
+
+  </ng-container>
+
+</mat-menu>
+

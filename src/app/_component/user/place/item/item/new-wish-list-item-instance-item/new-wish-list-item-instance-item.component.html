@@ -1,0 +1,73 @@
+<div>
+
+  <div id="item-header" style="position: relative; width: 100%">
+
+    <div>
+
+      <!--ICON-->
+      <div style="display: flex">
+        <div id="item-image" style="width: 1.75rem; height: 1.75rem">
+          <img src="https://image.flaticon.com/icons/svg/99/99518.svg" class="rounded">
+        </div>
+
+        <h3 style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+          {{item.name}}
+        </h3>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="item-instances-list">
+
+    <mat-list *ngIf="!newInstanceForm">
+
+
+      <button mat-raised-button color="primary" (click)="newInstanceForm = true" style="width: 100%;">
+        Add new instance
+      </button>
+
+
+      <mat-list-item
+        *ngFor="let instance of places[0].containers.getAllInstances().filterByWishListItems(null) | entityList; last as last">
+
+        <button mat-button (click)="addInstance(instance)">
+          <mat-icon aria-label="Add this">add</mat-icon>
+        </button>
+
+        <span mat-line class="space-between">
+
+          <span>
+            <i class="far fa-calendar-plus"></i> {{instance.added.dateToSimpleString}}
+          </span>
+
+          <span>
+            <i class="fas fa-user-plus"></i> {{instance.added.name}}
+          </span>
+
+          <span>
+            <i class="fas fa-hourglass-end"></i> {{instance.expireOn.toSimpleString()}}
+          </span>
+
+        </span>
+
+        <span mat-line>
+          {{instance.comment}}
+        </span>
+
+        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+
+      </mat-list-item>
+
+    </mat-list>
+
+    <div *ngIf="newInstanceForm">
+      <app-new-instance-form [wishListItem]="wishListItem" [item]="item" [places]="places"
+                             (newInstance)="addInstance($event); newInstanceForm = false">
+      </app-new-instance-form>
+    </div>
+
+  </div>
+
+</div>

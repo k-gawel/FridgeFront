@@ -1,0 +1,22 @@
+.item-instance-row {
+
+}
+
+.item-instance-row > * {
+  padding: 0;
+  margin: 0;
+}
+
+.instance-action-info-button {
+  width: 100%;
+}
+
+.instance-action-info-button > .mat-button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.price-badge {
+  width: 5rem;
+}
