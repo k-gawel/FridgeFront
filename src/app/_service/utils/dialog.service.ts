@@ -1,23 +1,26 @@
 import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
-import {NewItemComponent, NewItemDatas} from "../../_component/user/place/item-picker/new_item/new_item.component";
-import {ItemComponent, ItemComponentData} from "../../_component/user/place/item/item/item/item.component";
+import {
+  NewItemComponent,
+  NewItemDatas
+} from "../../_component/user/place/elements/item/new-item-form/new_item.component";
+import {ItemComponent, ItemComponentData} from "../../_component/user/place/elements/item/item/item.component";
 import {
   WishListFormComponent,
   WishListFormDatas
-} from "../../_component/user/place/right-sidebar/wish-list-menu/wish-list-form/wish-list-form.component";
+} from "../../_component/user/place/elements/wishlist/wish-list-form/wish-list-form.component";
 import {
   WishListComponent,
   WishListComponentData
-} from "../../_component/user/place/wishlist/wish-list/wish-list.component";
+} from "../../_component/user/place/elements/wishlist/wish-list/wish-list.component";
 import {
   WishListItemFormComponent,
   WishListItemFormComponentData
-} from "../../_component/user/place/wishlist/wish-list-item-form/wish-list-item-form.component";
+} from "../../_component/user/place/elements/wishlist/wish-list-item-form/wish-list-item-form.component";
 import {
   WishListItemComponent,
   WishListItemComponentData
-} from "../../_component/user/place/wishlist/wish-list-item/wish-list-item.component";
+} from "../../_component/user/place/elements/wishlist/wish-list-item/wish-list-item.component";
 import {ScrollStrategy} from "@angular/cdk/overlay";
 import {WishListItem} from "../../_models/response/WishListItem";
 import {WishList} from "../../_models/response/WishList";

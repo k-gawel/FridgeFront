@@ -7,6 +7,7 @@ import {PlaceUsersList} from "../place-user/PlaceUsersList";
 import {KeyName} from "../KeyName";
 import {Money} from "ts-money";
 import {UserDate} from "../../util/UserDate";
+import {ShopList} from "../ShopList";
 
 export class ItemInstance extends Entity {
 
@@ -24,7 +25,7 @@ export class ItemInstance extends Entity {
   deleted: UserDate;
 
   wishListItem: WishListItem;
-  shopList: any;
+  shopList: ShopList;
 
     constructor(json?: JSON) {
       super();
@@ -46,6 +47,7 @@ export class ItemInstance extends Entity {
 
       this.container = ContainersList.ALL[json['containerId']];
       this.container.instances.add(this);
+
 
       this.added = new UserDate(json['added']);
       this.opened = new UserDate(json['opened']);

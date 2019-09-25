@@ -7,7 +7,6 @@ export class PlaceElement extends KeyName {
 
   public place: PlaceDetails;
 
-
 }
 
 

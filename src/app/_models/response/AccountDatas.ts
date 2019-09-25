@@ -13,7 +13,6 @@ export class AccountDatas extends KeyName {
     this.id = json['id'];
     this.name = json['name'];
     this.places = new KeyNameList<KeyName>(json['places']);
-
   }
 
 

@@ -10,6 +10,7 @@ import {ItemInstancesList} from "./item/ItemInstancesList";
 
 export class WishListItem extends Entity {
 
+
   public author: KeyName;
   public createdOn: Date;
   public addedBy: KeyName;
@@ -34,7 +35,7 @@ export class WishListItem extends Entity {
     this.wishList.wishListItems.add(this);
 
     this.author = PlaceUsersList.ALL[json['authorId']];
-    this.createdOn = new Date(json['createdOn']);
+    this.createdOn = new Date(json['created']);
 
     if (json['addedInstanceId'] && json['addedById'] && json['addedOn']) {
       this.addedBy = PlaceUsersList.ALL[json['addedById']];

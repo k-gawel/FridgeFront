@@ -5,41 +5,40 @@ import {LocalDate} from "../../_util/date/JavaLocalDate";
 
 export class WishList extends PlaceElement {
 
-    public status: boolean;
+  public status: boolean;
 
   public createdOn: LocalDate;
   public archivedOn: LocalDate;
 
-    public description: string;
-
+  public description: string;
   public wishListItems: WishListItemList = new WishListItemList();
 
-    public constructor(json?: JSON | JSON[]) {
-      super();
+  public constructor(json?: JSON | JSON[]) {
+    super();
 
-      if (json == undefined) return;
-      json = json instanceof Array ? json[0] : json;
+    if (json == undefined) return;
+    json = json instanceof Array ? json[0] : json;
 
-      this.id = json['id'];
-      WishListList.ALL.add(this);
+    this.id = json['id'];
+    WishListList.ALL.add(this);
 
-      this.name = json['name'];
-      this.createdOn = new LocalDate(json['createdOn']);
+    this.name = json['name'];
+    this.createdOn = new LocalDate(json['created']);
 
-      this.place = PlaceDetailsList.ALL[json['placeId']];
-      this.place.wishLists.add(this);
+    this.place = PlaceDetailsList.ALL[json['placeId']];
+    this.place.wishLists.add(this);
 
-      this.status = json['status'];
-      this.archivedOn = new LocalDate(json['archivedOn']);
+    this.status = json['status'];
+    this.archivedOn = new LocalDate(json['archivedOn']);
 
-      this.description = json['description'];
-      (<JSON[]> json['items']).forEach(j => new WishListItem(j));
-    }
+    this.description = json['description'];
+    (<JSON[]> json['items']).forEach(j => new WishListItem(j));
+  }
 
 
-    public pushNewItem(listItem: WishListItem) {
-      this.wishListItems.add(listItem);
-    }
+  public pushNewItem(listItem: WishListItem) {
+    this.wishListItems.add(listItem);
+  }
 
 }
 
