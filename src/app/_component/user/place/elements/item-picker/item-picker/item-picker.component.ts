@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ItemService} from '../../../../../../_service/user/item/item/item.service';
 import {RelatedItemsService} from '../../../../../../_service/user/item/relatedItems/related-items.service';
 import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
@@ -7,13 +7,11 @@ import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
 import {ItemsList} from '../../../../../../_models/response/item/ItemsList';
 import {Item} from '../../../../../../_models/response/item/Item';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NewItemComponent, NewItemDatas} from '../../item/new-item-form/new_item.component';
-import {Size, WindowService} from '../../../../../../_service/utils/window.service';
+import {NewItemDatas} from '../../item/new-item-form/new_item.component';
+import {WindowService} from '../../../../../../_service/utils/window.service';
 import {BarcodeScannerComponent} from '../barcode-scanner/barcode-scanner.component';
 import {IdSelector} from "../../../../../../_service/utils/EntitySelector";
 import {MatDialog} from "@angular/material";
-import {ComponentType} from "@angular/cdk/portal";
-import {ItemComponent} from "../../item/item/item.component";
 import {DialogService} from "../../../../../../_service/utils/dialog.service";
 
 

@@ -3,7 +3,7 @@
   <span mat-line class="three-column">
 
     <span>
-      <i class="far fa-calendar-plus"></i> {{instance.added.dateToSimpleString}}
+      <i class="far fa-calendar-plus"></i> {{instance.added.simpleDateString}}
     </span>
 
     <span>
@@ -34,12 +34,12 @@
 <mat-menu #instanceMenu="matMenu">
 
   <button mat-menu-item (click)="$event.stopPropagation()">
-    <i class="fas fa-plus-square"></i> Added on {{instance.added.dateToSimpleString}} by {{instance.added.name}}
+    <i class="fas fa-plus-square"></i> Added on {{instance.added.simpleDateString}} by {{instance.added.name}}
   </button>
 
 
   <button mat-menu-item (click)="$event.stopPropagation()" *ngIf="instance.isOpen()">
-    <i class="fas fa-box-open"></i> Opened on {{instance.opened.dateToSimpleString}} by {{instance.opened.name}}
+    <i class="fas fa-box-open"></i> Opened on {{instance.opened.simpleDateString}} by {{instance.opened.name}}
   </button>
 
   <button mat-menu-item *ngIf="!instance.isOpen() && !instance.isDeleted()"
@@ -49,7 +49,7 @@
 
 
   <button mat-menu-item (click)="$event.stopPropagation()" *ngIf="instance.isDeleted()">
-    <i class="fas fa-trash"></i> Deleted on {{instance.deleted.dateToSimpleString}} by {{instance.deleted.name}}
+    <i class="fas fa-trash"></i> Deleted on {{instance.deleted.simpleDateString}} by {{instance.deleted.name}}
   </button>
 
   <button mat-menu-item *ngIf="!instance.isDeleted()"
@@ -67,6 +67,15 @@
   </button>
 
 
+  <button mat-menu-item *ngIf="instance.shopList != null" (click)="openShopList()">
+    {{instance.shopList.simpleString}}
+  </button>
+
+  <button mat-menu-item *ngIf="instance.shopList == null" [matMenuTriggerFor]="shopLists">
+    Add to ShopList
+  </button>
+
+
 </mat-menu>
 
 
@@ -78,7 +87,7 @@
       {{WL.name}}
     </span>
 
-    <button mat-menu-item class="multi-lines-menu-item" *ngFor="let WLitem of getWishListItems(WL) | entityList">
+    <button mat-menu-item class="multi-lines-menu-item" *ngFor="let WLitem of getWishListItems(WL) | entityList" (click)="addToWishListItem(WLitem)">
       <span>{{WLitem.category.name}}</span>
       <span>{{WLitem.comment}}</span>
     </button>
@@ -87,3 +96,12 @@
 
 </mat-menu>
 
+
+<mat-menu #shopLists="matMenu">
+
+  <button mat-menu-item class="multiple-lines-menu-item" *ngFor="let SL of getShopLists() | entityList" (click)="addToShopList(SL)">
+    <span>{{SL.simpleString}}</span>
+    <span>{{SL.created.name}}</span>
+  </button>
+
+</mat-menu>

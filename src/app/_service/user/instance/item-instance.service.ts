@@ -6,10 +6,11 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Entity} from '../../../_models/response/Entity';
 import {IdSelector} from '../../utils/EntitySelector';
 import {CookieDataService} from '../../auth/cookieDatas/cookie-datas.service';
-import {ItemInstanceForm} from '../../../_models/request/ItemInstanceForm';
+import {ItemInstanceForm} from '../../../_models/request/iteminstance/ItemInstanceForm';
 import {ItemInstancesList} from '../../../_models/response/item/ItemInstancesList';
 import {LocalDate} from '../../../_util/date/JavaLocalDate';
 import {UserDate} from "../../../_models/util/UserDate";
+import {ErrorHandlerService} from "../../utils/errorhanler/error-handler.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +19,15 @@ export class ItemInstanceService {
 
 
   constructor(private instanceApi: ItemInstanceApiService,
-              private cookieDatas: CookieDataService) {
+              private cookieDatas: CookieDataService,
+              private errorHandler: ErrorHandlerService) {
   }
 
 
   public addInstance(form: ItemInstanceForm): Promise<ItemInstance> {
     return this.instanceApi.newItemInstance(form)
       .then((res: JSON) => new ItemInstance(res))
-      .catch((error: HttpErrorResponse) => {
-        throw new ErrorMessage(error.message)
-      });
+      .catch(e => this.errorHandler.processFormError(form, e));
   }
 
 

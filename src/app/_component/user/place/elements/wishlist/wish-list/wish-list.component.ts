@@ -44,15 +44,6 @@ export class WishListComponent {
   }
 
 
-  newWishListItem(item: WishListItem) {
-    this.wishListItemService.get(item)
-      .then((res: WishListItem) => {
-        this._wishList.pushNewItem(res);
-      })
-      .catch((e: Error) => {
-        this.errorHandler.sendErrors(e);
-      })
-  }
 
 
   archive() {
@@ -82,8 +73,6 @@ export class WishListComponent {
 
     const dialogRef = DialogService.createWishListItemFromComponent(this.dialog, data);
     dialogRef.afterClosed().subscribe((res: WishListItem) => {
-      if (res != null)
-        this.newWishListItem(res);
     });
   }
 

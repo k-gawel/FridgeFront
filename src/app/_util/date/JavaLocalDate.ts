@@ -46,24 +46,16 @@ export class LocalDate implements JavaLocalDate {
   dayOfYear: number = null;
   leapYear: boolean = null;
 
-
-  public static monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
-
-  public static dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-
-
   constructor(json?: JSON) {
     if(json == undefined) {
       let date = new Date();
 
       this.year = date.getFullYear();
-      this.month = LocalDate.monthNames[date.getMonth()];
-      this.monthValue = date.getMonth();
+      this.month = LocalDate.monthNames[date.getUTCMonth()];
+      this.monthValue = date.getUTCMonth() + 1;
       this.dayOfMonth = date.getUTCDate();
       this.dayOfWeek = LocalDate.dayNames[date.getDay()];
+
     } else {
 
       this.year = json['year'];
@@ -79,12 +71,45 @@ export class LocalDate implements JavaLocalDate {
     }
   }
 
+
+  public static monthNames = ["January", "February", "March", "April", "May", "June",
+                              "July", "August", "September", "October", "November", "December" ];
+
+
+  public static dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+
+  public daysFromToday(): number {
+    const ONE_DAY = 1000 * 60 * 60 * 24;
+    let todayTime = new LocalDate().toDate().getTime();
+    let time = this.toDate().getTime();
+    let difference = Math.abs(time - todayTime);
+    return Math.round(difference / ONE_DAY);
+  }
+
+
+  public toDate(): Date {
+    return new Date(this.year, this.monthValue - 1, this.dayOfMonth);
+  }
+
   toString() {
     return this.dayOfMonth.toString() + "-" + this.monthValue.toString() + "-" + this.year.toString();
   }
 
+
   toSimpleString() {
-    return this.dayOfMonth.toString() + "/" + this.monthValue.toString();
+    let difference = this.daysFromToday();
+    switch (difference) {
+      case -1:
+        return "yesterday";
+      case 0:
+        return "today";
+      case 1:
+        return "tommorow";
+      default:
+        return this.dayOfMonth.toString() + "/" + this.monthValue.toString();
+    }
+
   }
 
 }

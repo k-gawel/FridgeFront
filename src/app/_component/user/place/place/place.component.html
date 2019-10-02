@@ -15,11 +15,6 @@
           </app-containers-menu>
         </mat-tab>
 
-        <mat-tab label="Categories">
-          <categories-menu (chosenCategory)="setChosenCategory($event)">
-          </categories-menu>
-        </mat-tab>
-
       </mat-tab-group>
 
     </mat-tab>
@@ -30,8 +25,9 @@
         <mat-icon aria-label="Items">view_list</mat-icon>
       </ng-template>
 
-      <app-place-items-scene [category]="_chosenCategory" [containers]="_chosenContainers">
+      <app-place-items-scene [containers]="_chosenContainers">
       </app-place-items-scene>
+
     </mat-tab>
 
     <mat-tab>
@@ -51,7 +47,7 @@
         <mat-icon aria-label="ShopLists">playlist_add_check</mat-icon>
       </ng-template>
 
-      <app-shop-list-menu [list]="_place.shopLists">
+      <app-shop-list-menu [place]="_place" [list]="_place.shopLists">
       </app-shop-list-menu>
 
     </mat-tab>

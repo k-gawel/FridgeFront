@@ -1,15 +1,14 @@
-import {Entity, EntityList} from './Entity';
-import {Item} from './item/Item';
-import {KeyName, KeyNameList} from './KeyName';
-import {ItemsList} from './item/ItemsList';
-import {ItemInstance} from './item/ItemInstance';
+import {Entity, EntityList} from '../Entity';
+import {KeyName, KeyNameList} from '../KeyName';
+import {ItemsList} from './ItemsList';
+import {ItemInstance} from './ItemInstance';
+import {UserDate} from "../../util/UserDate";
 
 export class InstanceChange extends Entity {
 
   instance: ItemInstance;
-  accountId: number;
-  changeDate: Date;
   changeType: string;
+  changed: UserDate;
 
   constructor(json?: JSON) {
     super(json);
@@ -17,10 +16,11 @@ export class InstanceChange extends Entity {
     if(json == undefined) return;
 
     this.id = json['id'];
-    this.accountId = json['accountId'];
+
     this.instance = new ItemInstance(json['instance']);
-    this.changeDate = new Date(InstanceChangeType[json['changeDate']]);
     this.changeType = InstanceChangeType[Number(json['changeType'])];
+    this.changed = new UserDate(json['changed']);
+
   }
   
 }
@@ -48,11 +48,6 @@ export class InstanceChangeList extends EntityList<InstanceChange> {
     let result: string = '';
     let change: InstanceChange = this[id];
 
-    result = result + this.users[change.accountId].name + " ";
-    result = result + change.changeType + " ";
-    result = result + this.items[change.instance.itemId].name + " ";
-    result = result + "on " + change.changeDate + " ";
-    result = result + "(" + change.instance.container.name + ")";
 
     return result;
   }

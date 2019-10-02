@@ -12,6 +12,8 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
 
+        <app-form-error [errors]="form.errors" [field]="'expireDate'"></app-form-error>
+
       </mat-form-field>
 
       <mat-form-field style="width: 25%;">
@@ -19,6 +21,8 @@
         <mat-label>Price</mat-label>
 
         <input matInput type="number" name="price" [(ngModel)]="form.price.amount">
+
+        <app-form-error [errors]="form.errors" [field]="'price'"></app-form-error>
 
       </mat-form-field>
 
@@ -45,6 +49,8 @@
 
         <input matInput type="text" placeholder="Comment" name="comment" [(ngModel)]="form.comment">
 
+        <app-form-error [errors]="form.errors" [field]="'comment'"></app-form-error>
+
       </mat-form-field>
 
 
@@ -52,13 +58,15 @@
 
         <mat-label>Container</mat-label>
 
-        <mat-select name="containerId" [(ngModel)]="form.containerId">
+        <mat-select name="containerId" [(ngModel)]="form.containerId" #containerId="ngModel" >
           <mat-optgroup *ngFor="let place of places | entityList" [label]="place.name">
             <mat-option *ngFor="let container of place.containers | entityList" [value]="container.id">
               {{container.name}}
             </mat-option>
           </mat-optgroup>
         </mat-select>
+
+        <app-form-error [errors]="form.errors" [field]="'container'"></app-form-error>
 
       </mat-form-field>
 
@@ -78,16 +86,22 @@
           </mat-optgroup>
         </mat-select>
 
+        <app-form-error [errors]="form.errors" [field]="'wishListItem'"></app-form-error>
+
       </mat-form-field>
+
 
       <mat-form-field>
 
         <mat-label>ShopList</mat-label>
 
         <mat-select name="shopListId" [(ngModel)]="form.shopListId">
-          <mat-option *ngFor="let shopList of []" [value]="0">
+          <mat-option *ngFor="let SL of getShopLists() | entityList" [value]="SL.id">
+            {{SL.shopName + ' ' + SL.created.simpleDateString}}
           </mat-option>
         </mat-select>
+
+        <app-form-error [errors]="form.errors" [field]="'shopList'"></app-form-error>
 
       </mat-form-field>
 

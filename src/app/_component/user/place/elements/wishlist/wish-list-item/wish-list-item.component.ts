@@ -24,8 +24,6 @@ export class WishListItemComponent implements OnInit {
 
   @Input() item: WishListItem;
 
-  instanceItem: Item;
-
   steps: NewInstanceFormSteps;
 
   constructor(public dialogRef: MatDialogRef<WishListItemComponent>,
@@ -33,25 +31,16 @@ export class WishListItemComponent implements OnInit {
     this.item = data.item;
   }
 
+  ngOnInit() {
+  }
 
   openForm() {
     this.steps = new NewInstanceFormSteps();
   }
 
-
   closeForm() {
     this.steps = undefined;
   }
-
-
-  ngOnInit() {
-  }
-
-
-  selectInstanceItem(item: Item) {
-    this.instanceItem = item;
-  }
-
 
 }
 

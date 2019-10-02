@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ApiService} from '../api/api.service';
-import {AccountForm} from '../../../_models/request/AccountForm';
+import {AccountForm} from '../../../_models/request/account/AccountForm';
 
 @Injectable({
   providedIn: 'root'

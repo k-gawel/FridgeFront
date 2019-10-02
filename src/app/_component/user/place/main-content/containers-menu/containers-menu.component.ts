@@ -3,7 +3,7 @@ import {Container, ContainersList} from '../../../../../_models/response/Contain
 import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
 import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
 import {ContainerService} from '../../../../../_service/user/place/container/container.service';
-import {ContainerForm} from '../../../../../_models/request/ContainerForm';
+import {ContainerForm} from '../../../../../_models/request/container/ContainerForm';
 import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
 
 @Component({
@@ -45,18 +45,19 @@ export class ContainersMenuComponent implements OnInit {
 
 
   addContainer() {
-    if(!this.containerForm.validate())
-      return;
+    let processSubmit = (res: Container) => {
+      if(res != null) {
+        this._containers.add(res);
+        this.addToChosen(res);
+      }
+    };
 
-    this.containersService.addNewContainer(this.containerForm)
-      .then((result: Container) => {
-        this._containers.add(result);
-        this.addToChosen(result);
-      })
-      .catch((e: ErrorMessage) => {
-        this.containerForm.errors = e;
-      });
+    let processValidation = (res: boolean) => {
+      if(res)
+        this.containersService.addNewContainer(this.containerForm).then(processSubmit);
+    };
 
+    this.containerForm.validate().then(processValidation);
   }
 
 

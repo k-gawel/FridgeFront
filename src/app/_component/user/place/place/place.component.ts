@@ -28,7 +28,6 @@ export class PlaceComponent  {
 
   _place: PlaceDetails;
   _chosenContainers: ContainersList;
-  _chosenCategory: Category;
 
   content: PlaceContent = PlaceContent.ITEMS;
   contentParams: any;
@@ -48,11 +47,6 @@ export class PlaceComponent  {
 
   setChosenContainers(containers: ContainersList) {
     this._chosenContainers = containers;
-  }
-
-
-  setChosenCategory(category: Category) {
-    this._chosenCategory = category;
   }
 
 

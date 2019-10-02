@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {PlaceDetails, PlaceDetailsList} from '../../../../_models/response/PlaceDetails';
 import {PlaceApiService} from '../../../api/place/place-api.service';
 import {KeyName} from '../../../../_models/response/KeyName';
-import {PlaceForm} from '../../../../_models/request/PlaceForm';
+import {PlaceForm} from '../../../../_models/request/place/PlaceForm';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {HttpErrorResponse} from '@angular/common/http';
 import {IdSelector} from '../../../utils/EntitySelector';
@@ -19,17 +19,8 @@ export class PlaceService {
 
   public newPlace(form: PlaceForm): Promise<PlaceDetails> {
     return this.placeApi.newPlace(form)
-      .then((response: JSON) => {
-        if(response == null)
-          throw new ErrorMessage("placecreate.unable");
-        else
-          return new PlaceDetails(response);
-      })
-      .catch((e: HttpErrorResponse | ErrorMessage) => {
-        e = e instanceof HttpErrorResponse ? new ErrorMessage(e) : e;
-        this.errorHandler.sendErrors(e);
-        return null;
-      })
+      .then((response: JSON) => new PlaceDetails(response) )
+      .catch(e => this.errorHandler.processFormError(form, e) );
   }
 
 

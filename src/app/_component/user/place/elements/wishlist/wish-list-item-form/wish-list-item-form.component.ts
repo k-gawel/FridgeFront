@@ -1,15 +1,13 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {Item} from '../../../../../../_models/response/item/Item';
 import {Category} from '../../../../../../_models/response/Category';
 import {ItemService} from '../../../../../../_service/user/item/item/item.service';
 import {WishListItemService} from '../../../../../../_service/user/wishlist/wishListItem/wish-list-item.service';
 import {WishListItem} from '../../../../../../_models/response/WishListItem';
 import {WishList} from '../../../../../../_models/response/WishList';
-import {WishListItemForm} from '../../../../../../_models/request/WishListItemForm';
-import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
+import {WishListItemForm} from '../../../../../../_models/request/wishlistitem/WishListItemForm';
 import {CookieDataService} from '../../../../../../_service/auth/cookieDatas/cookie-datas.service';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
-import {WishListComponent, WishListComponentData} from "../wish-list/wish-list.component";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 export interface WishListItemFormComponentData {
   wishList: WishList,

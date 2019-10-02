@@ -22,3 +22,17 @@
 /* add padding  */
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
+
+.ellipsis {
+  overflow: hidden;
+  width: 60px;
+  direction: rtl;
+  margin-left: 15px;
+  white-space: nowrap;
+}
+
+.ellipsis:after {
+  position: absolute;
+  left: 0px;
+  content: "...";
+}

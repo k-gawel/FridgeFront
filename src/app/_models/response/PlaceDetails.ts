@@ -3,7 +3,6 @@ import {PlaceUsersList} from './place-user/PlaceUsersList';
 import {Container, ContainersList} from './Container';
 import {PlaceUser} from './place-user/PlaceUser';
 import {WishList, WishListList} from './WishList';
-import {Entity} from "./Entity";
 import {ShopList, ShopListList} from "./ShopList";
 
 export class PlaceDetails extends KeyName {

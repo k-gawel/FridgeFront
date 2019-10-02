@@ -1,17 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ItemInstanceForm} from '../../../../../../_models/request/ItemInstanceForm';
+import {ItemInstanceForm} from '../../../../../../_models/request/iteminstance/ItemInstanceForm';
 import {Item} from '../../../../../../_models/response/item/Item';
 import {ItemInstance} from '../../../../../../_models/response/item/ItemInstance';
 import {AccountService} from '../../../../../../_service/user/user/account.service';
 import {PlaceService} from '../../../../../../_service/user/place/place/place.service';
 import {ItemInstanceService} from '../../../../../../_service/user/instance/item-instance.service';
-import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {PlaceDetailsList} from "../../../../../../_models/response/PlaceDetails";
 import {WishListItem, WishListItemList} from "../../../../../../_models/response/WishListItem";
 import {WishList, WishListList} from "../../../../../../_models/response/WishList";
-import {Currencies, Currency, Money} from "ts-money";
+import {Currencies, Currency} from "ts-money";
 import {CookieDataService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
+import {ShopList, ShopListList} from "../../../../../../_models/response/ShopList";
 
 
 @Component({
@@ -23,12 +22,13 @@ export class NewInstanceFormComponent implements OnInit {
 
   currencies: Currency[] = Object.values(Currencies);
 
+  console = console;
 
   @Input() item: Item;
   @Input() places: PlaceDetailsList;
 
   @Input() wishListItem: WishListItem;
-  @Input() shopListItem: any;
+  @Input() shopList: ShopList;
 
   @Output() newInstance = new EventEmitter<ItemInstance>();
 
@@ -49,6 +49,22 @@ export class NewInstanceFormComponent implements OnInit {
 
     if (this.wishListItem != null)
       this.form.wishListItemId = this.wishListItem.id;
+    if (this.shopList != null)
+      this.form.shopListId = this.shopList.id;
+  }
+
+
+  getShopLists(): ShopListList {
+    let result = new ShopListList();
+
+    if(this.shopList != null) {
+      result.add(this.shopList);
+    } else {
+      this.places.map(p => p.shopLists).forEach(sl => result.addAll(sl));
+      result = <ShopListList> result.filter(sl => sl.status);
+    }
+
+    return result;
   }
 
 
@@ -75,16 +91,20 @@ export class NewInstanceFormComponent implements OnInit {
 
 
   submit() {
-    if (!this.form.validate()) return;
+    let processValidate = (r: boolean) => {
+      if(r) processSubmit();
+    };
 
-    this.instanceService.addInstance(this.form)
-      .then((res: ItemInstance) => {
-        if (res == null)
-          throw new ErrorMessage("instancecreate.unable");
-        else
-          this.newInstance.emit(res);
-      })
-      .catch((error: ErrorMessage) => this.form.errors = error);
+    let processSubmit = () => {
+      this.instanceService.addInstance(this.form)
+        .then(processSubmitResult)
+    };
+
+    let processSubmitResult = (res: ItemInstance) => {
+      if(res != null) this.newInstance.emit(res);
+    };
+
+    this.form.validate().then(processValidate);
   }
 
 

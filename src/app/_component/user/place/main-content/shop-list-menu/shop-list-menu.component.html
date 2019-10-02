@@ -1,7 +1,7 @@
 <mat-action-list>
 
-  <button *ngFor="let shopList of list.getByStatus(true) | entityList"
-          mat-list-item>
+  <button *ngFor="let shopList of list | entityList"
+          mat-list-item (click)="select(shopList)">
     {{shopList.shopName}}
   </button>
 

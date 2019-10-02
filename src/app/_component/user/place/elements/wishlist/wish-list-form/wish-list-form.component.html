@@ -1,21 +1,14 @@
-<mat-toolbar class="dialog-full-screen-toolbar">
-
-  <mat-toolbar-row>
-    <span>Add new WishList</span>
-
-    <close-dialog-button [dialogRef]="dialogRef"></close-dialog-button>
-  </mat-toolbar-row>
-
-</mat-toolbar>
-
-
 <mat-form-field style="display: block; width: 100%">
   <input matInput placeholder="WishList name" name="wish-list-name" [(ngModel)]="form.name"/>
+
+  <app-form-error [errors]="form.errors" [field]="'name'"></app-form-error>
 </mat-form-field>
 
 <mat-form-field style="display: block; width: 100%">
   <textarea matInput placeholder="Description..." name="wish-list-description" [(ngModel)]="form.description">
   </textarea>
+
+  <app-form-error [errors]="form.errors" [field]="'description'"></app-form-error>
 </mat-form-field>
 
 <button mat-raised-button style="display: block; width: 100%"

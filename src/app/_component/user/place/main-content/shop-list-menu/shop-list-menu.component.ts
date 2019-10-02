@@ -4,6 +4,7 @@ import {PlaceDetails} from "../../../../../_models/response/PlaceDetails";
 import {ShopList, ShopListList} from "../../../../../_models/response/ShopList";
 import {ShopListFormDialogData} from "../../elements/shoplist/shop-list-form/shop-list-form.component";
 import {MatDialog} from "@angular/material";
+import {ShopListData} from "../../elements/shoplist/shop-list/shop-list.component";
 
 @Component({
   selector: 'app-shop-list-menu',
@@ -13,19 +14,21 @@ import {MatDialog} from "@angular/material";
 export class ShopListMenuComponent implements OnInit {
 
   @Input() list: ShopListList;
-
-  place: PlaceDetails;
+  @Input() place: PlaceDetails;
 
   constructor(private dialog: MatDialog) {
   }
 
   ngOnInit() {
-    this.place = this.list.getPlace();
+    if(this.place == null)
+      this.place = this.list.getPlace();
   }
 
 
   select(shopList: ShopList): void {
+    const data: ShopListData = { shopList: shopList };
 
+    const dialogRef = DialogService.createShopList(this.dialog, data);
   }
 
 

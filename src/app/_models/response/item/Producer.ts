@@ -1,5 +1,4 @@
 import {KeyName, KeyNameList} from '../KeyName';
-import {Entity} from "../Entity";
 
 export class Producer extends KeyName {
 

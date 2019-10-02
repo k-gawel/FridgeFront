@@ -2,7 +2,7 @@ import {UserDate} from "../util/UserDate";
 import {ItemInstancesList} from "./item/ItemInstancesList";
 import {PlaceElement, PlaceElementList} from "./PlaceElement";
 import {ItemInstance} from "./item/ItemInstance";
-import {PlaceDetails, PlaceDetailsList} from "./PlaceDetails";
+import {PlaceDetailsList} from "./PlaceDetails";
 
 export class ShopList extends PlaceElement {
 
@@ -37,6 +37,17 @@ export class ShopList extends PlaceElement {
     instance.shopList = this;
   }
 
+
+  get simpleString(): string {
+    return this.shopName + ' ' + this.created.simpleDateString;
+  }
+
+
+  get sumPrice(): number {
+    let result = 0;
+    this.instances.filter(ii => ii.price != undefined).map(ii => ii.price.getAmount()).forEach(a => result + a);
+    return result;
+  }
 
 }
 

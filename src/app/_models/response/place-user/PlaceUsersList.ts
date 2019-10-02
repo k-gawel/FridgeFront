@@ -1,6 +1,5 @@
 import {KeyName, KeyNameList} from '../KeyName';
 import {PlaceUser} from './PlaceUser';
-import {Entity} from "../Entity";
 
 export class PlaceUsersList extends KeyNameList<PlaceUser> {
 

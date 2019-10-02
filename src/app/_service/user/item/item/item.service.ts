@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
 import {ItemApiService} from '../../../api/item/item-api.service';
 import {Item} from '../../../../_models/response/item/Item';
-import {HttpErrorResponse} from '@angular/common/http';
 import {Category} from '../../../../_models/response/Category';
 import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
-import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
-import {ItemForm} from '../../../../_models/request/ItemForm';
+import {ItemForm} from '../../../../_models/request/item/ItemForm';
 import {IdSelector} from '../../../utils/EntitySelector';
 import {ItemsList} from '../../../../_models/response/item/ItemsList';
+import {ErrorHandlerService} from "../../../utils/errorhanler/error-handler.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,106 +16,51 @@ export class  ItemService {
   public items: ItemsList = new ItemsList();
   private cacheResults: Map<string, ItemsList> = new Map<any, ItemsList>();
 
-  constructor(private itemApi: ItemApiService) { }
-
-
-  public newItem(form: ItemForm): Promise<Item> {
-
-    if(!form.validate())
-      throw form.errors;
-
-    return this.itemApi.newItem(form)
-      .then((response: JSON) => { return new Item(response); })
-      .catch((error: HttpErrorResponse) => { throw new ErrorMessage(error.message) } );
-
+  constructor(private itemApi: ItemApiService,
+              private errorHandler: ErrorHandlerService) {
   }
 
 
-  public async getItemById(id: number, refresh?: boolean): Promise<Item | ErrorMessage> {
-
-    let result: Item | ErrorMessage = null;
-
-    if(!refresh)
-      result = ItemsList.ALL[id];
-
-    if(result === null) {
-
-      let query = new ItemQuery(this.itemApi);
-      query.itemIds = id;
-
-      await query.execute()
-        .then((response: JSON[]) => {
-          result = new Item(response[0]);
-        }).catch( (e: Error) => {
-          if(e instanceof HttpErrorResponse) {
-            throw new ErrorMessage(e.message)
-          } else {
-            console.error(e);
-            return null;
-          }
-        })
-
-    }
-
-    return result;
-
+  public newItem(form: ItemForm): Promise<Item | ItemForm> {
+    return this.itemApi.newItem(form)
+      .then((response: JSON) => new Item(response) )
+      .catch(e => this.errorHandler.processFormError(form, e) );
   }
 
 
   public async getItemsByIds(ids: number[], refresh?: boolean): Promise<ItemsList> {
     let result: ItemsList = new ItemsList();
-    let idsToFind: number[] = [];
-    idsToFind = idsToFind.concat(ids);
-
-    if(!refresh) {
-      for(let id of ids) {
-        let item = ItemsList.ALL[id];
-        if(item != null) {
-          result.add(item);
-          idsToFind.splice(idsToFind.indexOf(id), 1);
-        }
-      }
-    }
+    let idsToFind = this.getIdsToFind(ids, result, refresh);
 
     if(idsToFind.length != 0) {
       let query = new ItemQuery(this.itemApi);
       query.itemIds = idsToFind;
       await query.execute()
-        .then((r: JSON[]) => new ItemsList(r))
-        .then(r => <ItemsList> result.addAll(r))
+        .then((r: JSON[]) => {
+          return new ItemsList(r);
+        })
+        .then(r => <ItemsList> result.addAll(r));
     }
+
 
     return result;
   }
 
 
   public searchItemsByBarcode(barcode: number, place?: PlaceDetails): Promise<ItemsList> {
-
-    let result: ItemsList | ErrorMessage;
-
     let query = new ItemQuery(this.itemApi);
     query.barcode = barcode;
+
     if(place != undefined)
       query.placeIds = place.id;
 
-    return query.execute().then(
-      (response: JSON[]) => {
-        return new ItemsList(response);
-      },
-      (error: HttpErrorResponse) => {
-        if(error.status === 400) {
-          return new ItemsList();
-        } else {
-          throw new ErrorMessage(error.message);
-        }
-      }
-    );
-
+    return query.execute()
+                .then((response: JSON[]) => new ItemsList(response) )
+                .catch(e => new ItemsList() );
   }
 
 
   public async searchItemByName(name: string, place?: PlaceDetails | PlaceDetails[] | number | number[], category?: Category): Promise<ItemsList> {
-
     let query = new ItemQuery(this.itemApi);
     query.name = name;
     if(place !== undefined)
@@ -134,11 +78,8 @@ export class  ItemService {
         let result = new ItemsList(response);
         this.cacheResults.set(query.asKey(), result);
         return result;
-      },
-      (error: HttpErrorResponse) => {
-        throw new ErrorMessage(error.message);
       }
-    );
+    )
 
   }
 
@@ -147,25 +88,37 @@ export class  ItemService {
 
     let query = new ItemQuery(this.itemApi);
     query.categoryId = category.id[0];
-    if(place != undefined)
+    if (place != undefined)
       query.placeIds = place.id;
 
 
     let cacheResult = this.cacheResults.get(query.asKey());
-    if(cacheResult != undefined)
+    if (cacheResult != undefined)
       return cacheResult;
 
 
     return query.execute()
-      .then((response: JSON[]) => {
-          let result = new ItemsList(response);
-          this.cacheResults.set(query.asKey(), result);
-          return result;
-      })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e.message);
-      });
+                .then((response: JSON[]) => {
+                  let result = new ItemsList(response);
+                  this.cacheResults.set(query.asKey(), result);
+                  return result;
+                });
 
+  }
+
+
+  private getIdsToFind(ids: number[], result: ItemsList, refresh?: boolean): number[] {
+    if(refresh == true) return ids;
+
+    let resultIds = [];
+
+    for (let id of ids) {
+      let item = ItemsList.ALL[id];
+      if (item == null) resultIds.push(id);
+      else              result.add(item);
+    }
+
+    return resultIds;
   }
 
 

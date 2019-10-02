@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AccountForm} from '../../../../_models/request/AccountForm';
+import {AccountForm} from '../../../../_models/request/account/AccountForm';
 import {AccountService} from '../../../../_service/user/user/account.service';
 
 @Component({

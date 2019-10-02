@@ -1,38 +1,28 @@
 import {Injectable} from '@angular/core';
 import {ContainerApiService} from '../../../api/place/container-api.service';
-import {ContainerForm} from '../../../../_models/request/ContainerForm';
+import {ContainerForm} from '../../../../_models/request/container/ContainerForm';
 import {Container, ContainersList} from '../../../../_models/response/Container';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {HttpErrorResponse} from '@angular/common/http';
 import {KeyName} from '../../../../_models/response/KeyName';
 import {IdSelector} from '../../../utils/EntitySelector';
 import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
+import {ErrorHandlerService} from "../../../utils/errorhanler/error-handler.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContainerService {
 
-  constructor(private containerApi: ContainerApiService) { }
-
-
-
+  constructor(private containerApi: ContainerApiService,
+              private errorHanlder: ErrorHandlerService) {
+  }
 
 
   public addNewContainer(form: ContainerForm): Promise<Container> {
-
-    if(!form.validate())
-      throw form.errors;
-
     return this.containerApi.addNewContainer(form)
-      .then((result: JSON) => {
-        if(result == null)
-          throw new ErrorMessage("containercreate.unable");
-        return new Container(result);
-      })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e.message);
-      });
+      .then((result: JSON) => new Container(result) )
+      .catch((e: HttpErrorResponse) => this.errorHanlder.processFormError(form, e));
 
   }
 

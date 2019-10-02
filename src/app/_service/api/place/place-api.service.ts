@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
-import {PlaceForm} from '../../../_models/request/PlaceForm';
+import {PlaceForm} from '../../../_models/request/place/PlaceForm';
 
 @Injectable({
   providedIn: 'root'

@@ -1,10 +1,8 @@
-import {Component, Inject, Output} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import {Item} from "../../../../../../_models/response/item/Item";
 import {PlaceDetails, PlaceDetailsList} from "../../../../../../_models/response/PlaceDetails";
-import {WishList, WishListList} from "../../../../../../_models/response/WishList";
 import {ItemInstance} from "../../../../../../_models/response/item/ItemInstance";
-import {WishListItem, WishListItemList} from "../../../../../../_models/response/WishListItem";
 import {ItemInstanceQuery, ItemInstanceService} from "../../../../../../_service/user/instance/item-instance.service";
 import {WishListItemService} from "../../../../../../_service/user/wishlist/wishListItem/wish-list-item.service";
 import {EntityList} from "../../../../../../_models/response/Entity";
@@ -22,6 +20,7 @@ export interface ItemComponentData {
   styleUrls: ['./item.component.css']
 })
 export class ItemComponent {
+
 
   content: string = 'INSTANCES';
   item: Item;
@@ -57,22 +56,22 @@ export class ItemComponent {
 
 
   addNewInstance() {
-    const formDatas = {
-      item: this.item,
-      places: this.places
-    };
+    const data = { item: this.item, places: this.places };
 
     const dialogRef = this.dialog.open(NewInstanceFormDialog, {
       maxWidth: "100vw",
       width: "100%",
-      data: formDatas
+      data: data
     });
   }
 
 
   getContainers(itemInstances?: ItemInstancesList): EntityList<Container> {
-    return this.places.getContainers()
-      .filter(c => c.instances.filterByDeleted(false).size() != 0);
+    let filter = (c: Container) => c.instances.filterByItems(this.item)
+                                             .filterByDeleted(false)
+                                             .size() != 0;
+
+    return this.places.getContainers().filter(filter);
   }
 
 }

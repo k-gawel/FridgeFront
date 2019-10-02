@@ -5,10 +5,11 @@ import {Category} from '../../../../../_models/response/Category';
 import {Item} from '../../../../../_models/response/item/Item';
 import {KeyNameList} from '../../../../../_models/response/KeyName';
 import {ItemService} from '../../../../../_service/user/item/item/item.service';
-import {ItemInstancesList} from '../../../../../_models/response/item/ItemInstancesList';
-import {MatDialog} from "@angular/material";
+import {ItemInstanceFilter, ItemInstancesList} from '../../../../../_models/response/item/ItemInstancesList';
+import {MatBottomSheet, MatBottomSheetConfig, MatDialog} from "@angular/material";
 import {DialogService} from "../../../../../_service/utils/dialog.service";
 import {ItemsList} from "../../../../../_models/response/item/ItemsList";
+import {CategoriesMenuSheet} from "../../elements/categories-menu/categories-menu.component";
 
 @Component({
   selector: 'app-place-items-scene',
@@ -17,42 +18,26 @@ import {ItemsList} from "../../../../../_models/response/item/ItemsList";
 })
 export class PlaceItemsSceneComponent {
 
-  constructor(private itemService: ItemService,
-              public  dialog: MatDialog) {
-  }
+  _containers: ContainersList = new ContainersList();
+  _category: Category = Category.rootCategory;
 
-  owners:   KeyNameList;
+  _place: PlaceDetails;
+  owners: KeyNameList;
 
   content: string = 'LIST';
 
-  open:    boolean | null = null;
-  frozen:  boolean | null = null;
-  deleted: boolean | null = false;
-
+  filter: ItemInstanceFilter = new ItemInstanceFilter();
   baseInstances: ItemInstancesList = new ItemInstancesList();
+  items: ItemsList = new ItemsList();
 
-  items: ItemsList;
-
-
-  getVisibleInstances(): ItemInstancesList {
-    let result = this.baseInstances.getByOwners(this.owners)
-                             .filterByOpen(this.open)
-                             .filterByDeleted(this.deleted);
-    console.log("Base Instances", this.baseInstances, "Visible instances:", result);
-    return result;
+  constructor(private itemService: ItemService,
+              public  dialog: MatDialog,
+              private bottomSheet: MatBottomSheet ) {
   }
 
 
-  getVisibleItems() {
-    let ids = this.getVisibleInstances().getItemIds();
-    this.itemService.getItemsByIds(ids)
-      .then(r => this.items = r.getByCategory(this._category));
-  }
-
-
-  _place: PlaceDetails;
-  _containers: ContainersList = new ContainersList();
-  @Input() set containers(containers: ContainersList) {
+  @Input()
+  set containers(containers: ContainersList) {
     if(containers == undefined) return;
 
     this._containers = containers;
@@ -64,13 +49,14 @@ export class PlaceItemsSceneComponent {
   }
 
 
-  _category: Category = Category.rootCategory;
-  @Input() set category(category: Category) {
+  @Input()
+  set category(category: Category) {
     if(category == undefined) return;
 
     this._category = category;
     this.getVisibleItems();
   }
+
 
 
   openItem(item: Item) {
@@ -79,5 +65,29 @@ export class PlaceItemsSceneComponent {
     const dialogRef = DialogService.createItemComponent(this.dialog, datas);
   }
 
+
+  getVisibleItems() {
+    if(this._containers == null || this._category == null)
+      return;
+
+    let ids = this.getVisibleInstances().getItemIds();
+    this.itemService.getItemsByIds(ids)
+      .then(r => { this.items = r.getByCategory(this._category); });
+  }
+
+
+  getVisibleInstances(): ItemInstancesList {
+    let result = this.baseInstances.getByOwners(this.owners).filterByProps(this.filter);
+    return result;
+  }
+
+
+  openCategoriesSheet() {
+    const config = new MatBottomSheetConfig();
+    config.data = { category: this._category };
+
+    const ref = this.bottomSheet.open(CategoriesMenuSheet, config);
+    ref.afterDismissed().subscribe(() => this.category = ref.instance.chosenCategory)
+  }
 
 }

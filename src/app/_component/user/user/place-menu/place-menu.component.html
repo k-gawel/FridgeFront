@@ -2,3 +2,18 @@
         *ngFor="let p of places | entityList" (click)="setPlace(p)">
   {{p.name}} {{p.equals(_chosenPlace)}}
 </button>
+
+<span style="display: flex">
+
+  <button mat-icon-button (click)="addNewPlace()" style="margin-top: 7px">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <mat-form-field class="example-full-width" style="width: 100%">
+    <input matInput placeholder="Email" [(ngModel)]="form.name" (keyup.ENTER)="addNewPlace()">
+    <mat-error *ngIf="form.errors != null">
+      {{form.errors.messages}}
+    </mat-error>
+  </mat-form-field>
+
+</span>

@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
+import {Component, Inject, Input} from '@angular/core';
 import {Category} from '../../../../../../_models/response/Category';
 import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
 import {Item} from '../../../../../../_models/response/item/Item';
-import {AllergenForm, ItemForm} from '../../../../../../_models/request/ItemForm';
+import {AllergenForm, ItemForm} from '../../../../../../_models/request/item/ItemForm';
 import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
 import {ItemService} from '../../../../../../_service/user/item/item/item.service';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 export interface NewItemDatas {
   place: PlaceDetails,

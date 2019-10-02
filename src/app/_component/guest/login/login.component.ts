@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {LoginForm} from '../../../_models/request/LoginForm';
+import {LoginForm} from '../../../_models/request/login/LoginForm';
 import {AuthService} from '../../../_service/auth/auth/auth.service';
 import {RoleContent} from '../../../_models/util/Content';
 import {AccountDatas} from '../../../_models/response/AccountDatas';
@@ -20,21 +20,17 @@ export class LoginComponent implements OnInit {
 
 
   submit() {
-    if (!this.form.validate())
-      return;
+    let processSubmit = (res: AccountDatas) => {
+      if(res != null)
+        this.account.emit(res);
+    };
 
-    this.authService.login(this.form)
-      .then((result: AccountDatas) => this.account.emit(result) )
-      .catch((e: HttpErrorResponse) => {
-        console.log("ERROR", e);
-        let msg = e.error.localizedMessage;
-        let target = msg.split(".")[0];
-        let type = msg.split(".")[1];
-        if(target == "password")
-          this.form.passwordError = type;
-        else
-          this.form.nameError = type;
-      });
+    let processValidation = (res: boolean) => {
+      if(res)
+        this.authService.login(this.form).then(processSubmit);
+    };
+
+    this.form.validate().then(processValidation);
   }
 
   switchToRegister() {

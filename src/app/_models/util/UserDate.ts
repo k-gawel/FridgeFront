@@ -39,7 +39,7 @@ export class UserDate {
     return this.date != undefined ? this.date.toString() : null;
   }
 
-  get dateToSimpleString(): string {
+  get simpleDateString(): string {
     return this.date != undefined ? this.date.toSimpleString() : null;
   }
 

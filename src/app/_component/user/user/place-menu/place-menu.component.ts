@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {KeyName, KeyNameList} from '../../../../_models/response/KeyName';
-import {PlaceForm} from '../../../../_models/request/PlaceForm';
+import {PlaceForm} from '../../../../_models/request/place/PlaceForm';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
 import {PlaceService} from '../../../../_service/user/place/place/place.service';
 import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
@@ -18,7 +18,6 @@ export class PlaceMenuComponent implements OnInit {
 
   @Output() chosenPlace = new EventEmitter<KeyName>();
   _chosenPlace: KeyName;
-
 
   form: PlaceForm = new PlaceForm();
 
@@ -40,21 +39,27 @@ export class PlaceMenuComponent implements OnInit {
 
 
   setPlace(place: KeyName) {
+    if(place.equals(this._chosenPlace)) return;
+
     this._chosenPlace = place;
     this.chosenPlace.emit(place);
   }
 
 
   addNewPlace() {
-    if(!this.form.validate())
-      this.errorHandler.sendErrors(this.form.errors);
-    else
-      this.placeService.newPlace(this.form)
-        .then(p => {
-          this.places.add(p);
-          this.setPlace(p);
-        })
-        .catch(e => this.form.errors = e);
+    let processSubmit = (res: PlaceDetails) => {
+      if(res != null) {
+        this.places.add(res);
+        this.setPlace(res);
+      }
+    };
+
+    let processValidate = (res: boolean) => {
+      if(res)
+        this.placeService.newPlace(this.form).then(processSubmit);
+    };
+
+    this.form.validate().then(processValidate);
   }
 
 

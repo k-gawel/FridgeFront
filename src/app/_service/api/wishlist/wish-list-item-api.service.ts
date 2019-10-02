@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
-import {WishListItemForm} from '../../../_models/request/WishListItemForm';
+import {WishListItemForm} from '../../../_models/request/wishlistitem/WishListItemForm';
 import {HttpParams} from '@angular/common/http';
 
 @Injectable({

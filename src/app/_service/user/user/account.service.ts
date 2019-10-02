@@ -4,7 +4,7 @@ import {PlaceUsersList} from '../../../_models/response/place-user/PlaceUsersLis
 import {KeyName, KeyNameList} from '../../../_models/response/KeyName';
 import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 import {HttpErrorResponse} from '@angular/common/http';
-import {AccountForm} from '../../../_models/request/AccountForm';
+import {AccountForm} from '../../../_models/request/account/AccountForm';
 
 @Injectable({
   providedIn: 'root'
@@ -28,17 +28,8 @@ export class AccountService {
 
 
   public searchByName(name: string): Promise<KeyNameList> {
-
     return this.api.searchByName(name)
-      .then((res: JSON[]) => {
-        if(res == null)
-          throw new ErrorMessage("Res is null");
-        return new KeyNameList(res);
-      })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e.message);
-      })
-
+                   .then((res: JSON[]) => new KeyNameList(res) );
   }
 
 

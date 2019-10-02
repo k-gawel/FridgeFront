@@ -9,9 +9,6 @@ import {AccountService} from '../../../../../_service/user/user/account.service'
 import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
 import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
 import {FormControl} from "@angular/forms";
-import {BehaviorSubject, Observable} from "rxjs";
-import {startWith} from "rxjs-compat/operator/startWith";
-import {map} from "rxjs/operators";
 
 
 @Component({

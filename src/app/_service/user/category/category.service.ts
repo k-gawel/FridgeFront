@@ -13,15 +13,8 @@ export class CategoryService {
 
 
   public getRootCategory(): Promise<Category> {
-
     return this.api.getAllCategories()
-      .then((res: JSON) => {
-        return new Category(res);
-      })
-      .catch((e: HttpErrorResponse) => {
-        throw new ErrorMessage(e);
-      });
-
+                   .then((res: JSON) => new Category(res) );
   }
 
 

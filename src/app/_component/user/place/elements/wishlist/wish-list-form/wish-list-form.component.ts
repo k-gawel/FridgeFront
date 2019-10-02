@@ -1,13 +1,11 @@
-import {Component, Inject, Input} from '@angular/core';
-import {WishListForm} from '../../../../../../_models/request/WishListForm';
+import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
+import {WishListForm} from '../../../../../../_models/request/wishlist/WishListForm';
 import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
 import {WishListService} from '../../../../../../_service/user/wishlist/wishlist/wish-list.service';
 import {CookieDataService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {WishList} from "../../../../../../_models/response/WishList";
 
-export interface WishListFormDatas {
-  place: PlaceDetails
-}
 
 @Component({
   selector: 'app-wish-list-form',
@@ -17,26 +15,63 @@ export interface WishListFormDatas {
 export class WishListFormComponent {
 
   @Input() place: PlaceDetails;
+  @Output() result = new EventEmitter<WishList>();
+
+  form: WishListForm;
 
   constructor(private wishListService: WishListService,
-              public dialogRef: MatDialogRef<WishListFormComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: WishListFormDatas,
               private sessionService: CookieDataService) {
-
-    this.place = data.place;
-    this.form.placeId = this.place.id;
-    this.form.authorId = sessionService.getUserId();
   }
 
-  form: WishListForm = new WishListForm();
-
+  ngOnInit() {
+    this.form = new WishListForm();
+    this.form.placeId = this.place.id;
+    this.form.authorId = this.sessionService.getUserId();
+  }
 
   submit() {
-    if(this.form.validate())
-      this.wishListService.addNew(this.form)
-        .then(res => this.dialogRef.close(res))
-        .catch(e => this.form.errors = e);
+    let processSubmit = (res: WishList) => {
+      if(res != null)
+        this.result.emit(res);
+    };
+
+    let processValidation = (res: boolean) => {
+      if(res)
+        this.wishListService.addNew(this.form).then(processSubmit);
+    };
+
+    this.form.validate().then(processValidation);
   }
 
+}
+
+export interface WishListFormData {
+  place: PlaceDetails
+}
+
+@Component({
+  template: `
+    <mat-toolbar class="dialog-full-screen-toolbar">
+
+      <mat-toolbar-row>
+        <span>Add new WishList</span>
+
+        <close-dialog-button [dialogRef]="dialogRef"></close-dialog-button>
+      </mat-toolbar-row>
+
+    </mat-toolbar>
+    
+    <app-wish-list-form [place]="data.place" (result)="onResult($event)"></app-wish-list-form>
+  `
+})
+export class WishListFormDialog {
+
+  constructor(public dialogRef: MatDialogRef<WishListFormComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: WishListFormData) {
+  }
+
+  onResult(result: WishList): void {
+    this.dialogRef.close(result);
+  }
 
 }

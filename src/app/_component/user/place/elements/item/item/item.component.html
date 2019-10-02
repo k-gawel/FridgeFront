@@ -2,7 +2,7 @@
 
   <mat-toolbar-row>
 
-    <span>
+    <span class="text-truncate" style="width: calc(100% - 80px)">
       <mat-icon aria-hidden="false" aria-label="Icon">fastfood</mat-icon>
       {{item.name}}
     </span>
@@ -86,7 +86,7 @@
 <div class="option-buttons ob-right">
 
   <button mat-fab (click)="addNewInstance()">
-    <mat-icon aria-hidden="false" aria-label="Add instance">plus</mat-icon>
+    <mat-icon aria-hidden="false" aria-label="Add instance">add</mat-icon>
   </button>
 
 </div>

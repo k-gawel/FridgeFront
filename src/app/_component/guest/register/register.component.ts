@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AuthService} from '../../../_service/auth/auth/auth.service';
 import {RoleContent} from '../../../_models/util/Content';
-import {AccountForm} from '../../../_models/request/AccountForm';
+import {AccountForm} from '../../../_models/request/account/AccountForm';
 import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 
 @Component({

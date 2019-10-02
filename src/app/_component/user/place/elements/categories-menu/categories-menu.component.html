@@ -1,11 +1,11 @@
-<mat-card>
+<mat-card *ngIf="rootCategory">
 
   <mat-card-header>
 
     <mat-card-title class="space-between">
-
       {{rootCategory.name}}
 
+      Children: {{rootCategory.children.length}}
       <button mat-stroked-button *ngIf="rootCategory.parent != null"
               (click)="chooseCategory(rootCategory.parent)">
         <mat-icon>keyboard_arrow_up</mat-icon>
@@ -17,8 +17,7 @@
 
   <mat-card-content style="padding: 0.8em">
     <mat-chip-list>
-      <mat-chip (click)="chooseCategory(category)"
-                *ngFor="let category of rootCategory.children">
+      <mat-chip (click)="chooseCategory(category)" *ngFor="let category of rootCategory.children">
         {{category.name}}
       </mat-chip>
     </mat-chip-list>

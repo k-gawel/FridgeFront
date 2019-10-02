@@ -3,8 +3,6 @@ import {LocalDate} from '../../../_util/date/JavaLocalDate';
 import {ItemInstancesList} from './ItemInstancesList';
 import {WishListItem} from "../WishListItem";
 import {Container, ContainersList} from "../Container";
-import {PlaceUsersList} from "../place-user/PlaceUsersList";
-import {KeyName} from "../KeyName";
 import {Money} from "ts-money";
 import {UserDate} from "../../util/UserDate";
 import {ShopList} from "../ShopList";
@@ -13,10 +11,10 @@ export class ItemInstance extends Entity {
 
   price: Money;
 
-    comment: string;
-    expireOn: LocalDate;
+  comment: string;
+  expireOn: LocalDate;
 
-    itemId: number;
+  itemId: number;
   container: Container;
 
   added: UserDate;

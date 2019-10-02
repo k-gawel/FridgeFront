@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {KeyNameList} from "../../../../../_models/response/KeyName";
 import {ProducersList} from "../../../../../_models/response/item/Producer";
 
 @Component({

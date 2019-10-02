@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
-import {ItemForm} from '../../../_models/request/ItemForm';
+import {ItemForm} from '../../../_models/request/item/ItemForm';
 import {HttpParams} from '@angular/common/http';
 
 @Injectable({

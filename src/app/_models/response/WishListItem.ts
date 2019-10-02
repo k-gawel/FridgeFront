@@ -2,21 +2,18 @@ import {Entity, EntityList} from './Entity';
 import {WishList, WishListList} from './WishList';
 import {Item} from './item/Item';
 import {Category} from './Category';
-import {KeyName, KeyNameList} from './KeyName';
 import {ItemInstance} from './item/ItemInstance';
-import {PlaceUser} from "./place-user/PlaceUser";
-import {PlaceUsersList} from "./place-user/PlaceUsersList";
 import {ItemInstancesList} from "./item/ItemInstancesList";
+import {UserDate} from "../util/UserDate";
 
 export class WishListItem extends Entity {
 
-
-  public author: KeyName;
-  public createdOn: Date;
-  public addedBy: KeyName;
+  public created: UserDate;
   public wishList: WishList;
-  public addedOn: Date;
+
+  public added:   UserDate;
   public addedInstance: ItemInstance;
+
   public comment: string;
   public category: Category;
 
@@ -34,12 +31,10 @@ export class WishListItem extends Entity {
     this.wishList = WishListList.ALL[json['wishListId']];
     this.wishList.wishListItems.add(this);
 
-    this.author = PlaceUsersList.ALL[json['authorId']];
-    this.createdOn = new Date(json['created']);
+    this.created = new UserDate(json['created']);
 
-    if (json['addedInstanceId'] && json['addedById'] && json['addedOn']) {
-      this.addedBy = PlaceUsersList.ALL[json['addedById']];
-      this.addedOn = new Date(json['addedOn']);
+    if (json['addedInstanceId'] && json['added']) {
+      this.added = new UserDate(json['added']);
 
       this.addedInstance = ItemInstancesList.ALL[json['addedInstanceId']];
       this.addedInstance.wishListItem = this;

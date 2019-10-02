@@ -2,7 +2,6 @@ import {KeyNameList} from '../KeyName';
 import {Category} from '../Category';
 import {Item} from './Item';
 import {IdSelector} from '../../../_service/utils/EntitySelector';
-import {Entity} from "../Entity";
 
 export class ItemsList extends KeyNameList<Item> {
 

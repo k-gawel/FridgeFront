@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
 import {HttpParams} from '@angular/common/http';
-import {ContainerForm} from '../../../_models/request/ContainerForm';
+import {ContainerForm} from '../../../_models/request/container/ContainerForm';
 
 @Injectable({
   providedIn: 'root'

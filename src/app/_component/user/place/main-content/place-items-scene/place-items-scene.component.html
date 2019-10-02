@@ -2,7 +2,7 @@
 
 
   <div class="input-group-prepend" style="display: flex; width: 100%">
-        <span class="input-group-text" style="flex-grow: 1">
+        <span class="input-group-text" style="flex-grow: 1" (click)="openCategoriesSheet()">
           {{_category.name}}
         </span>
     <span class="input-group-text" style="flex-grow: 1">
@@ -10,23 +10,25 @@
         </span>
   </div>
 
-  <mat-action-list *ngIf="items != null && content == 'LIST'">
+  <mat-action-list *ngIf="content == 'LIST'" style="height: calc(100% - 2.4em); overflow: auto">
     <button mat-list-item *ngFor="let item of items | entityList" (click)="openItem(item)">
 
-      <h4 mat-line>NAME: {{item.name}}</h4>
+      <h4 mat-line class="text-truncate">{{item.name}}</h4>
 
-      <p mat-line>
-        <span>CATEGORY: </span>
-        <span *ngFor="let category of item.category.getTrack()">
-            {{category.name}} /
-          </span>
+      <p mat-line class="space-between">
+        <span>
+          {{item.category.name}}
+        </span>
+        <span>
+          {{item.producer.name}}
+        </span>
       </p>
 
       <img src="https://image.flaticon.com/icons/svg/99/99518.svg" class="rounded" width="50px" height="50px">
     </button>
   </mat-action-list>
 
-  <div style="height: calc(100vh - 88px)" *ngIf="content == 'PICKER'">
+  <div *ngIf="content == 'PICKER'" style="height: calc(100% - 2.4em); overflow: auto">
 
     <app-item-picker (close)="content = 'LIST'" (selectedItem)="openItem($event)"
                      [category]="_category" [place]="_place" [closeable]="true">

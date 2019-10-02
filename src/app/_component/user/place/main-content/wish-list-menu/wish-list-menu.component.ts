@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
-import {WishListService} from '../../../../../_service/user/wishlist/wishlist/wish-list.service';
+import {WishListQuery, WishListService} from '../../../../../_service/user/wishlist/wishlist/wish-list.service';
 import {KeyName} from '../../../../../_models/response/KeyName';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {WishList, WishListList} from '../../../../../_models/response/WishList';
@@ -9,6 +9,7 @@ import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie
 import {DialogService} from "../../../../../_service/utils/dialog.service";
 import {MatDialog} from "@angular/material";
 import {PlaceService} from "../../../../../_service/user/place/place/place.service";
+import {OffsetLimit} from "../../../../../_util/OffsetLimit";
 
 @Component({
   selector: 'app-wish-list-menu',
@@ -19,10 +20,11 @@ export class WishListMenuComponent implements OnInit {
 
 
   @Input() list: WishListList;
+  @Input() place: PlaceDetails;
+
   @Output() selectedWishList = new EventEmitter<KeyName>();
 
-  place: PlaceDetails;
-  _selectedWishList: WishList = null;
+  deleted: WishList[] = [];
 
   constructor(private wishListService: WishListService,
               private modalService: NgbModal,
@@ -33,8 +35,10 @@ export class WishListMenuComponent implements OnInit {
 
 
   ngOnInit() {
-    this.place = this.list.getPlace();
+    if(this.place == null)
+      this.place = this.list.getPlace();
   }
+
 
   openForm() {
     const formDatas = {place: this.place};
@@ -50,15 +54,15 @@ export class WishListMenuComponent implements OnInit {
   }
 
 
-  deleteWishList(list: Entity | number) {
-    let element: Entity;
+  offset: number = 0;
+  loadDeleted() {
+    let query = new WishListQuery();
+    query.active = false;
+    query.placeIds = [ this.place.id ];
+    query.offsetLimit = new OffsetLimit(this.offset, 10);
 
-    if(typeof list =='number') {
-      element = new KeyName();
-      element.id = list;
-    }
-    else
-      element = list;
+    this.wishListService.get(query)
+                        .then(l => l.forEach(w => this.deleted.push(w)));
   }
 
 

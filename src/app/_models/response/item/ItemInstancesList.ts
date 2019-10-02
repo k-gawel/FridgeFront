@@ -1,11 +1,29 @@
-import {Entity, EntityList} from '../Entity';
+import {EntityList} from '../Entity';
 import {Container, ContainersList} from '../Container';
 import {ItemsList} from './ItemsList';
 import {KeyName, KeyNameList} from '../KeyName';
 import {Item} from './Item';
 import {ItemInstance} from './ItemInstance';
 import {IdSelector} from '../../../_service/utils/EntitySelector';
-import {WishListItem, WishListItemList} from "../WishListItem";
+import {WishListItemList} from "../WishListItem";
+import {ShopListList} from "../ShopList";
+
+export class ItemInstanceFilter {
+
+  constructor(deleted?: boolean | null, opened?: boolean | null, frozen?: boolean | null) {
+    if(this.deleted === undefined) return;
+
+    this.deleted = deleted;
+    this.opened = opened;
+    this.frozen = frozen;
+  }
+
+  deleted: boolean | null = false;
+  opened:  boolean | null = null;
+  frozen:  boolean | null = null;
+
+
+}
 
 export class ItemInstancesList extends EntityList<ItemInstance> {
 
@@ -93,6 +111,15 @@ export class ItemInstancesList extends EntityList<ItemInstance> {
   }
 
 
+  public filterByItems(items: number | Item | number[] | ItemsList): ItemInstancesList {
+    let ids = new IdSelector(items).id;
+    let result = <ItemInstancesList> this.filter(ii => ids.includes(ii.itemId));
+    Object.setPrototypeOf(result, ItemInstancesList.prototype);
+    return result;
+  }
+
+
+
   public filterByWishListItems(items: WishListItemList): ItemInstancesList {
     let result;
 
@@ -102,6 +129,24 @@ export class ItemInstancesList extends EntityList<ItemInstance> {
 
     Object.setPrototypeOf(result, ItemInstancesList.prototype);
     return result;
+  }
+
+
+  public filterByShopLists(lists: ShopListList): ItemInstancesList {
+    let result;
+
+    result = lists == null ?
+      <ItemInstancesList> this.filter(i => i.shopList == null)
+      : <ItemInstancesList> this.filter(i => lists.contains(i.shopList));
+
+    Object.setPrototypeOf(result, ItemInstancesList.prototype);
+    return result;
+  }
+
+
+  public filterByProps(filter: ItemInstanceFilter): ItemInstancesList {
+    return this.filterByDeleted(filter.deleted)
+               .filterByOpen(filter.opened);
   }
 
 }

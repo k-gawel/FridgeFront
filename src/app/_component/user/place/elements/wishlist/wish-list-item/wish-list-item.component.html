@@ -1,30 +1,14 @@
-<!--<mat-toolbar *ngIf="dialogRef != null" class="dialog-full-screen-toolbar">-->
-
-<!--<mat-toolbar-row class="space-between">-->
-
-<!--<span>-->
-<!--{{item.categoryId.name}}-->
-<!--</span>-->
-
-<!--<close-dialog-button [dialogRef]="dialogRef">-->
-<!--</close-dialog-button>-->
-
-<!--</mat-toolbar-row>-->
-
-<!--</mat-toolbar>-->
-
-
 <div [ngStyle]="{'display': steps == null ? '' : 'none' }">
 
   <div>
 
     <h4 class="space-between">
         <span>
-          <i class="fa fa-user"></i> {{item.author.name}}
+          <i class="fa fa-user"></i> {{item.created.name}}
         </span>
 
       <span>
-          <i class="fa fa-calendar"></i> {{item.createdOn | date: 'dd/MM'}}
+          <i class="fa fa-calendar"></i> {{item.created.simpleDateString}}
         </span>
     </h4>
 
@@ -42,11 +26,11 @@
     <h5 class="space-between">
 
         <span>
-          <i class="fa fa-user-plus"></i> {{item.addedBy.name}}
+          <i class="fa fa-user-plus"></i> {{item.added.name}}
         </span>
 
       <span>
-          <i class="fa fa-calendar-plus"></i> {{item.addedOn | date: 'd/M'}}
+          <i class="fa fa-calendar-plus"></i> {{item.added.simpleDateString}}
         </span>
 
     </h5>
@@ -63,11 +47,11 @@
         </span>
 
       <span *ngIf="item.addedInstance.isOpen() && !item.addedInstance.isDeleted()">
-          <i class="fas fa-box-open"></i> {{item.addedInstance.opened.dateToSimpleString}}
+          <i class="fas fa-box-open"></i> {{item.addedInstance.opened.simpleDateString}}
         </span>
 
       <span *ngIf="item.addedInstance.isDeleted()">
-          <i class="fas fa-trash"></i> {{item.addedInstance.deleted.dateToSimpleString}}
+          <i class="fas fa-trash"></i> {{item.addedInstance.deleted.simpleDateString}}
         </span>
 
     </h5>
@@ -117,15 +101,14 @@
     </ng-template>
 
     <app-item-picker [place]="item.wishList.place" [category]="steps.category" [closeable]="false"
-                     (selectedItem)="selectInstanceItem($event); stepper.next()">
+                     (selectedItem)="steps.item = $event; stepper.next()">
     </app-item-picker>
 
     <button style="width: 100%" mat-raised-button matStepperNext>
       Next
     </button>
 
-  </mat-step>
-  >
+  </mat-step>>
 
   <mat-step>
 
@@ -133,8 +116,8 @@
       Instance
     </ng-template>
 
-    <app-new-wish-list-item-instance-item *ngIf="instanceItem != null"
-                                          [item]="instanceItem" [wishListItem]="item" (ready)="steps = null">
+    <app-new-wish-list-item-instance-item (ready)="steps = null" [wishListItem]="item"
+                                          [category]="steps.category" [item]="steps.item" >
     </app-new-wish-list-item-instance-item>
 
     <div>
