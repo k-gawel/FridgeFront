@@ -18,7 +18,7 @@ export class ContainersMenuComponent implements OnInit {
   _place: PlaceDetails;
   @Input() set place(value: PlaceDetails) {
     this._place = value;
-    this.containerForm.placeId = this._place.id;
+    this.containerForm.place = this._place.id;
 
     this._containers = this._place.containers;
     this._chosenContainers = new ContainersList();

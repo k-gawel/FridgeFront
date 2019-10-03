@@ -7,7 +7,7 @@ import {ShopList, ShopListList} from "./ShopList";
 
 export class PlaceDetails extends KeyName {
 
-    adminId: number;
+  adminId: number;
 
   containers: ContainersList = new ContainersList();
   users: PlaceUsersList = new PlaceUsersList();
@@ -62,8 +62,7 @@ export class PlaceDetailsList extends KeyNameList<PlaceDetails> {
     constructor(json?: JSON[]) {
       super();
 
-      if(json == undefined)
-        return;
+      if(json == undefined) return;
 
       json.forEach((element: JSON) => this.add(new PlaceDetails(element)));
     }

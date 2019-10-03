@@ -58,7 +58,7 @@
 
         <mat-label>Container</mat-label>
 
-        <mat-select name="containerId" [(ngModel)]="form.containerId" #containerId="ngModel" >
+        <mat-select name="container" [(ngModel)]="form.container" #container="ngModel" >
           <mat-optgroup *ngFor="let place of places | entityList" [label]="place.name">
             <mat-option *ngFor="let container of place.containers | entityList" [value]="container.id">
               {{container.name}}
@@ -78,7 +78,7 @@
 
         <mat-label>WishList item</mat-label>
 
-        <mat-select name="wishListItem" [(ngModel)]="form.wishListItemId">
+        <mat-select name="wishListItem" [(ngModel)]="form.wishListItem">
           <mat-optgroup *ngFor="let WL of getWishLists() | entityList" [label]="WL.name">
             <mat-option *ngFor="let WLI of getItems(WL)  | entityList" [value]="WLI.id">
               {{WLI.category.name}}
@@ -95,7 +95,7 @@
 
         <mat-label>ShopList</mat-label>
 
-        <mat-select name="shopListId" [(ngModel)]="form.shopListId">
+        <mat-select name="shopList" [(ngModel)]="form.shopList">
           <mat-option *ngFor="let SL of getShopLists() | entityList" [value]="SL.id">
             {{SL.shopName + ' ' + SL.created.simpleDateString}}
           </mat-option>

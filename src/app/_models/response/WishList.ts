@@ -34,7 +34,6 @@ export class WishList extends PlaceElement {
     this.place = PlaceDetailsList.ALL[json['placeId']];
     this.place.wishLists.add(this);
 
-
     this.description = json['description'];
     (<JSON[]> json['items']).forEach(j => new WishListItem(j));
   }

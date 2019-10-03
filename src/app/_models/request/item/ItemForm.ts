@@ -14,11 +14,10 @@ export class ItemForm extends Form {
   barcode: number;
 
   @Min(0, { message: ErrorCode.PLACE.NULL })
-  placeId: number;
+  place: number;
 
   @Min(0, { message: ErrorCode.CATEGORY.NULL } )
-  categoryId: number;
-
+  category: number;
 
   producer: string;
 

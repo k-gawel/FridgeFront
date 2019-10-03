@@ -43,7 +43,7 @@ export class ApiService {
   }
 
   public get(url: string, headers: HttpHeaders, params: HttpParams) {
-    return this.http.get(url, {headers, params}).toPromise();
+    return this.http.get(url, { headers: headers, params: params }).toPromise();
   }
 
   public put(url: string, params: HttpParams, body: any, headers: HttpHeaders) {

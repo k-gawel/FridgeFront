@@ -33,23 +33,23 @@ export class WishListItemFormComponent {
               public dialogRef: MatDialogRef<WishListItemFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: WishListItemFormComponentData) {
     this._wishList = data.wishList;
-    this.form.authorId = this.cookieDatas.getUserId();
-    this.form.wishListId = this._wishList.id;
+    this.form.author = this.cookieDatas.getUserId();
+    this.form.wishList = this._wishList.id;
   }
 
 
   selectCategory(category: Category) {
     this.chosenCategory = category;
-    this.form.itemId = null;
-    this.form.categoryId = category.id;
+    this.form.item = null;
+    this.form.category = category.id;
     this.activeElement = category;
   }
 
 
   selectItem(item: Item) {
     this.chosenCategory = item.category;
-    this.form.itemId = item.id;
-    this.form.categoryId = null;
+    this.form.item = item.id;
+    this.form.category = null;
     this.activeElement = item;
   }
 

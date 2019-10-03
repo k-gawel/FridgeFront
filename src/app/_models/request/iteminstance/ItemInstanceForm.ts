@@ -9,18 +9,18 @@ export class ItemInstanceForm extends Form {
 
 
   @Min(0, {message: "user.null"})
-  userId: number;
+  user: number;
 
   comment: string;
 
   @Min(0, {message: "item.null"})
-  itemId: number;
+  item: number;
 
   @Min(0, {message: "container.null"})
-  containerId: number;
+  container: number;
 
-  wishListItemId: number;
-  shopListId: number;
+  wishListItem: number;
+  shopList: number;
 
   @MinDate(new LocalDate().toDate(), { message: "expireDate.past"})
   expireDate: Date;

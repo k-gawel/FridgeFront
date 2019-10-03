@@ -19,12 +19,7 @@ import {PlaceUserService} from '../../../../_service/user/place/placeUser/place-
 })
 export class PlaceComponent  {
 
-  @Input()
-  set place(value: KeyName) {
-    this.placeService.getById(new IdSelector(value))
-      .then((result: PlaceDetails) => this._place = result )
-      .catch(e => console.log(e));
-  }
+
 
   _place: PlaceDetails;
   _chosenContainers: ContainersList;
@@ -39,6 +34,12 @@ export class PlaceComponent  {
               private errorHandler: ErrorHandlerService) {
   }
 
+  @Input()
+  set place(value: KeyName) {
+    this.placeService.getById(new IdSelector(value))
+      .then((result: PlaceDetails) => this._place = result )
+      .catch(e => console.log(e));
+  }
 
   isAdmin(): boolean {
     return this.cookieData.getUserId() === this._place.adminId;
@@ -72,7 +73,7 @@ export class PlaceComponent  {
 
   leavePlace() {
     if (!this.canLeavePlace()) {
-      this.errorHandler.sendErrors(["You can't leave this placeId without an admin. Try to promote someone."]);
+      this.errorHandler.sendErrors(["You can't leave this place without an admin. Try to promote someone."]);
       return;
     }
 

@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
 import {ItemInstanceForm} from '../../../_models/request/iteminstance/ItemInstanceForm';
 import {HttpParams} from '@angular/common/http';
+import {ItemInstanceQuery} from "../../../_models/request/iteminstance/ItemInstanceQuery";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemInstanceApiService {
 
-  private url = this.api.url + "item_instances";
+  private url = this.api.url + "itemInstances";
 
   constructor(private api: ApiService) { }
 
@@ -21,39 +22,10 @@ export class ItemInstanceApiService {
   }
 
 
-  public get(ids: number | number[], items: number | number[], places: number | number[],
-             containers: number | number[], owners: number | number[], deleted: Boolean,
-             open: Boolean, frozen: Boolean, limit: number, offset: number) {
-    let idsString = ApiService.numbersArrayToString(ids);
-    let itemsString = ApiService.numbersArrayToString(items);
-    let placesString = ApiService.numbersArrayToString(places);
-    let containersString = ApiService.numbersArrayToString(containers);
-    let ownersString = ApiService.numbersArrayToString(owners);
-
+  public get(query: ItemInstanceQuery) {
     let url = this.url;
-    let params = new HttpParams();
-    if(idsString != '')
-      params = params.append("ids", idsString);
-    if(itemsString != '')
-      params = params.append("items", itemsString);
-    if(placesString != '')
-      params = params.append("places", placesString);
-    if(containersString != '')
-      params = params.append("containers", containersString);
-    if(ownersString != '')
-      params = params.append("owners", ownersString);
-    if(deleted != null)
-      params = params.append("deleted", deleted.toString());
-    if(open != null)
-      params = params.append("open", open.toString());
-    if(frozen != null)
-      params = params.append("frozen", frozen.toString());
-    if(limit != null)
-      params = params.append("limit", limit.toString());
-    if (offset != null)
-      params = params.append("offset", offset.toString());
-
     let header = this.api.getHeaderWithToken();
+    let params = query.toHttpParams();
 
     return this.api.get(url, header, params);
   }

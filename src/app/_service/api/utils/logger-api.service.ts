@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
+import {OffsetLimit} from "../../../_util/OffsetLimit";
+import {HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +14,5 @@ export class LoggerApiService {
 
   url: string;
 
-  public getInstanceChangesByPlace(placesId: number, limit: number) {
-
-    let url = this.url + "_instances/byPlace/" + placesId + "/limit/" + limit;
-    let headers = this.api.getHeaderWithToken();
-    let params = null;
-
-    return this.api.get(url, headers, null);
-  }
 
 }

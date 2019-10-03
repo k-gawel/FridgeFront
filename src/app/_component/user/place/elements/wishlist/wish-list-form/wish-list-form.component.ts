@@ -25,8 +25,8 @@ export class WishListFormComponent {
 
   ngOnInit() {
     this.form = new WishListForm();
-    this.form.placeId = this.place.id;
-    this.form.authorId = this.sessionService.getUserId();
+    this.form.place = this.place.id;
+    this.form.author = this.sessionService.getUserId();
   }
 
   submit() {

@@ -9,20 +9,18 @@ import {FormErrorMessages} from "../FormErrorMessages";
 export class WishListItemForm extends Form {
 
   @Min(0, { message: "wishList.null"} )
-  wishListId: number;
+  wishList: number;
 
   @Min(0, { message: "user.null"} )
-  authorId: number;
+  author: number;
 
   @Min(0, { message: "category.null"} )
-  categoryId: number;
+  category: number;
 
-  itemId: number;
+  item: number;
 
   @Length(0, 50, { message: "comment.tooLong" } )
   comment: string;
-
-
 
   private _errors = new WishListItemFormErrors();
   private static _messages = new WishListItemFormErrorMessages();

@@ -15,7 +15,7 @@ export class IngredientApiService {
   public getByIds(ids: number[] | number) {
     let url = this.url;
     let params: HttpParams = new HttpParams();
-    params = params.append("ids", ids.toString());
+    params = params.append("ingredients", ids.toString());
 
     return this.api.get(url, null, params);
   }

@@ -27,9 +27,9 @@ export class ContainerApiService {
     let url = this.url;
     let params = new HttpParams();
     if (ids != null)
-      params = params.append("ids", ApiService.numbersArrayToString(ids));
+      params = params.append("containers", ApiService.numbersArrayToString(ids));
     if(placeIds != null)
-      params = params.append("placeIds", ApiService.numbersArrayToString(placeIds));
+      params = params.append("places", ApiService.numbersArrayToString(placeIds));
     let header = this.api.getHeaderWithToken();
 
     return this.api.get(url, header, params);
@@ -40,11 +40,11 @@ export class ContainerApiService {
     let url = this.url + "user_stats";
     let params = new HttpParams();
     if(userIds != null)
-      params = params.append("user_ids", ApiService.numbersArrayToString(userIds));
+      params = params.append("users", ApiService.numbersArrayToString(userIds));
     if(containerIds != undefined)
-      params = params.append("container_ids", ApiService.numbersArrayToString(containerIds));
+      params = params.append("container", ApiService.numbersArrayToString(containerIds));
     if(placeIds != undefined)
-      params = params.append("place_ids", ApiService.numbersArrayToString(placeIds));
+      params = params.append("place", ApiService.numbersArrayToString(placeIds));
     let headers = this.api.getHeaderWithToken();
 
     return this.api.get(url, headers, params);

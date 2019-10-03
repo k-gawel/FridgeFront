@@ -42,8 +42,8 @@ export class NewItemComponent {
     this.form = new ItemForm();
     this.newAllergen = new AllergenForm();
 
-    this.form.categoryId = data.category.id;
-    this.form.placeId = data.place.id;
+    this.form.category = data.category.id;
+    this.form.place = data.place.id;
     this.form.name = data.name;
     this.form.barcode = data.barcode;
   }

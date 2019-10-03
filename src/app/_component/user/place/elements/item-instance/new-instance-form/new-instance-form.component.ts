@@ -43,14 +43,14 @@ export class NewInstanceFormComponent implements OnInit {
 
 
   ngOnInit() {
-    this.form.itemId = this.item.id;
+    this.form.item = this.item.id;
     this.form.price.currency = Currencies.PLN.code;
-    this.form.userId = this.cookieService.getUserId();
+    this.form.user = this.cookieService.getUserId();
 
     if (this.wishListItem != null)
-      this.form.wishListItemId = this.wishListItem.id;
+      this.form.wishListItem = this.wishListItem.id;
     if (this.shopList != null)
-      this.form.shopListId = this.shopList.id;
+      this.form.shopList = this.shopList.id;
   }
 
 

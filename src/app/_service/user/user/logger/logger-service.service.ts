@@ -10,15 +10,4 @@ export class LoggerServiceService {
 
   constructor(private loggerApi: LoggerApiService) { }
 
-  public async getInstancesChangesByPlace(place: PlaceDetails | number): Promise<InstanceChangeList> {
-    let placeId: number = place instanceof PlaceDetails ? place.id : place;
-
-    let result: InstanceChangeList;
-
-    return this.loggerApi.getInstanceChangesByPlace(placeId, 10)
-      .then( (res: JSON[]) => new InstanceChangeList(res) )
-      .catch( (e: Error) => null );
-
-  }
-
 }

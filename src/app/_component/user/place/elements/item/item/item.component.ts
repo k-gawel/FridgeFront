@@ -3,11 +3,13 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import {Item} from "../../../../../../_models/response/item/Item";
 import {PlaceDetails, PlaceDetailsList} from "../../../../../../_models/response/PlaceDetails";
 import {ItemInstance} from "../../../../../../_models/response/item/ItemInstance";
-import {ItemInstanceQuery, ItemInstanceService} from "../../../../../../_service/user/instance/item-instance.service";
+import {ItemInstanceService} from "../../../../../../_service/user/instance/item-instance.service";
 import {WishListItemService} from "../../../../../../_service/user/wishlist/wishListItem/wish-list-item.service";
 import {EntityList} from "../../../../../../_models/response/Entity";
 import {Container} from "../../../../../../_models/response/Container";
 import {ItemInstancesList} from "../../../../../../_models/response/item/ItemInstancesList";
+import {ItemInstanceParams, ItemInstanceQuery} from "../../../../../../_models/request/iteminstance/ItemInstanceQuery";
+import {OffsetLimit} from "../../../../../../_util/OffsetLimit";
 
 export interface ItemComponentData {
   item: Item;
@@ -44,10 +46,9 @@ export class ItemComponent {
   getDeletedInstances() {
     let query = new ItemInstanceQuery();
     query.containers = this.places.getContainers().map(c => c.id);
-    query.items = this.item.id;
-    query.deleted = true;
-    query.limit = 20;
-    query.offset = this.deletedInstancesFetches * 20;
+    query.items = [ this.item.id ];
+    query.params = new ItemInstanceParams(null, null, true);
+    query.offsetLimit = new OffsetLimit(this.deletedInstancesFetches * 20, 20);
     this.itemInstanceService.get(query).then(ii => {
       this.deletedInstances.push(ii);
       this.deletedInstancesFetches = ii.size() != 0 ? this.deletedInstancesFetches + 1 : null;

@@ -13,6 +13,7 @@ import {BarcodeScannerComponent} from '../barcode-scanner/barcode-scanner.compon
 import {IdSelector} from "../../../../../../_service/utils/EntitySelector";
 import {MatDialog} from "@angular/material";
 import {DialogService} from "../../../../../../_service/utils/dialog.service";
+import {ItemGetQuery} from "../../../../../../_models/request/item/ItemGetQuery";
 
 
 @Component({
@@ -77,16 +78,23 @@ export class ItemPickerComponent  {
 
 
   searchByBarcode(barcode: number) {
-    this.itemService.searchItemsByBarcode(barcode, this.place)
-      .then((items: ItemsList) => this.setItems(items, false) )
-      .catch((e: ErrorMessage) => this.errorMessage = e )
+    let query = new ItemGetQuery();
+    query.barcode = barcode;
+    query.places = [this.place.id];
+
+    this.itemService.get(query)
+                    .then((items: ItemsList) => this.setItems(items, false) );
   }
 
 
   searchByName(name: string) {
-    this.itemService.searchItemByName(name, this.place, this._category)
-      .then(items => this.setItems(items, false) )
-      .catch(e => this.errorMessage = e );
+    let query = new ItemGetQuery();
+    query.name = name;
+    query.places = [this.place.id];
+    query.category = this._category.id;
+
+    this.itemService.get(query)
+                    .then((i: ItemsList) => this.setItems(i, false));
   }
 
 

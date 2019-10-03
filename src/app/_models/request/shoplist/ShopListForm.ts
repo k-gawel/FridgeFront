@@ -10,10 +10,10 @@ import {ErrorCode} from "../ErrorCode";
 export class ShopListForm extends Form {
 
   @Min(0, { message: ErrorCode.PLACE.NULL })
-  placeId: number;
+  place: number;
 
   @Min(0, { message: ErrorCode.USER.NULL })
-  authorId: number;
+  author: number;
 
   shopName: string;
   description: string;

@@ -41,7 +41,7 @@ export class WishListItem extends Entity {
     }
 
 
-    this.category = Category.getById(json['categoryId']);
+    this.category = Category.getById(json['category']);
     this.comment = json['comment'];
   };
 

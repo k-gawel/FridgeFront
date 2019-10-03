@@ -9,7 +9,7 @@ import {ErrorCode} from "../ErrorCode";
 export class ContainerForm extends Form {
 
   @Min(0, { message: ErrorCode.PLACE.NULL } )
-  placeId: number;
+  place: number;
 
   @Length(5, 30, { message: ErrorCode.NAME.LENGTH })
   name: string;

@@ -13,10 +13,10 @@ export class WishListForm extends Form {
   name: string;
 
   @Min(0, { message: ErrorCode.USER.NULL })
-  authorId: number;
+  author: number;
 
   @Min(0, { message: ErrorCode.PLACE.NULL })
-  placeId: number;
+  place: number;
 
   description: string;
 
