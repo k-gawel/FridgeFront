@@ -73,7 +73,7 @@
     </mat-list>
 
     <div *ngIf="newInstanceForm">
-      <app-new-instance-form [wishListItem]="wishListItem" [item]="item" [places]="places"
+      <app-new-instance-form [wishListItem]="wishListItem" [item]="_item" [places]="places"
                              (newInstance)="addInstance($event); newInstanceForm = false">
       </app-new-instance-form>
     </div>

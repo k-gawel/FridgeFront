@@ -1,11 +1,37 @@
 <mat-action-list>
 
+  <!--ACTIVE LIST-->
   <button *ngFor="let wishList of list.getByStatus(true) | entityList"
           mat-list-item (click)="select(wishList)">
-    {{wishList.name}}
+    <span class="space-between" style="width: 100%">
+      <span>
+        {{wishList.name}}
+      </span>
+      <span [ngStyle]="{'color': wishList.isComplete() ? '#2e7565' : 'black'}">
+        {{wishList.addedSize() + '/' + wishList.wishListItems.size()}}
+      </span>
+    </span>
   </button>
 
-  <button mat-list-item (click)="loadDeleted()">
+
+  <mat-divider></mat-divider>
+
+
+  <!--ARCHIVED LIST-->
+  <button mat-list-item *ngFor="let WL of deleted" (click)="select(WL)">
+    <span class="space-between" style="width: 100%">
+      <span>
+      {{WL.name}}
+      </span>
+      <span [ngStyle]="{'color': WL.isComplete() ? '#2e7565' : 'rgba(107, 0, 12, 0.73)'}">
+        <i class="fa fa-trash" aria-hidden="true"></i> {{WL.archived.simpleDateString}}
+      </span>
+    </span>
+  </button>
+
+
+  <!--SHOW MORE BUTTOn-->
+  <button mat-list-item (click)="loadDeleted()" *ngIf="offset != null">
     Show archived
     <mat-icon>keyboard_arrow_down</mat-icon>
   </button>
@@ -14,8 +40,7 @@
 
 <div class="option-buttons ob-right">
 
-  <button mat-fab aria-label="New WishList" *ngIf="place != null"
-          (click)="openForm()">
+  <button mat-fab aria-label="New WishList" *ngIf="place != null" (click)="openForm()">
     <mat-icon aria-hidden="false" aria-label="Search item">add_new</mat-icon>
   </button>
 

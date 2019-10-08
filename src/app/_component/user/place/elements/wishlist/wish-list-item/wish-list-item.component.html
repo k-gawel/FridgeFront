@@ -1,5 +1,7 @@
 <div [ngStyle]="{'display': steps == null ? '' : 'none' }">
 
+  <!--WISH LIST ITEM DESCIRPTION-->
+
   <div>
 
     <h4 class="space-between">
@@ -21,7 +23,13 @@
   <mat-divider></mat-divider>
 
 
+  <!--ADDED INSTANCE DESCRIPTION-->
+
   <div *ngIf="item.addedInstance != null" style="margin-top: 1em">
+
+    <h5 class="text-truncate" style="width: 100%">
+      {{item.addedInstance.item.name}}
+    </h5>
 
     <h5 class="space-between">
 
@@ -64,11 +72,11 @@
 
   </div>
 
-  <div *ngIf="item.addedInstance == null">
+
+  <div *ngIf="item.addedInstance == null && item.wishList.archived == null">
 
     <button mat-raised-button style="width: 100%" (click)="openForm()">
-      <mat-icon>add</mat-icon>
-      Add instance
+      <mat-icon>add</mat-icon> Add instance
     </button>
 
   </div>
@@ -76,6 +84,7 @@
 
 </div>
 
+<!--NEW INSTANCE FORM-->
 
 <mat-horizontal-stepper linear #stepper *ngIf="steps != null" class="dialog-full-width-element">
 

@@ -54,13 +54,13 @@ export class ItemInstanceComponent implements OnInit {
 
 
   getWishLists(): EntityList<WishList> {
-    let item = ItemsList.ALL[this.instance.itemId];
+    let item = this.instance.item;
     let place = this.instance.container.place;
     return place.wishLists.filter(w => w.wishListItems.filterByItem(item).size() != 0);
   }
 
   getWishListItems(wishList: WishList): EntityList<WishListItem> {
-    let item = ItemsList.ALL[this.instance.itemId];
+    let item = this.instance.item;
     return wishList.wishListItems.filterByItem(item).filter(i => i.addedInstance == null);
   }
 

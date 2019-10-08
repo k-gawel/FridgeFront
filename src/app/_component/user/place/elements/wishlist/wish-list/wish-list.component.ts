@@ -77,4 +77,14 @@ export class WishListComponent {
   }
 
 
+  indicatorClass(item: WishListItem): string {
+    if(item.added != null)
+      return 'header-added';
+    else if(this._wishList.archived != null && item.added == null)
+      return 'header-missed';
+    else
+      return null;
+  }
+
+
 }

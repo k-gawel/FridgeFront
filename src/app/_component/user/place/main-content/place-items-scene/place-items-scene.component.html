@@ -5,7 +5,7 @@
         <span class="input-group-text" style="flex-grow: 1" (click)="openCategoriesSheet()">
           {{_category.name}}
         </span>
-    <span class="input-group-text" style="flex-grow: 1">
+    <span class="input-group-text" style="flex-grow: 1" (click)="openProducersSheet()">
           Producer
         </span>
   </div>
@@ -24,14 +24,14 @@
         </span>
       </p>
 
-      <img src="https://image.flaticon.com/icons/svg/99/99518.svg" class="rounded" width="50px" height="50px">
+      <img [src]="imageUrl(item)" class="rounded" width="50px" height="50px">
     </button>
   </mat-action-list>
 
   <div *ngIf="content == 'PICKER'" style="height: calc(100% - 2.4em); overflow: auto">
 
     <app-item-picker (close)="content = 'LIST'" (selectedItem)="openItem($event)"
-                     [category]="_category" [place]="_place" [closeable]="true">
+                     [category]="_category" [place]="place" [closeable]="true">
     </app-item-picker>
 
   </div>

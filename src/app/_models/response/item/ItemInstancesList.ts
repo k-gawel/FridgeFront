@@ -56,15 +56,20 @@ export class ItemInstancesList extends EntityList<ItemInstance> {
 
 
   public getItemIds(): number[] {
-    let ids = <number[]> this.map(i => i.itemId);
+    let ids = <number[]> this.map(i => i.item.id);
     let idsSet = new Set(ids);
     return Array.from(idsSet.values());
   }
 
+  public getItems(): ItemsList {
+    let result = new ItemsList();
+    this.map(ii => ii.item).forEach(i => result.add(i));
+    return result;
+  }
 
   public getByItems(items: number | Item | number[] | ItemsList | Item[]): ItemInstancesList {
     let ids: number[] = new IdSelector(items).id;
-    let result = <ItemInstancesList> this.filter((ii: ItemInstance) => ids.includes(ii.itemId));
+    let result = <ItemInstancesList> this.filter((ii: ItemInstance) => ids.includes(ii.item.id));
 
     Object.setPrototypeOf(result, ItemInstancesList.prototype);
     return result;
@@ -113,7 +118,7 @@ export class ItemInstancesList extends EntityList<ItemInstance> {
 
   public filterByItems(items: number | Item | number[] | ItemsList): ItemInstancesList {
     let ids = new IdSelector(items).id;
-    let result = <ItemInstancesList> this.filter(ii => ids.includes(ii.itemId));
+    let result = <ItemInstancesList> this.filter(ii => ids.includes(ii.item.id) );
     Object.setPrototypeOf(result, ItemInstancesList.prototype);
     return result;
   }

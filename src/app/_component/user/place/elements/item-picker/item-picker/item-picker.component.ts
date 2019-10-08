@@ -14,6 +14,7 @@ import {IdSelector} from "../../../../../../_service/utils/EntitySelector";
 import {MatDialog} from "@angular/material";
 import {DialogService} from "../../../../../../_service/utils/dialog.service";
 import {ItemGetQuery} from "../../../../../../_models/request/item/ItemGetQuery";
+import {ApiService} from "../../../../../../_service/api/api/api.service";
 
 
 @Component({
@@ -26,23 +27,24 @@ export class ItemPickerComponent  {
   constructor(private itemService: ItemService,
               private relatedItemsService: RelatedItemsService,
               private modalService: NgbModal,
-              private windowService: WindowService,
               public dialog: MatDialog) {
   }
 
   @Input() closeable: boolean = false;
+  @Input() place: PlaceDetails;
 
+  @Output() selectedItem = new EventEmitter<Item>();
+  @Output() close = new EventEmitter();
 
-  errorMessage: ErrorMessage;
+  items: ItemsList;
+
   textSearch: string | number = '';
 
 
   _category: Category = Category.rootCategory;
   @Input() set category(category: Category) {
-    if(this._category.equals(category) || category == null)
-      return;
-    else
-      this._category = category;
+    if(this._category.equals(category) || category == null) return;
+    else this._category = category;
 
     if(this._category.isFinal() && this.textSearch == "")
       this.getRelatedItems();
@@ -51,18 +53,8 @@ export class ItemPickerComponent  {
   }
 
 
-  @Input() place: PlaceDetails = new PlaceDetails();
-
-
-  @Output() selectedItem = new EventEmitter<Item>();
-  @Output() close = new EventEmitter();
-
-
-  related: boolean = true;
-  items: ItemsList;
-  setItems(items: ItemsList, related: boolean) {
-    this.items = items;
-    this.related = related;
+  imageUrl(item: Item): string {
+    return ApiService.imageUrl(item);
   }
 
   
@@ -83,7 +75,7 @@ export class ItemPickerComponent  {
     query.places = [this.place.id];
 
     this.itemService.get(query)
-                    .then((items: ItemsList) => this.setItems(items, false) );
+                    .then((items: ItemsList) => this.items = items );
   }
 
 
@@ -94,7 +86,7 @@ export class ItemPickerComponent  {
     query.category = this._category.id;
 
     this.itemService.get(query)
-                    .then((i: ItemsList) => this.setItems(i, false));
+                    .then((i: ItemsList) => this.items = i);
   }
 
 
@@ -103,11 +95,11 @@ export class ItemPickerComponent  {
 
     if(this._category.isFinal())
       this.relatedItemsService.getAll(new IdSelector(this._category), new IdSelector(this.place), 100)
-        .then(items => this.setItems(items, false));
+                              .then(items => this.items = items);
     else
       this.relatedItemsService.getMostPopular(this._category, this.place)
-        .then( (items: ItemsList) => this.setItems(items, true) )
-        .catch( (e: ErrorMessage) => this.errorMessage = e );
+                              .then( (items: ItemsList) => this.items = items );
+
   }
 
   
@@ -124,21 +116,13 @@ export class ItemPickerComponent  {
 
   
   createNewItem() {
-    if (!this._category.isFinal())
-      return;
-
-    const formData = {
-      category: this._category,
-      place: this.place,
-      name: isNaN(Number(this.textSearch)) ? this.textSearch : null,
-      barcode: !isNaN(Number(this.textSearch)) ? null : this.textSearch
-    };
+    const formData = { category: this._category, place: this.place,
+                       name: isNaN(Number(this.textSearch)) ? this.textSearch : null,
+                      barcode: !isNaN(Number(this.textSearch)) ? null : this.textSearch
+                     };
 
     const dialogRef = DialogService.createItemFormComponent(this.dialog, <NewItemDatas> formData);
-    dialogRef.afterClosed().subscribe(i => {
-      if (i != null)
-        this.selectedItem.emit(i);
-    })
+    dialogRef.afterClosed().subscribe(i => { if (i != null) this.selectedItem.emit(i); })
   }
 
 }

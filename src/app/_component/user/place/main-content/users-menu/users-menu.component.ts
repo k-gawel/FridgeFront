@@ -7,10 +7,6 @@ import {PlaceService} from '../../../../../_service/user/place/place/place.servi
 import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
 import {AccountService} from '../../../../../_service/user/user/account.service';
 import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
-import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
-import {FormControl} from "@angular/forms";
-
-
 @Component({
   selector: 'app-users-menu',
   templateUrl: './users-menu.component.html',
@@ -20,11 +16,9 @@ export class UsersMenuComponent implements OnInit {
 
 
   @Input() place: PlaceDetails;
-  users: PlaceUsersList = new PlaceUsersList();
 
-  formCtrl = new FormControl();
 
-  form: KeyName = new KeyName();
+  form: KeyName;
   usersList: KeyNameList<KeyName> = new KeyNameList<KeyName>();
 
 
@@ -33,14 +27,13 @@ export class UsersMenuComponent implements OnInit {
               private placeService: PlaceService,
               private errorHandler: ErrorHandlerService,
               private placeUserService: PlaceUserService) {
-    this.formCtrl.valueChanges.subscribe(e => this.searchByName(e));
   }
 
   ngOnInit() {
-    this.users = this.place.users;
   }
 
   searchByName(name: string) {
+    this.form = null;
     if (name == null)
       return;
     if (name.length < 4)
@@ -50,22 +43,16 @@ export class UsersMenuComponent implements OnInit {
   }
 
 
-  selectUserToAdd(user: KeyName) {
-    this.form = user;
-  }
-
-
   addUser() {
+    let processResult = () => {
+      this.form = null;
+      this.usersList = new KeyNameList<KeyName>();
+    };
+
     this.placeUserService.addUser(this.place, this.form)
-      .catch( e => this.errorHandler.sendErrors(e) )
-      .then( () => this.form = new KeyName() );
+                         .then( processResult);
   }
 
-
-  private pushUser(u: KeyName) {
-    let user = PlaceUser.clone(u);
-    this.users.add(user);
-  }
 
 
   isAdmin(user?: KeyName): boolean {
@@ -97,6 +84,10 @@ export class UsersMenuComponent implements OnInit {
 
 
 }
+import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
+
+
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'user-menu-stat',

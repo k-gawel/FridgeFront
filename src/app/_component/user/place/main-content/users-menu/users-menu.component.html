@@ -1,6 +1,6 @@
 <mat-action-list>
 
-  <ng-container *ngFor="let user of users | entityList">
+  <ng-container *ngFor="let user of place.users.getByStatus(true) | entityList">
 
     <button mat-list-item [matMenuTriggerFor]="userMenu">
       {{user.name}}
@@ -34,15 +34,20 @@
 
 </mat-action-list>
 
-<!--<mat-form-field style="width: 100%; padding: 0 0.5em">-->
-  <!--<input matInput placeholder="New user name" [matAutocomplete]="usersAutocomplete"-->
-         <!--[formControl]="formCtrl['name']" name="newuser-form-name"/>-->
 
-  <!--<mat-icon matSuffix>add</mat-icon>-->
+<mat-form-field style="width: 100%; padding: 0 0.5em">
 
-  <!--&lt;!&ndash;<mat-autocomplete #usersAutocomplete="matAutocomplete">&ndash;&gt;-->
-  <!--&lt;!&ndash;<mat-option *ngFor="let user of usersList | entityList" [value]="user">&ndash;&gt;-->
-  <!--&lt;!&ndash;{{user.name}}&ndash;&gt;-->
-  <!--&lt;!&ndash;</mat-option>&ndash;&gt;-->
-  <!--&lt;!&ndash;</mat-autocomplete>&ndash;&gt;-->
-<!--</mat-form-field>-->
+  <input matInput placeholder="New username." #newUserName [matAutocomplete]="usersAutocomplete"
+         (keyup)="form = null" (keyup.ENTER)="searchByName($event.target.value)"/>
+
+  <button mat-icon-button matSuffix [disabled]="form == null" (click)="addUser(); newUserName.target.value = null">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <mat-autocomplete #usersAutocomplete="matAutocomplete">
+    <mat-option *ngFor="let user of usersList | entityList" [value]="user.name" (click)="form = user;">
+      {{user.name}}
+    </mat-option>
+  </mat-autocomplete>
+
+</mat-form-field>

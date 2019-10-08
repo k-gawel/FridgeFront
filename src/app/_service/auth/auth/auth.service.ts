@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {RoleContent} from '../../../_models/util/Content';
 import {AuthorizationApiService} from '../../api/account/authorization-api.service';
 import {LoginForm} from '../../../_models/request/login/LoginForm';
@@ -17,7 +17,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 })
 export class AuthService {
 
-  public $roleContent = new BehaviorSubject<RoleContent>(RoleContent.GUEST);
+  public $roleContent = new Subject<RoleContent>();
 
   constructor(private accountApi: AccountApiService,
               private authApi: AuthorizationApiService,
@@ -60,7 +60,7 @@ export class AuthService {
     this.cookiesData.setToken(json['token']);
 
     (<JSON[]> json['producers']).forEach(j => new Producer(j));
-    Category.rootCategory = new Category(json['root_category']);
+    Category.rootCategory = new Category(json['rootCategory']);
   }
 
 

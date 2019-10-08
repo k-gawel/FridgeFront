@@ -8,6 +8,9 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {WishListItemService} from "../wishListItem/wish-list-item.service";
 import {ErrorHandlerService} from "../../../utils/errorhanler/error-handler.service";
 import {OffsetLimit} from "../../../../_util/OffsetLimit";
+import {ItemsList} from "../../../../_models/response/item/ItemsList";
+import {Item} from "../../../../_models/response/item/Item";
+import {ItemInstance} from "../../../../_models/response/item/ItemInstance";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +23,14 @@ export class WishListService {
 
 
   public get(query: WishListQuery): Promise<WishListList> {
+    let processResult = (r: JSON) => {
+      r['items'].forEach(j => Item.parse(j));
+      r['instances'].forEach(j => ItemInstance.parse(j));
+      return new WishListList(r['wishLists']);
+    };
+
     query.api = this.wishListApiServcie;
-    return query.execute().then((res: JSON[]) => new WishListList(res));
+    return query.execute().then(processResult);
   }
 
 

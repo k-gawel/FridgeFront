@@ -95,4 +95,12 @@ export class WishListItemList extends EntityList<WishListItem> {
   }
 
 
+  public filterByAdded(status: boolean): WishListItemList {
+    let result = new WishListItemList();
+    this.filter(i => (i.added != null) === status).forEach(i => result.add(i));
+    return result;
+
+  }
+
+
 }

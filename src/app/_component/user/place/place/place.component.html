@@ -1,6 +1,6 @@
 <ng-container *ngIf="_place != null">
 
-  <mat-tab-group class="full-screen">
+  <mat-tab-group >
 
     <mat-tab>
 
@@ -10,10 +10,29 @@
 
       <mat-tab-group>
 
-        <mat-tab label="Containers">
+
+        <mat-tab>
+
+          <ng-template mat-tab-label="Containers">
+            <mat-icon>all_inbox</mat-icon>
+          </ng-template>
+
           <app-containers-menu [place]="_place" (chosenContainers)="setChosenContainers($event)">
           </app-containers-menu>
+
         </mat-tab>
+
+
+        <mat-tab>
+
+          <ng-template mat-tab-label="Users">
+            <mat-icon aria-label="Users" aria-hidden="false">people_alt</mat-icon>
+          </ng-template>
+
+          <app-users-menu [place]="_place"></app-users-menu>
+
+        </mat-tab>
+
 
       </mat-tab-group>
 
@@ -52,16 +71,6 @@
 
     </mat-tab>
 
-    <mat-tab>
-
-      <ng-template mat-tab-label="Users">
-        <mat-icon aria-label="Users" aria-hidden="false">people_alt</mat-icon>
-      </ng-template>
-
-      <app-users-menu [place]="_place">
-      </app-users-menu>
-
-    </mat-tab>
 
   </mat-tab-group>
 

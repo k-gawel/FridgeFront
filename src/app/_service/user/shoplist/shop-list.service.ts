@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {ShopListApiService} from "../../api/shoplist/shop-list-api.service";
-import {ShopList} from "../../../_models/response/ShopList";
+import {ShopList, ShopListList} from "../../../_models/response/ShopList";
 import {ShopListForm} from "../../../_models/request/shoplist/ShopListForm";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ItemInstance} from "../../../_models/response/item/ItemInstance";
 import {ErrorHandlerService} from "../../utils/errorhanler/error-handler.service";
+import {ShopListQuery} from "../../../_models/request/wishlist/ShopListQuery";
+import {Item} from "../../../_models/response/item/Item";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,17 @@ export class ShopListService {
 
   constructor(private api: ShopListApiService,
               private errorHandler: ErrorHandlerService) {
+  }
+
+
+  public get(query: ShopListQuery): Promise<ShopListList> {
+    let processResult = (r: JSON) => {
+      (<JSON[]> r['items']).forEach(j => Item.parse(j));
+      (<JSON[]> r['instances']).forEach(j => ItemInstance.parse(j));
+      return new ShopListList(r['shopLists']);
+    };
+
+    return this.api.getShopList(query).then(processResult);
   }
 
 
@@ -49,7 +62,6 @@ export class ShopListService {
     };
 
     let manageError = (e: HttpErrorResponse) => {
-      console.log(e);
       return false;
     };
 

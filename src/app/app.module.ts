@@ -73,7 +73,10 @@ import {NewWishListItemInstanceItemComponent} from './_component/user/place/elem
 import {ItemInstanceComponent} from './_component/user/place/elements/item-instance/item-instance/item-instance.component';
 import {CloseDialogButtonComponent} from './_component/utils/close-dialog-button/close-dialog-button.component';
 import {InstanceActionInfoComponent} from './_component/user/place/elements/item-instance/item-instance/instance-action-info.component';
-import {ProducersMenuComponent} from './_component/user/place/main-content/producers-menu/producers-menu.component';
+import {
+  ProducersMenuComponent,
+  ProducersMenuSheet
+} from './_component/user/place/main-content/producers-menu/producers-menu.component';
 import {ShopListMenuComponent} from './_component/user/place/main-content/shop-list-menu/shop-list-menu.component';
 import {
   ShopListFormComponent,
@@ -87,6 +90,7 @@ import {
 } from './_component/user/place/elements/shoplist/shop-list-instance-form/shop-list-instance-form.component';
 import {FormErrorComponent} from './_component/utils/form-error/form-error.component';
 import { ShowOnDirective } from './_component/utils/show-on/show-on.directive';
+import { ItemInstancesListComponentComponent } from './_component/user/place/elements/item/item-instances-list-component/item-instances-list-component.component';
 
 
 const appRoutes: Routes = [];
@@ -112,6 +116,7 @@ const appRoutes: Routes = [];
     PlaceItemsSceneComponent,
     ContainersMenuComponent,
     ProducersMenuComponent,
+    ProducersMenuSheet,
     UsersMenuComponent,
     UserStatComponent,
 
@@ -156,11 +161,13 @@ const appRoutes: Routes = [];
     NavbarComponent,
     FormErrorComponent,
     ShowOnDirective,
+    ItemInstancesListComponentComponent,
 
   ],
   entryComponents: [
     // PLACE
     CategoriesMenuSheet,
+    ProducersMenuSheet,
 
     // ITEM
     NewItemComponent,

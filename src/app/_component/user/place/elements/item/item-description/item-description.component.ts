@@ -9,7 +9,6 @@ import {Item} from '../../../../../../_models/response/item/Item';
 })
 export class ItemDescriptionComponent implements OnInit {
 
-
   @Input() item: Item;
 
   constructor() { }

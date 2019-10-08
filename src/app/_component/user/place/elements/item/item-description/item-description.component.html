@@ -19,11 +19,19 @@
         </tr>
         <tr>
           <td><b>Description:</b></td>
-          <td>{{item.description}}</td>
+          <td>
+            <p *ngFor="let description of item.description">
+              {{description}}
+            </p>
+          </td>
         </tr>
         <tr>
           <td><b>Storage rules:</b></td>
-          <td>{{item.storage}}</td>
+          <td>
+            <p *ngFor="let storage of item.storage">
+              {{storage}}
+            </p>
+          </td>
         </tr>
         </tbody>
       </table>

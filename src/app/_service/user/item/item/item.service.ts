@@ -40,7 +40,6 @@ export class  ItemService {
     if(idsToFind.length != 0) {
       let query = new ItemGetQuery();
       query.items = idsToFind;
-      console.log("Getting items by ids: ", query);
       await this.itemApi.search(query)
                         .then((r: JSON[]) => new ItemsList(r) )
                         .then(r => <ItemsList> result.addAll(r));

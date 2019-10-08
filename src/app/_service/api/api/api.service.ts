@@ -1,12 +1,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {CookieDataService} from '../../auth/cookieDatas/cookie-datas.service';
+import {Item} from "../../../_models/response/item/Item";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+
+  public static readonly imageBaseUrl = "http://localhost:8080/static/item/";
 
   // url = "http://91.134.142.39:8080/fridgeapi/";
   public url = "http://localhost:8080/fridgeapi/";
@@ -59,5 +62,9 @@ export class ApiService {
     return this.http.delete(url, {headers, params}).toPromise();
   }
 
+
+  public static imageUrl(item: Item): string {
+    return ApiService.imageBaseUrl + item.id + ".jpg";
+  }
 
 }

@@ -32,6 +32,7 @@
     "fast-average-color": "^5.2.0",
     "jquery": "^3.3.1",
     "jquery-slim": "^3.0.0",
+    "material-design-icons": "^3.0.1",
     "ngx-cookie-service": "2.2.0",
     "ngx-smart-popover": "1.1.0",
     "node-vibrant": "^3.1.3",

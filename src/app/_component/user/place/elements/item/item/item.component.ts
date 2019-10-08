@@ -10,6 +10,7 @@ import {Container} from "../../../../../../_models/response/Container";
 import {ItemInstancesList} from "../../../../../../_models/response/item/ItemInstancesList";
 import {ItemInstanceParams, ItemInstanceQuery} from "../../../../../../_models/request/iteminstance/ItemInstanceQuery";
 import {OffsetLimit} from "../../../../../../_util/OffsetLimit";
+import {ApiService} from "../../../../../../_service/api/api/api.service";
 
 export interface ItemComponentData {
   item: Item;
@@ -22,7 +23,6 @@ export interface ItemComponentData {
   styleUrls: ['./item.component.css']
 })
 export class ItemComponent {
-
 
   content: string = 'INSTANCES';
   item: Item;
@@ -39,41 +39,17 @@ export class ItemComponent {
     this.places.addAll(data.places);
   }
 
-
-  deletedInstances: ItemInstancesList[] = [];
-  private deletedInstancesFetches: number = 0;
-
-  getDeletedInstances() {
-    let query = new ItemInstanceQuery();
-    query.containers = this.places.getContainers().map(c => c.id);
-    query.items = [ this.item.id ];
-    query.params = new ItemInstanceParams(null, null, true);
-    query.offsetLimit = new OffsetLimit(this.deletedInstancesFetches * 20, 20);
-    this.itemInstanceService.get(query).then(ii => {
-      this.deletedInstances.push(ii);
-      this.deletedInstancesFetches = ii.size() != 0 ? this.deletedInstancesFetches + 1 : null;
-    });
+  get imageUrl(): string {
+    return ApiService.imageUrl(this.item);
   }
-
 
   addNewInstance() {
     const data = { item: this.item, places: this.places };
-
-    const dialogRef = this.dialog.open(NewInstanceFormDialog, {
-      maxWidth: "100vw",
-      width: "100%",
-      data: data
-    });
+    const config = { data: data, panelClass: 'full-width'};
+    const dialogRef = this.dialog.open(NewInstanceFormDialog, config);
   }
 
 
-  getContainers(itemInstances?: ItemInstancesList): EntityList<Container> {
-    let filter = (c: Container) => c.instances.filterByItems(this.item)
-                                             .filterByDeleted(false)
-                                             .size() != 0;
-
-    return this.places.getContainers().filter(filter);
-  }
 
 }
 

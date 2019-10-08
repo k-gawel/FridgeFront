@@ -8,8 +8,8 @@
 
     <span>
 
-      <button mat-icon-button (click)="archive()">
-        <i class="fas fa-trash-alt"></i>
+      <button mat-icon-button (click)="archive()" *ngIf="_wishList.archived == null">
+        <i class="fa fa-trash-alt"></i>
       </button>
 
       <close-dialog-button [dialogRef]="dialogRef">
@@ -21,22 +21,20 @@
 
 </mat-toolbar>
 
-<!--<mat-icon *ngIf="item.addedInstance == null">add_box</mat-icon>-->
-<!--<mat-icon *ngIf="item.addedInstance != null" style="color: #00ad5f">check_box</mat-icon>-->
-
 
 <mat-accordion>
 
-  <mat-expansion-panel class="dialog-full-width-element"
-                       *ngFor="let item of _wishList.wishListItems | entityList">
+  <mat-expansion-panel class="dialog-full-width-element" *ngFor="let item of _wishList.wishListItems | entityList">
 
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header [ngClass]="indicatorClass(item)">
       <mat-panel-title class="text-nowrap">
         {{item.category.name}}
       </mat-panel-title>
 
       <mat-panel-description class="text-truncate">
-        {{item.comment}}
+        <span>
+          {{item.comment}}
+        </span>
       </mat-panel-description>
     </mat-expansion-panel-header>
 
@@ -50,7 +48,7 @@
 
 <div class="option-buttons ob-right">
 
-  <button mat-fab aria-label="Add item" (click)="openForm()">
+  <button mat-fab aria-label="Add item" (click)="openForm()" *ngIf="_wishList.archived == null">
     <mat-icon>add</mat-icon>
   </button>
 

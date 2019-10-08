@@ -16,11 +16,9 @@ export abstract class Query {
     return result;
   }
 
-
   private isPrimitiveArray(val: any[]): boolean {
     return val.filter(v => typeof v === 'object').length === 0;
   }
-
 
   private convertValue(val: any, parentKey: string, params: Map<string, string>): void {
     if(val instanceof Array)
@@ -32,7 +30,8 @@ export abstract class Query {
   }
 
   private convertPrimitive(val: any, parentKey: string, params: Map<string, string>): void {
-    params.set(parentKey, JSON.stringify(val));
+    let value = typeof val === 'string' ? val : JSON.stringify(val);
+    params.set(parentKey, value);
   }
 
   private convertArray(val: any[], parentKey: string, params: Map<string, string>): void {
@@ -56,6 +55,7 @@ export abstract class Query {
       key = key.substr(1);
     return parentKey == null ? key : parentKey + "." + key;
   }
+
 
 
 }

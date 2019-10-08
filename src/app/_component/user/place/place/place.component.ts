@@ -19,8 +19,6 @@ import {PlaceUserService} from '../../../../_service/user/place/placeUser/place-
 })
 export class PlaceComponent  {
 
-
-
   _place: PlaceDetails;
   _chosenContainers: ContainersList;
 
@@ -76,10 +74,10 @@ export class PlaceComponent  {
       this.errorHandler.sendErrors(["You can't leave this place without an admin. Try to promote someone."]);
       return;
     }
-
-    this.placeUserService.removeUser(this._place, this.cookieData.getUserId())
-      .then(() => this.leavedPlace.emit(this._place) )
-      .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e));
+    let user = this._place.users[this.cookieData.getUserId()];
+    this.placeUserService.removeUser(this._place, user)
+                         .then(() => this.leavedPlace.emit(this._place) )
+                         .catch((e: ErrorMessage) => this.errorHandler.sendErrors(e));
   }
 
 }

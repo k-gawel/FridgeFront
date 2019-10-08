@@ -1,22 +1,29 @@
 import {KeyName} from '../KeyName';
 import {PlaceUsersList} from './PlaceUsersList';
 import {PlaceUserStats} from './PlaceUserStats';
+import {PlaceDetails} from "../PlaceDetails";
 
 export class PlaceUser extends KeyName {
 
   status: boolean;
   stats:  PlaceUserStats;
 
-  static clone(kn: KeyName | PlaceUser, status?: boolean) {
-    let result = <PlaceUser> super.clone(kn);
-    if(kn instanceof PlaceUser) {
-      result.status = kn.status;
-      result.stats  = kn.stats;
+  static added(kn: KeyName, place: PlaceDetails, status?: boolean): PlaceUser {
+    if(status == null)
+      status = true;
+
+    let result;
+    if(place.users[kn.id] != null) {
+      result = place.users[kn.id];
+      result.status = true;
+    } else {
+      result = new PlaceUser();
+      result.id = kn.id;
+      result.name = kn.name;
+      result.status = PlaceUserStats.create(kn.id);
+      place.users.add(result);
     }
-    else {
-      result.status = status != null ? status : true;
-      result.stats  = PlaceUserStats.create(kn.id);
-    }
+
     return result;
   }
 

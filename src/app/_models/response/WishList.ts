@@ -43,6 +43,19 @@ export class WishList extends PlaceElement {
     this.wishListItems.add(listItem);
   }
 
+  public addedSize(): number {
+    return this.wishListItems.filterByAdded(true).size();
+  }
+
+  public missingSize(): number {
+    return this.wishListItems.filterByAdded(false).size();
+  }
+
+  public isComplete(): boolean {
+    return this.addedSize() === this.wishListItems.size();
+  }
+
+
 }
 
 

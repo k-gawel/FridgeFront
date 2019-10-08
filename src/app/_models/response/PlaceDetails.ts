@@ -4,6 +4,8 @@ import {Container, ContainersList} from './Container';
 import {PlaceUser} from './place-user/PlaceUser';
 import {WishList, WishListList} from './WishList';
 import {ShopList, ShopListList} from "./ShopList";
+import {ItemGetQuery} from "../request/item/ItemGetQuery";
+import {Item} from "./item/Item";
 
 export class PlaceDetails extends KeyName {
 
@@ -26,6 +28,7 @@ export class PlaceDetails extends KeyName {
       this.adminId = json['adminId'];
 
       this.users.addAll(new PlaceUsersList(json['users']));
+      (<JSON[]> json['items']).forEach(j => new Item(j));
       (<JSON[]> json['containers']).forEach(j => new Container(j));
       (<JSON[]> json['wishLists']).forEach(j => new WishList(j));
       (<JSON[]> json['shopLists']).forEach(j => new ShopList(j));

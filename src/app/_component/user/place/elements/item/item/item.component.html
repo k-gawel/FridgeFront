@@ -3,7 +3,7 @@
   <mat-toolbar-row>
 
     <span class="text-truncate" style="width: calc(100% - 80px)">
-      <mat-icon aria-hidden="false" aria-label="Icon">fastfood</mat-icon>
+      <img [src]="imageUrl" width="25px" height="25px" class="rounded" />
       {{item.name}}
     </span>
 
@@ -25,62 +25,15 @@
 
 
 <div [ngStyle]="{'display': content === 'INFO' ? '' : 'none'}">
-
+  <app-item-description [item]="item">
+  </app-item-description>
 </div>
 
-<mat-action-list class="dialog-full-width-element" [ngStyle]="{'display': content === 'INSTANCES' ? '' : 'none'}">
 
-  <!--CURRENT INSTANCES-->
-
-  <ng-container *ngFor="let container of getContainers() | entityList">
-
-    <h3 mat-subheader class="space-between">
-      <span>
-        {{container.name}}
-      </span>
-      <span>
-        {{container.place.name}}
-      </span>
-    </h3>
-
-    <app-item-instance *ngFor="let instance of container.instances.getByItems(item).filterByDeleted(false) | entityList"
-                       [instance]="instance">
-    </app-item-instance>
-
-  </ng-container>
-
-
-  <mat-divider></mat-divider>
-
-
-  <!--DELTED INSTANCES-->
-
-  <ng-container *ngFor="let dI of deletedInstances" style="background-color: #F8F8F8">
-
-    <ng-container *ngFor="let container of dI.getContainers() | entityList">
-
-      <h3 mat-subheader class="space-between">
-        <span>
-          {{container.name}}
-        </span>
-        <span>
-          {{container.place.name}}
-        </span>
-      </h3>
-
-      <app-item-instance *ngFor="let instance of dI.getByContainers(container) | entityList" [instance]="instance"
-                         [buttonColor]="'#F8F8F8'">
-      </app-item-instance>
-
-    </ng-container>
-
-  </ng-container>
-
-  <button mat-list-item *ngIf="deletedInstancesFetches != null" (click)="getDeletedInstances()"
-          style="background-color: #F8F8F8;">Show more...
-  </button>
-
-</mat-action-list>
+<div [ngStyle]="{'display': content === 'INSTANCES' ? '' : 'none'}">
+  <app-item-instances-list-component [item]="item" [places]="places">
+  </app-item-instances-list-component>
+</div>
 
 
 <div class="option-buttons ob-right">

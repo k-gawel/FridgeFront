@@ -10,7 +10,7 @@ import {AccountDatas} from './_models/response/AccountDatas';
 })
 export class AppComponent implements OnInit {
 
-  content: RoleContent = RoleContent.GUEST;
+  content: RoleContent;
   contentParams: any;
 
   text: string;

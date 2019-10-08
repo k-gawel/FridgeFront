@@ -1,5 +1,5 @@
-<mat-selection-list>
-  <mat-list-option *ngFor="let producer of producers | entityList" [selected]="true">
+<mat-selection-list #producersList (selectionChange)="onSelectionChange(producersList.selectedOptions.selected)">
+  <mat-list-option *ngFor="let producer of producers | entityList" [value]="producer" [selected]="selectedProducers.contains(producer)">
     {{producer.name}}
   </mat-list-option>
 </mat-selection-list>

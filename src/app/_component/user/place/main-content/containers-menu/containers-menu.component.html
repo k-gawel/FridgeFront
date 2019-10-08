@@ -5,9 +5,12 @@
 </mat-selection-list>
 
 <mat-form-field style="width: 100%; padding: 0 0.5em">
+
   <input matInput placeholder="New container name" (keyup.ENTER)="addContainer()"
          [(ngModel)]="containerForm.name" name="container-form-name"/>
 
-  <mat-icon matSuffix>add</mat-icon>
+  <button mat-button (click)="addContainer()" [disabled]="containerForm.name != null" matSuffix>
+    <mat-icon matSuffix>add</mat-icon>
+  </button>
 </mat-form-field>
 

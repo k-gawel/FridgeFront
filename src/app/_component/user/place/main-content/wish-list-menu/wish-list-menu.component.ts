@@ -56,13 +56,20 @@ export class WishListMenuComponent implements OnInit {
 
   offset: number = 0;
   loadDeleted() {
+    if(this.offset == null) return;
+    const limit = 10;
+
+    let processResult = (w: WishListList) => {
+      this.offset = w.size() >= limit ? this.offset + 10 : null;
+      w.forEach(l => this.deleted.push(l));
+    };
+
     let query = new WishListQuery();
     query.active = false;
     query.placeIds = [ this.place.id ];
-    query.offsetLimit = new OffsetLimit(this.offset, 10);
+    query.offsetLimit = new OffsetLimit(this.offset, limit);
 
-    this.wishListService.get(query)
-                        .then(l => l.forEach(w => this.deleted.push(w)));
+    this.wishListService.get(query).then(processResult);
   }
 
 

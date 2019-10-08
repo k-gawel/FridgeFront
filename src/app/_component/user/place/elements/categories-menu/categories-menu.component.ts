@@ -1,8 +1,5 @@
 import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {Category} from '../../../../../_models/response/Category';
-import {CategoryService} from '../../../../../_service/user/category/category.service';
-import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
-import {Size, WindowService} from '../../../../../_service/utils/window.service';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from "@angular/material";
 
 @Component({
@@ -20,7 +17,6 @@ export class CategoriesMenu implements OnInit {
   }
 
   ngOnInit() {
-    console.log("Categories", this.rootCategory);
     this.chooseCategory(this.rootCategory);
   }
 
@@ -47,7 +43,6 @@ export class CategoriesMenuSheet {
 
   constructor(private sheetRef: MatBottomSheetRef<CategoriesMenuSheet>,
               @Inject(MAT_BOTTOM_SHEET_DATA) public data: { category: Category }) {
-    console.log("CategoriesSheet", this.data);
     this.chosenCategory = this.data.category;
   }
 

@@ -31,10 +31,7 @@ export class RelatedItemsService {
         let result = new ItemsList(res);
         this.mostPopularOfCategory.set(categoryId, result);
         return result;
-      } )
-      .catch( (e: HttpErrorResponse) => {
-        throw new ErrorMessage(e);
-      } );
+      });
   }
 
 
@@ -51,7 +48,5 @@ export class RelatedItemsService {
         let result = new ItemsList(res);
         this.allOfCategory.set(categoryID, result);
         return result;
-      })
-      .catch((e: HttpErrorResponse) => { throw new ErrorMessage(e); });
-  }
+      })};
 }

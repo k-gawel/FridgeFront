@@ -13,15 +13,12 @@ export class PlaceUserService {
 
   constructor(private placeApi: PlaceApiService) { }
 
-  public removeUser(place: PlaceDetails, user: KeyName | number) {
-    user  = typeof user  === 'number' ? user  : user.id;
-
-    return this.placeApi.removeUser(place.id, user)
+  public removeUser(place: PlaceDetails, user: KeyName) {
+    return this.placeApi.removeUser(place.id, user.id)
       .then(res => {
-        if(res) place.users.remove(user);
-        else throw new Error("Couldn't remove user.");
-      })
-      .catch(e => new ErrorMessage(e.message));
+        if(res)
+          place.users[user.id].status = false;
+      });
   }
 
 
@@ -39,25 +36,14 @@ export class PlaceUserService {
   }
 
 
-  public addUser(place: PlaceDetails, user: KeyName) {
+  public addUser(place: PlaceDetails, user: KeyName): Promise<PlaceUser> {
+    let processResult = (r: boolean) => {
+      if(r)
+        return PlaceUser.added(user, place, true);
+    };
 
     return this.placeApi.addUser(place.id, user.id)
-      .then(res => {
-        if(!res)
-          throw new Error("Could not add user");
-        else
-          PlaceUserService.addUserToPlace(user, place);
-      })
-      .catch((e: HttpErrorResponse) => new ErrorMessage(e.message))
-
+                        .then(processResult);
   }
-
-  private static addUserToPlace(user: KeyName, place: PlaceDetails) {
-    let placeUser = place.users[user.id];
-    if(placeUser == undefined)
-      placeUser = PlaceUser.clone(user, true);
-    place.users.add(placeUser);
-  }
-
 
 }

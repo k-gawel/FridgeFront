@@ -50,47 +50,20 @@ export class DialogService {
 
   // UTILS
 
-  private static addFullWidth(config: MatDialogConfig): MatDialogConfig {
-    config.width = "100%";
-    config.maxWidth = "100vw";
-    return config;
-  }
-
-  private static addFullHeight(config: MatDialogConfig): MatDialogConfig {
-    config.height = "100%";
-    config.maxHeight = "100vh";
-
-    return config;
-  }
-
-  private static addNoPadding(config: MatDialogConfig): MatDialogConfig {
-    config.panelClass = 'app-full-bleed-dialog';
-    return config;
-  }
-
   private static getFullScreenConfig(data: any): MatDialogConfig {
     let config = new MatDialogConfig();
     config.data = data;
-    config = this.addFullHeight(config);
-    config = this.addFullWidth(config);
-
+    config.panelClass = 'full-screen';
     return config;
   }
 
-  private static getFullScreenNoPaddingConfig(data: any): MatDialogConfig {
-    let config = this.getFullScreenConfig(data);
-    config.panelClass = 'app-full-bleed-dialog';
+  private static getFullWidthConfig(data: any): MatDialogConfig {
+    const config = new MatDialogConfig();
+    config.data = data;
+    config.panelClass = 'full-width';
+    config.disableClose = true;
     return config;
   }
-
-  private static getFullWidthConfig(data: any) {
-    return {
-      width: "100%",
-      maxWidth: "100vw",
-      data: data
-    }
-  }
-
 
   private static createFullWidthComponent<T>(dialog, component: ComponentType<T> | TemplateRef<T>, data): MatDialogRef<T> {
     const config = this.getFullWidthConfig(data);
@@ -129,9 +102,7 @@ export class DialogService {
   // WISH LIST ITEM
 
   public static createWishListItemComponent(dialog: MatDialog, data: WishListItemComponentData): MatDialogRef<WishListItemComponent, undefined> {
-    let config = new MatDialogConfig();
-    config.data = data;
-    config = this.addFullWidth(config);
+    let config = this.getFullWidthConfig(data);
     return <MatDialogRef<WishListItemComponent, undefined>> dialog.open(WishListItemComponent, config);
   }
 
@@ -147,16 +118,14 @@ export class DialogService {
   }
 
   public static createShopList(dialog: MatDialog, data: ShopListData): MatDialogRef<ShopListComponent> {
-    let config = new MatDialogConfig();
-    config.data = data;
-    config = this.addNoPadding(config);
-    config = this.addFullWidth(config);
-    config = this.addFullHeight(config);
+    const config = this.getFullScreenConfig(data);
     return dialog.open(ShopListComponent, config);
   }
 
   public static createShopListInstanceForm(dialog: MatDialog, data: ShopListInstanceFormData): MatDialogRef<ShopListInstanceFormDialog, ItemInstance> {
-    return this.createFullWidthComponent(dialog, ShopListInstanceFormDialog, data);
+    const config = this.getFullWidthConfig(data);
+    config.maxHeight = "90vh";
+    return dialog.open(ShopListInstanceFormDialog, config);
   }
 
 }

@@ -13,8 +13,8 @@ export class Item extends KeyName {
     category: Category;
     producer: Producer;
 
-    description: string;
-    storage: string;
+    description: string[];
+    storage: string[];
     capacity: Capacity;
 
     allergens: Allergen[];
@@ -45,6 +45,11 @@ export class Item extends KeyName {
         this.nutrition = new Nutrition(json['nutrition']);
 
       ItemsList.ALL.add(this);
+    }
+
+    public static parse(j: JSON): Item {
+      let cache = ItemsList.ALL[j['id']];
+      return cache != null ? cache : new Item(j);
     }
 
 }

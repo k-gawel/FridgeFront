@@ -32,6 +32,8 @@ export class ItemInstanceService {
 
 
   public addInstance(form: ItemInstanceForm): Promise<ItemInstance> {
+    if(!form.validPrice()) form.price = null;
+
     return this.instanceApi.newItemInstance(form)
       .then((res: JSON) => new ItemInstance(res))
       .catch(e => this.errorHandler.processFormError(form, e));

@@ -25,7 +25,7 @@ export class ItemInstanceForm extends Form {
   @MinDate(new LocalDate().toDate(), { message: "expireDate.past"})
   expireDate: Date;
 
-  price: { amount: number, currency: string } = {amount: null, currency: null};
+  price: { amount: number, currency: string,  } = {amount: null, currency: null};
 
   errors = new ItemInstanceFormErrors();
 
@@ -37,6 +37,10 @@ export class ItemInstanceForm extends Form {
 
   restartErrors(): void {
     this.errors = new ItemInstanceFormErrors();
+  }
+
+  validPrice(): boolean {
+    return this.price.amount != null && this.price.currency != null;
   }
 
 }

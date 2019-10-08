@@ -60,9 +60,9 @@ export class NewWishListItemInstanceItemComponent implements OnInit {
       this.items.add(this._item);
     } else {
       let finalCategories = this._category.getFinalCategories().map(c => c.id);
-      allInstances.getItemIds().map(id => ItemsList.ALL[id])
-                               .filter(i => finalCategories.includes(i.category.id))
-                               .forEach(i => this.items.add(i));
+      allInstances.getItems()
+                  .filter(i => finalCategories.includes(i.category.id))
+                  .forEach(i => this.items.add(i));
       this.instances = allInstances.filterByItems(this.items);
     }
   }

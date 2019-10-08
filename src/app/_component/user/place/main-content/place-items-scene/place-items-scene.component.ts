@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
 import {ContainersList} from '../../../../../_models/response/Container';
 import {Category} from '../../../../../_models/response/Category';
@@ -10,84 +10,106 @@ import {MatBottomSheet, MatBottomSheetConfig, MatDialog} from "@angular/material
 import {DialogService} from "../../../../../_service/utils/dialog.service";
 import {ItemsList} from "../../../../../_models/response/item/ItemsList";
 import {CategoriesMenuSheet} from "../../elements/categories-menu/categories-menu.component";
+import {ProducersMenuSheet} from "../producers-menu/producers-menu.component";
+import {ProducersList} from "../../../../../_models/response/item/Producer";
+import {ItemGetQuery} from "../../../../../_models/request/item/ItemGetQuery";
+import {ApiService} from "../../../../../_service/api/api/api.service";
 
 @Component({
   selector: 'app-place-items-scene',
   templateUrl: './place-items-scene.component.html',
   styleUrls: ['./place-items-scene.component.css']
 })
-export class PlaceItemsSceneComponent {
+export class PlaceItemsSceneComponent implements OnInit {
 
-  _containers: ContainersList = new ContainersList();
+
+  baseInstances: ItemInstancesList = new ItemInstancesList();
+  filter: ItemInstanceFilter = new ItemInstanceFilter();
+
+  baseItems: ItemsList = new ItemsList();
+  items: ItemsList = new ItemsList();
+
+  producers: ProducersList = new ProducersList();
+  _chosenProducers: ProducersList = new ProducersList();
+
+  @Input() containers: ContainersList;
+
   _category: Category = Category.rootCategory;
-
-  _place: PlaceDetails;
+  place: PlaceDetails;
   owners: KeyNameList;
 
   content: string = 'LIST';
 
-  filter: ItemInstanceFilter = new ItemInstanceFilter();
-  baseInstances: ItemInstancesList = new ItemInstancesList();
-  items: ItemsList = new ItemsList();
 
   constructor(private itemService: ItemService,
               public  dialog: MatDialog,
               private bottomSheet: MatBottomSheet ) {
   }
 
+  ngOnInit(): void {
+    this.place = this.containers.getPlace();
+    this.baseInstances = this.containers.getAllInstances();
+    this.owners = this.place.users;
 
-  @Input()
-  set containers(containers: ContainersList) {
-    if(containers == undefined) return;
+    this.baseItems.addAll(this.baseInstances.getItems());
+    this.items.addAll(this.baseInstances.getItems());
 
-    this._containers = containers;
-    this._place      = containers.getPlace();
-    this.owners      = this._place.users;
-    this.baseInstances.addAll(containers.getAllInstances());
-
-    this.getVisibleItems();
+    this.producers.addAll(this.baseItems.getProducers());
+    this._chosenProducers.addAll(this.baseItems.getProducers());
   }
 
+  imageUrl(item: Item): string {
+    return ApiService.imageUrl(item);
+  }
 
-  @Input()
+  set chosenProducers(producers: ProducersList) {this._chosenProducers = producers;
+    this.setVisibleItems();
+  }
+
   set category(category: Category) {
-    if(category == undefined) return;
-
     this._category = category;
-    this.getVisibleItems();
+    this.items = this.baseItems.getByCategory(this._category);
+    this.producers = this.items.getProducers();
+    this.chosenProducers = this.items.getProducers();
+    this.setVisibleItems();
   }
-
-
 
   openItem(item: Item) {
-    const datas = {item: item, places: [this._place]};
+    const datas = {item: item, places: [this.place]};
 
     const dialogRef = DialogService.createItemComponent(this.dialog, datas);
   }
 
 
-  getVisibleItems() {
-    if(this._containers == null || this._category == null)
-      return;
-
-    let ids = this.getVisibleInstances().getItemIds();
-    this.itemService.getItemsByIds(ids)
-      .then(r => { this.items = r.getByCategory(this._category); });
+  setVisibleItems() {
+    let instances = this.getVisibleInstances();
+    this.items = instances.getItems().getByCategory(this._category)
+                                     .getByProducers(this._chosenProducers);
   }
 
 
   getVisibleInstances(): ItemInstancesList {
-    let result = this.baseInstances.getByOwners(this.owners).filterByProps(this.filter);
-    return result;
+    return this.baseInstances.getByOwners(this.owners).filterByProps(this.filter);
   }
 
 
   openCategoriesSheet() {
     const config = new MatBottomSheetConfig();
     config.data = { category: this._category };
+    config.panelClass = 'full-width';
 
     const ref = this.bottomSheet.open(CategoriesMenuSheet, config);
-    ref.afterDismissed().subscribe(() => this.category = ref.instance.chosenCategory)
+    ref.afterDismissed().subscribe(() => this.category = ref.instance.chosenCategory);
+  }
+
+
+  openProducersSheet() {
+    const config = new MatBottomSheetConfig();
+    config.data  = { producers: this.producers, selectedProducers: this._chosenProducers };
+    config.panelClass = 'full-width';
+
+    const ref = this.bottomSheet.open(ProducersMenuSheet, config);
+    ref.afterDismissed().subscribe(() => this.chosenProducers = ref.instance.chosenProducers );
   }
 
 }

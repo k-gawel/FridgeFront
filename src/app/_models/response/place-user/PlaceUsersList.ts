@@ -19,8 +19,13 @@ export class PlaceUsersList extends KeyNameList<PlaceUser> {
   }
 
 
-  public getByStatus(status: boolean): PlaceUsersList {
-    return <PlaceUsersList> this.filter(p => p.status === status);
+  public getByStatus(status?: boolean): PlaceUsersList {
+    let result = new PlaceUsersList();
+    if(status == null)
+      this.forEach(u => result.add(u));
+    else
+      this.filter(u => u.status == status).forEach(u => result.add(u));
+    return result;
   }
 
 }

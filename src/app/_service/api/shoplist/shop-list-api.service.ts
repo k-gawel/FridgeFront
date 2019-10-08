@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from "../api/api.service";
 import {ShopListForm} from "../../../_models/request/shoplist/ShopListForm";
+import {ShopListQuery} from "../../../_models/request/wishlist/ShopListQuery";
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,15 @@ import {ShopListForm} from "../../../_models/request/shoplist/ShopListForm";
 export class ShopListApiService extends ApiService {
 
   public surl = this.url + "shoplists/";
+
+
+  public getShopList(query: ShopListQuery) {
+    let url = this.surl;
+    let header = this.getHeaderWithToken();
+    let params = query.toHttpParams();
+
+    return this.get(url, header, params);
+  }
 
 
   public create(form: ShopListForm) {

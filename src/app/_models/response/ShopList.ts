@@ -56,5 +56,22 @@ export class ShopListList extends PlaceElementList<ShopList> {
 
   public static readonly ALL = new ShopListList();
 
+  constructor(json?: JSON[]) {
+    super();
+    if(json == null) return;
+
+    json.map(j => new ShopList(j))
+        .forEach(l => this.add(l));
+  }
+
+
+  public filterByStatus(status: boolean): ShopListList {
+    let result = new ShopListList();
+    if(status == null)
+      this.forEach(l => result.add(l));
+    else
+      this.filter(l => l.status == status).forEach(l => result.add(l));
+    return result;
+  }
 
 }
