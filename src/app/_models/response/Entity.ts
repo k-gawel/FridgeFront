@@ -5,6 +5,7 @@ export class Entity {
   constructor(entry?: JSON | number) {
     if (entry == undefined)
       return;
+
     else if (typeof entry == 'number')
       this.id = entry;
     else if (entry['id'] != undefined)

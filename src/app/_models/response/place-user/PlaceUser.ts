@@ -1,14 +1,14 @@
 import {KeyName} from '../KeyName';
 import {PlaceUsersList} from './PlaceUsersList';
 import {PlaceUserStats} from './PlaceUserStats';
-import {PlaceDetails} from "../PlaceDetails";
+import {Place} from "../Place";
 
 export class PlaceUser extends KeyName {
 
   status: boolean;
   stats:  PlaceUserStats;
 
-  static added(kn: KeyName, place: PlaceDetails, status?: boolean): PlaceUser {
+  static added(kn: KeyName, place: Place, status?: boolean): PlaceUser {
     if(status == null)
       status = true;
 

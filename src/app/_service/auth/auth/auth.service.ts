@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {RoleContent} from '../../../_models/util/Content';
 import {AuthorizationApiService} from '../../api/account/authorization-api.service';
 import {LoginForm} from '../../../_models/request/login/LoginForm';
@@ -7,7 +7,7 @@ import {AccountForm} from '../../../_models/request/account/AccountForm';
 import {AccountApiService} from '../../api/account/account-api.service';
 import {ErrorMessage} from '../../../_models/util/ErrorMessage';
 import {AccountDatas} from '../../../_models/response/AccountDatas';
-import {CookieDataService} from '../cookieDatas/cookie-datas.service';
+import {SessionService} from '../cookieDatas/cookie-datas.service';
 import {Producer} from '../../../_models/response/item/Producer';
 import {Category} from '../../../_models/response/Category';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -21,7 +21,7 @@ export class AuthService {
 
   constructor(private accountApi: AccountApiService,
               private authApi: AuthorizationApiService,
-              private cookiesData: CookieDataService) {
+              private cookiesData: SessionService) {
   }
 
   public register(form: AccountForm) {
@@ -37,13 +37,15 @@ export class AuthService {
 
 
     return initialResponse.then((r: JSON) => {
+      console.log("Initial Response", r);
       this.processInitialResponse(r);
       return new AccountDatas(r);
     }).catch((e: HttpErrorResponse) => {
-      if(form == undefined)
+      if(form != undefined) {
         return null;
-      else
-        throw e;
+      } else {
+        return null;
+      }
     });
   }
 

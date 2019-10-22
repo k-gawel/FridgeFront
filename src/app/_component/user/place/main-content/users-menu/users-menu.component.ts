@@ -1,12 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
-import {PlaceUsersList} from '../../../../../_models/response/place-user/PlaceUsersList';
-import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {Place} from '../../../../../_models/response/Place';
+import {SessionService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
 import {KeyName, KeyNameList} from '../../../../../_models/response/KeyName';
 import {PlaceService} from '../../../../../_service/user/place/place/place.service';
 import {ErrorHandlerService} from '../../../../../_service/utils/errorhanler/error-handler.service';
 import {AccountService} from '../../../../../_service/user/user/account.service';
 import {PlaceUserService} from '../../../../../_service/user/place/placeUser/place-user.service';
+import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
+
 @Component({
   selector: 'app-users-menu',
   templateUrl: './users-menu.component.html',
@@ -15,7 +16,7 @@ import {PlaceUserService} from '../../../../../_service/user/place/placeUser/pla
 export class UsersMenuComponent implements OnInit {
 
 
-  @Input() place: PlaceDetails;
+  @Input() place: Place;
 
 
   form: KeyName;
@@ -23,7 +24,7 @@ export class UsersMenuComponent implements OnInit {
 
 
   constructor(private userService: AccountService,
-              private cookieDatas: CookieDataService,
+              private cookieDatas: SessionService,
               private placeService: PlaceService,
               private errorHandler: ErrorHandlerService,
               private placeUserService: PlaceUserService) {
@@ -84,10 +85,6 @@ export class UsersMenuComponent implements OnInit {
 
 
 }
-import {PlaceUser} from '../../../../../_models/response/place-user/PlaceUser';
-
-
-import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'user-menu-stat',

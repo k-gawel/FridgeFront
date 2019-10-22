@@ -1,32 +1,6 @@
 <button mat-list-item [matMenuTriggerFor]="instanceMenu" [ngStyle]="{'background-color': buttonColor}">
 
-  <span mat-line class="three-column">
-
-    <span>
-      <i class="far fa-calendar-plus"></i> {{instance.added.simpleDateString}}
-    </span>
-
-    <span>
-      <i class="fas fa-user-plus"></i> {{instance.added.name}}
-    </span>
-
-    <span>
-      <i class="fas fa-hourglass-end"></i> {{instance.expireOn.toSimpleString()}}
-    </span>
-
-  </span>
-
-  <span mat-line class="space-between">
-
-    <span>
-      <i class="fas fa-comment-alt"></i> {{instance.comment}}
-    </span>
-
-    <span *ngIf="instance.price != null">
-      {{instance.price.getAmount()}} {{instance.price.getCurrencyInfo().symbol_native}}
-    </span>
-
-  </span>
+  <app-instance-content [instance]="instance"></app-instance-content>
 
 </button>
 

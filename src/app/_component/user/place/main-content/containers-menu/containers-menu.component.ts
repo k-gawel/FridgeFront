@@ -1,10 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Container, ContainersList} from '../../../../../_models/response/Container';
-import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
-import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {Place} from '../../../../../_models/response/Place';
+import {SessionService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
 import {ContainerService} from '../../../../../_service/user/place/container/container.service';
 import {ContainerForm} from '../../../../../_models/request/container/ContainerForm';
-import {ErrorMessage} from '../../../../../_models/util/ErrorMessage';
 
 @Component({
   selector: 'app-containers-menu',
@@ -15,8 +14,8 @@ export class ContainersMenuComponent implements OnInit {
 
   _containers: ContainersList;
   _chosenContainers: ContainersList;
-  _place: PlaceDetails;
-  @Input() set place(value: PlaceDetails) {
+  _place: Place;
+  @Input() set place(value: Place) {
     this._place = value;
     this.containerForm.place = this._place.id;
 
@@ -29,7 +28,7 @@ export class ContainersMenuComponent implements OnInit {
   @Output() chosenContainers = new EventEmitter<ContainersList>();
 
   constructor(private containersService: ContainerService,
-              private cookiesData: CookieDataService) {
+              private cookiesData: SessionService) {
     this.containerForm = new ContainerForm();
   }
 

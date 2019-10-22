@@ -3,7 +3,7 @@ import {KeyName, KeyNameList} from '../../../../_models/response/KeyName';
 import {PlaceForm} from '../../../../_models/request/place/PlaceForm';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
 import {PlaceService} from '../../../../_service/user/place/place/place.service';
-import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../_models/response/Place';
 import {ErrorStateMatcher} from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 
@@ -32,7 +32,7 @@ export class PlaceMenuComponent implements OnInit {
   }
 
 
-  @Input() set removedPlace(place: PlaceDetails) {
+  @Input() set removedPlace(place: Place) {
     if (place != null)
       this.places.remove(place)
   }
@@ -47,7 +47,7 @@ export class PlaceMenuComponent implements OnInit {
 
 
   addNewPlace() {
-    let processSubmit = (res: PlaceDetails) => {
+    let processSubmit = (res: Place) => {
       if(res != null) {
         this.places.add(res);
         this.setPlace(res);

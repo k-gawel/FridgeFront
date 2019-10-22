@@ -4,10 +4,9 @@ import {Container, ContainersList} from './Container';
 import {PlaceUser} from './place-user/PlaceUser';
 import {WishList, WishListList} from './WishList';
 import {ShopList, ShopListList} from "./ShopList";
-import {ItemGetQuery} from "../request/item/ItemGetQuery";
 import {Item} from "./item/Item";
 
-export class PlaceDetails extends KeyName {
+export class Place extends KeyName {
 
   adminId: number;
 
@@ -22,7 +21,7 @@ export class PlaceDetails extends KeyName {
       if (json == undefined) return;
 
       this.id = json['id'];
-      PlaceDetailsList.ALL.add(this);
+      PlacesList.ALL.add(this);
 
       this.name = json['name'];
       this.adminId = json['adminId'];
@@ -57,9 +56,9 @@ export class PlaceDetails extends KeyName {
 
 }
 
-export class PlaceDetailsList extends KeyNameList<PlaceDetails> {
+export class PlacesList extends KeyNameList<Place> {
 
-  public static readonly ALL: PlaceDetailsList = new PlaceDetailsList();
+  public static readonly ALL: PlacesList = new PlacesList();
 
 
     constructor(json?: JSON[]) {
@@ -67,7 +66,7 @@ export class PlaceDetailsList extends KeyNameList<PlaceDetails> {
 
       if(json == undefined) return;
 
-      json.forEach((element: JSON) => this.add(new PlaceDetails(element)));
+      json.forEach((element: JSON) => this.add(new Place(element)));
     }
 
 

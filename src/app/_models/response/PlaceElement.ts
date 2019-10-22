@@ -1,11 +1,11 @@
 import {KeyName, KeyNameList} from "./KeyName";
-import {PlaceDetails} from "./PlaceDetails";
+import {Place} from "./Place";
 import {Entity, EntityList} from "./Entity";
 import {IdSelector} from "../../_service/utils/EntitySelector";
 
 export class PlaceElement extends KeyName {
 
-  public place: PlaceDetails;
+  public place: Place;
 
 }
 
@@ -19,7 +19,7 @@ export class PlaceElementList<T extends PlaceElement> extends KeyNameList<T> {
   }
 
 
-  public getPlace(): PlaceDetails {
+  public getPlace(): Place {
     if (this.size() == 0) return null;
     let firstPlace = this.first().place;
 

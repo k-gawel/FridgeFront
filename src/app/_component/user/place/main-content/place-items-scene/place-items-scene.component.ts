@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../../_models/response/Place';
 import {ContainersList} from '../../../../../_models/response/Container';
 import {Category} from '../../../../../_models/response/Category';
 import {Item} from '../../../../../_models/response/item/Item';
@@ -12,8 +12,6 @@ import {ItemsList} from "../../../../../_models/response/item/ItemsList";
 import {CategoriesMenuSheet} from "../../elements/categories-menu/categories-menu.component";
 import {ProducersMenuSheet} from "../producers-menu/producers-menu.component";
 import {ProducersList} from "../../../../../_models/response/item/Producer";
-import {ItemGetQuery} from "../../../../../_models/request/item/ItemGetQuery";
-import {ApiService} from "../../../../../_service/api/api/api.service";
 
 @Component({
   selector: 'app-place-items-scene',
@@ -21,7 +19,6 @@ import {ApiService} from "../../../../../_service/api/api/api.service";
   styleUrls: ['./place-items-scene.component.css']
 })
 export class PlaceItemsSceneComponent implements OnInit {
-
 
   baseInstances: ItemInstancesList = new ItemInstancesList();
   filter: ItemInstanceFilter = new ItemInstanceFilter();
@@ -35,7 +32,7 @@ export class PlaceItemsSceneComponent implements OnInit {
   @Input() containers: ContainersList;
 
   _category: Category = Category.rootCategory;
-  place: PlaceDetails;
+  place: Place;
   owners: KeyNameList;
 
   content: string = 'LIST';
@@ -45,6 +42,7 @@ export class PlaceItemsSceneComponent implements OnInit {
               public  dialog: MatDialog,
               private bottomSheet: MatBottomSheet ) {
   }
+
 
   ngOnInit(): void {
     this.place = this.containers.getPlace();
@@ -58,13 +56,11 @@ export class PlaceItemsSceneComponent implements OnInit {
     this._chosenProducers.addAll(this.baseItems.getProducers());
   }
 
-  imageUrl(item: Item): string {
-    return ApiService.imageUrl(item);
-  }
 
   set chosenProducers(producers: ProducersList) {this._chosenProducers = producers;
     this.setVisibleItems();
   }
+
 
   set category(category: Category) {
     this._category = category;
@@ -72,12 +68,6 @@ export class PlaceItemsSceneComponent implements OnInit {
     this.producers = this.items.getProducers();
     this.chosenProducers = this.items.getProducers();
     this.setVisibleItems();
-  }
-
-  openItem(item: Item) {
-    const datas = {item: item, places: [this.place]};
-
-    const dialogRef = DialogService.createItemComponent(this.dialog, datas);
   }
 
 
@@ -92,6 +82,11 @@ export class PlaceItemsSceneComponent implements OnInit {
     return this.baseInstances.getByOwners(this.owners).filterByProps(this.filter);
   }
 
+
+  openItem(item: Item) {
+    console.log("Opening item", item);
+    const dialogRef = DialogService.createItemComponent(this.dialog, {item: item, places: [this.place]})
+  }
 
   openCategoriesSheet() {
     const config = new MatBottomSheetConfig();

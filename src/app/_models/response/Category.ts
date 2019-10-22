@@ -12,22 +12,22 @@ export class Category extends Entity {
 
     constructor(json?: JSON) {
         super();
+        if(json == null) return;
 
-      if(json == null)
-        return;
+        const {id, name, children} = json;
 
-      if(Category.rootCategory == null)
-        Category.rootCategory = this;
+        if(Category.rootCategory == null)
+           Category.rootCategory = this;
 
-      this.id = json['id'];
-      this.name = json['name'];
+        this.id = id;
+        this.name = name;
 
-      this.children = [];
-      json['children'].forEach((c: JSON) => {
-        let child: Category = new Category(c);
-        child.parent = this;
-        this.children.push(child);
-      });
+        this.children = [];
+        children.forEach((c: JSON) => {
+          let child: Category = new Category(c);
+          child.parent = this;
+          this.children.push(child);
+        });
     }
 
     public isFinal(): boolean {
@@ -90,16 +90,13 @@ export class Category extends Entity {
     }
 
     getFinalCategories(): Category[] {
-      let result: Category[] = [];
+      const result: Category[] = [];
 
       if(this.isFinal())
         result.push(this);
-      else {
-        for(let category of this.children) {
-          let categories = category.getFinalCategories();
-          categories.forEach((c: Category) => result.push(c));
-        }
-      }
+      else
+        for(let category of this.children)
+          category.getFinalCategories().forEach((c: Category) => result.push(c));
 
       return result;
     }

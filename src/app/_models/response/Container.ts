@@ -1,6 +1,6 @@
 import {ItemInstancesList} from './item/ItemInstancesList';
 import {ItemInstance} from './item/ItemInstance';
-import {PlaceDetailsList} from './PlaceDetails';
+import {PlacesList} from './Place';
 import {PlaceElement, PlaceElementList} from "./PlaceElement";
 
 export class Container extends PlaceElement {
@@ -16,7 +16,7 @@ export class Container extends PlaceElement {
 
     this.name = json['name'];
 
-    this.place = PlaceDetailsList.ALL[json['place_id']];
+    this.place = PlacesList.ALL[json['place_id']];
     this.place.containers.add(this);
 
     (<JSON[]> json['instances']).forEach(j => new ItemInstance(j));

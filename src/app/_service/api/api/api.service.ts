@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {CookieDataService} from '../../auth/cookieDatas/cookie-datas.service';
+import {SessionService} from '../../auth/cookieDatas/cookie-datas.service';
 import {Item} from "../../../_models/response/item/Item";
 
 
@@ -11,10 +11,10 @@ export class ApiService {
 
   public static readonly imageBaseUrl = "http://localhost:8080/static/item/";
 
-  // url = "http://91.134.142.39:8080/fridgeapi/";
-  public url = "http://localhost:8080/fridgeapi/";
+  // url = "http://192.168.0.106:8080/fridgeapi/";
+  public url = "http://192.168.0.106:8080/fridgeapi/";
 
-  constructor(private cookieDatas: CookieDataService,
+  constructor(private cookieDatas: SessionService,
               private http: HttpClient) {
   }
 

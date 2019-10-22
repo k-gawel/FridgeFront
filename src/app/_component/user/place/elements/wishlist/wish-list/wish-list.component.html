@@ -1,49 +1,30 @@
-<mat-toolbar color="primary" class="dialog-full-screen-toolbar">
+<app-wish-list-header [wishList]="_wishList" [dialogRef]="dialogRef">
+</app-wish-list-header>
 
-  <mat-toolbar-row>
+<div class="dialog-content">
+  <mat-accordion>
 
-    <span>
-      {{_wishList.name}}
-    </span>
+    <mat-expansion-panel *ngFor="let item of _wishList.wishListItems | entityList">
 
-    <span>
+      <mat-expansion-panel-header [ngClass]="indicatorClass(item)">
+        <mat-panel-title class="text-nowrap">
+          {{item.category.name}}
+        </mat-panel-title>
 
-      <button mat-icon-button (click)="archive()" *ngIf="_wishList.archived == null">
-        <i class="fa fa-trash-alt"></i>
-      </button>
+        <mat-panel-description class="text-truncate">
+          <span>
+            {{item.comment}}
+          </span>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-      <close-dialog-button [dialogRef]="dialogRef">
-      </close-dialog-button>
-      
-    </span>
+      <app-wish-list-item [item]="item">
+      </app-wish-list-item>
 
-  </mat-toolbar-row>
+    </mat-expansion-panel>
 
-</mat-toolbar>
-
-
-<mat-accordion>
-
-  <mat-expansion-panel class="dialog-full-width-element" *ngFor="let item of _wishList.wishListItems | entityList">
-
-    <mat-expansion-panel-header [ngClass]="indicatorClass(item)">
-      <mat-panel-title class="text-nowrap">
-        {{item.category.name}}
-      </mat-panel-title>
-
-      <mat-panel-description class="text-truncate">
-        <span>
-          {{item.comment}}
-        </span>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-
-    <app-wish-list-item [item]="item">
-    </app-wish-list-item>
-
-  </mat-expansion-panel>
-
-</mat-accordion>
+  </mat-accordion>
+</div>
 
 
 <div class="option-buttons ob-right">

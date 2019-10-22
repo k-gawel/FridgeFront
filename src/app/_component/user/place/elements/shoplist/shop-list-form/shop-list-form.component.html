@@ -1,0 +1,15 @@
+<form>
+
+  <mat-form-field>
+    <input type="text" matInput name="shopName" [(ngModel)]="form.shopName" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea  matInput name="description" [(ngModel)]="form.description"></textarea>
+  </mat-form-field>
+
+  <button mat-button (click)="send()" color="primary">
+    Create
+  </button>
+
+</form>

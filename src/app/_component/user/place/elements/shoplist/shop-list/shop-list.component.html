@@ -1,0 +1,41 @@
+<mat-toolbar class="space-between">
+
+  <span>
+    {{shopList.shopName}}
+  </span>
+
+  <span>
+    <close-dialog-button [dialogRef]="dialogRef"></close-dialog-button>
+  </span>
+
+</mat-toolbar>
+
+<mat-action-list class="dialog-content">
+
+  <button mat-list-item *ngFor="let SLI of shopList.instances | entityList">
+    <span mat-line class="space-between">
+
+      <span>{{SLI.item.name}}</span>
+      <span>{{SLI.added.name}}</span>
+
+    </span>
+
+    <span mat-line class="space-between">
+
+      <span>{{SLI.comment}}</span>
+      <span>{{SLI.price.toString()}}</span>
+
+    </span>
+
+  </button>
+
+</mat-action-list>
+
+
+<div class="option-buttons ob-right">
+
+  <button mat-icon-button *ngIf="shopList.status" (click)="openForm()">
+    <mat-icon>add</mat-icon>
+  </button>
+
+</div>

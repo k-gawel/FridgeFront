@@ -1,0 +1,74 @@
+.dialog-full-screen, .dialog-full-width {
+  min-width: var(--w) !important;
+  max-width: var(--w) !important;
+  height: 100%;
+  position: relative !important;
+}
+
+.dialog-full-screen > .mat-dialog-container {
+  height: 100%;
+  position: absolute;
+}
+
+.dialog-full-width > .mat-dialog-container {
+  height: 80%;
+  overflow: hidden;
+  position: relative !important;
+  top: 50%;
+  transform: translateY(-50%) !important;
+}
+
+.dialog-no-padding {
+
+}
+
+.dialog-content {
+  position: relative;
+  height: calc(100% - 64px);
+  width: 100%;
+  overflow: auto;
+}
+
+.dialog-no-padding > .mat-dialog-container {
+  padding: 0 !important;
+}
+
+/* DRAWER */
+
+.mat-drawer-container {
+}
+
+/*.mat-drawer-container > .mat-drawer-content {*/
+  /*height: 100% !important;*/
+  /*width: 100% !important;*/
+/*}*/
+
+
+/*TABS*/
+
+.main-tabs {
+  height: calc(100% - 64px);
+  min-height: calc(100% - 64px);
+  width: 100%;
+  min-width: 100%;
+  margin: 0px;
+}
+
+/*STEPPER*/
+
+.no-padding-stepper, .relative-height-stepper {
+}
+
+.no-padding-stepper > .mat-horizontal-content-container {
+  padding: 0 !important;
+}
+
+.relative-height-stepper > .mat-horizontal-content-container {
+  height: calc(100% - 72px); /* 72 px is header height */
+  position: relative;
+}
+
+.relative-height-stepper > .mat-horizontal-content-container > .mat-horizontal-stepper-content {
+  max-height: 100%;
+}
+

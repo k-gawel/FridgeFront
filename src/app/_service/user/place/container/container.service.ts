@@ -6,7 +6,7 @@ import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {HttpErrorResponse} from '@angular/common/http';
 import {KeyName} from '../../../../_models/response/KeyName';
 import {IdSelector} from '../../../utils/EntitySelector';
-import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../_models/response/Place';
 import {ErrorHandlerService} from "../../../utils/errorhanler/error-handler.service";
 
 @Injectable({
@@ -60,7 +60,7 @@ export class ContainerService {
   }
 
 
-  getByPlace(places: IdSelector | PlaceDetails) {
+  getByPlace(places: IdSelector | Place) {
 
 
     return this.containerApi.get(null, places.id )

@@ -1,44 +1,24 @@
-<div style="width: 100%; height: 100%;">
+<div class="header">
 
-  <div class="header" style="display: flex;">
+  <app-item-input style="width: 100%;" (value)="input = $event"></app-item-input>
 
-    <mat-form-field style="width: 100%; padding: 0 1em">
-      <span matPrefix>
-        <i class="fas fa-barcode"></i>&nbsp;
-      </span>
-      <input type="text" matInput placeholder="Search your item" (keyup.ENTER)="searchByName($event.target.value)">
-      <span matSuffix>
-        &nbsp;<i class="fas fa-times"></i>
-      </span>
-    </mat-form-field>
-
-    <button mat-icon-button *ngIf="closeable" style="height: 100%" (click)="close.emit()">
-      <mat-icon aria-hidden="false" aria-label="Back">arrow_back_ios</mat-icon>
-    </button>
-
-  </div>
-
-  <!-- SEARCH RESULTS -->
-
-  <mat-action-list *ngIf="items != null" style="height: calc(100% - 4.1em); overflow-y: auto; overflow-x: auto">
-    <button mat-list-item *ngFor="let item of items | entityList" (click)="selectedItem.emit(item)">
-
-      <h4 mat-line>{{item.name}}</h4>
-      <span mat-line class="space-between">
-        <span>{{item.category.name}}</span>
-        <span>{{item.producer.name}}</span>
-      </span>
-
-      <img [src]="imageUrl(item)" class="rounded" width="50px" height="50px">
-
-    </button>
-  </mat-action-list>
-
+  <button mat-icon-button *ngIf="closeable" style="height: 100%" (click)="close.emit()">
+    <mat-icon aria-hidden="false" aria-label="Back">arrow_back_ios</mat-icon>
+  </button>
 
 </div>
 
+<!-- SEARCH RESULTS -->
+
+<div class="content">
+  <app-item-picker-core [place]="place" [category]="category"
+                        [input]="input" (selectedItem)="selectedItem.emit($event)">
+  </app-item-picker-core>
+</div>
+
+
 <!--ADD NEW ITEM-->
-<div class="option-buttons ob-right" *ngIf="_category.isFinal()">
+<div class="option-buttons ob-right" *ngIf="category.isFinal()">
 
   <button mat-fab aria-label="Add item"
           (click)="createNewItem()">

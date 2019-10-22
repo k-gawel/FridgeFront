@@ -1,6 +1,6 @@
 import {Component, Inject, Input} from '@angular/core';
 import {Category} from '../../../../../../_models/response/Category';
-import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../../../_models/response/Place';
 import {Item} from '../../../../../../_models/response/item/Item';
 import {AllergenForm, ItemForm} from '../../../../../../_models/request/item/ItemForm';
 import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
@@ -8,7 +8,7 @@ import {ItemService} from '../../../../../../_service/user/item/item/item.servic
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 export interface NewItemDatas {
-  place: PlaceDetails,
+  place: Place,
   category: Category,
   barcode: number,
   name: string
@@ -26,7 +26,7 @@ export interface AllergenForm {
 })
 export class NewItemComponent {
 
-  place: PlaceDetails;
+  place: Place;
 
   @Input() name: string = null;
   @Input() barcode: number = null;

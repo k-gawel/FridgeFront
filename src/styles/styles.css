@@ -1,59 +1,70 @@
 @import "../../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
 
+
 @media only screen and (min-width: 600px) {
 
   :root {
-    --wm: 600px;
+    --w: 600px;
+    --margin-x: calc( ((100vw - 600px) / 2));
   }
+  
 
 }
 
 @media only screen and (max-width: 600px) {
 
   :root {
-    --wm: 100vw;
+    --w: 100vw;
+    --margin-x: 0;
   }
 
 }
 
 
-:root {
-  --margin-x: calc( ((100vw - var(--wm)) / 2) );
-}
-
-.nowrap {
-
+html {
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 body {
-  overflow-x: hidden;
-  background-image: url("../assets/images/bg.svg");
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 
-* {
+.body {
+  margin-left: var(--margin-x);
+  position: relative;
+  width: var(--w);
+  height: 100%;
+  overflow-x: hidden;
   box-sizing: border-box;
 }
 
 /*UTILS*/
-body {
-  margin-left: calc( (100vh - 600px) / 2 );
+
+.full-screen {
+  width: var(--w);
+  min-width: var(--w) !important;
+  max-width: var(--w) !important;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+}
+
+.noPadding {
+  padding: 0 !important;
 }
 
 .full-width {
-  min-width: var(--wm) !important;
-  max-width: var(--wm) !important;
-}
-
-.full-screen {
-  min-width: var(--wm) !important;
-  max-width: var(--wm) !important;
-  min-height: 100vh;
-  max-height: 100vh;
+  min-width: var(--w) !important;
+  max-width: var(--w) !important;
 }
 
 .full-width-center {
-  min-width: var(--wm) !important;
-  max-width: var(--wm) !important;
+  min-width: var(--w) !important;
+  max-width: var(--w) !important;
   margin-left: var(--margin-x);
 }
 
@@ -85,23 +96,26 @@ body {
 /* OPTION BUTTONS */
 
 .option-buttons {
-  bottom: 1rem;
+  bottom: 0;
+  padding: 0.5rem;
   position: fixed;
 }
 
 .ob-left {
-  left: calc(var(--margin-x) + 1rem);
+  position: fixed;
+  left: var(--margin-x);
 }
 
 .ob-right {
-  right: calc(var(--margin-x) + 1rem);
+  position: fixed;
+  right: var(--margin-x);
 }
 
 .option-buttons > button {
   display: block;
 }
 
-.option-buttos > button:not(:last-child) {
+.option-buttons > button:not(:last-child) {
   margin-bottom: 0.5rem;
 }
 
@@ -125,19 +139,22 @@ body {
 
 /* DIALOG */
 
+.dialog-full-screen {
+
+}
 
 /* DIALOG ELEMENTS*/
 
 .dialog-full-width-element {
-  width: var(--wm) !important;
+  width: var(--w) !important;
   margin-left: -24px !important;
   margin-right: -24px !important;
 }
 
 .dialog-full-screen-toolbar {
   margin: -24px -24px 0 -24px;
-  min-width: var(--wm);
-  max-width: var(--wm);
+  min-width: var(--w);
+  max-width: var(--w);
 }
 
 .dialog-full-screen-toolbar > .mat-toolbar-row {
@@ -150,8 +167,8 @@ body {
   margin-left: -24px;
   margin-bottom: -24px;
 
-  min-width: var(--wm);
-  width: var(--wm);
+  min-width: var(--w);
+  width: var(--w);
 }
 
 
@@ -210,7 +227,9 @@ body {
   vertical-align: middle;
 }
 
-.header-missed .mat-expansion-indicator { }
+.header-missed .mat-expansion-indicator {
+  
+}
 
 .header-missed .mat-expansion-indicator::after {
   color: rgba(107, 0, 12, 0.73);

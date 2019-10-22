@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {PlaceDetails, PlaceDetailsList} from '../../../../_models/response/PlaceDetails';
+import {Place, PlacesList} from '../../../../_models/response/Place';
 import {PlaceApiService} from '../../../api/place/place-api.service';
 import {KeyName} from '../../../../_models/response/KeyName';
 import {PlaceForm} from '../../../../_models/request/place/PlaceForm';
-import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
-import {HttpErrorResponse} from '@angular/common/http';
 import {IdSelector} from '../../../utils/EntitySelector';
 import {ErrorHandlerService} from '../../../utils/errorhanler/error-handler.service';
 
@@ -17,9 +15,9 @@ export class PlaceService {
               private errorHandler: ErrorHandlerService) { }
 
 
-  public newPlace(form: PlaceForm): Promise<PlaceDetails> {
+  public newPlace(form: PlaceForm): Promise<Place> {
     return this.placeApi.newPlace(form)
-      .then((response: JSON) => new PlaceDetails(response) )
+      .then((response: JSON) => new Place(response) )
       .catch(e => this.errorHandler.processFormError(form, e) );
   }
 
@@ -29,11 +27,11 @@ export class PlaceService {
   }
 
 
-  public getById(ids: IdSelector): Promise<PlaceDetails> {
+  public getById(ids: IdSelector): Promise<Place> {
     let id = ids.id[0];
 
     return this.placeApi.get(id)
-      .then((response: JSON[]) => new PlaceDetailsList(response)[id]);
+      .then((response: JSON[]) => new PlacesList(response)[id]);
   }
 
 

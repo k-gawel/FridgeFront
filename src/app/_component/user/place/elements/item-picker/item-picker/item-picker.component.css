@@ -3,36 +3,11 @@
   width: 100%;
 }
 
-/* enable absolute positioning */
-.inner-addon {
-  position: relative;
+.header {
+  display: flex;
 }
 
-/* style icon */
-.inner-addon .glyphicon {
-  position: absolute;
-  padding: 10px;
-  pointer-events: none;
-}
-
-/* align icon */
-.left-addon .glyphicon  { left:  0px;}
-.right-addon .glyphicon { right: 0px;}
-
-/* add padding  */
-.left-addon input  { padding-left:  30px; }
-.right-addon input { padding-right: 30px; }
-
-.ellipsis {
-  overflow: hidden;
-  width: 60px;
-  direction: rtl;
-  margin-left: 15px;
-  white-space: nowrap;
-}
-
-.ellipsis:after {
-  position: absolute;
-  left: 0px;
-  content: "...";
+.content {
+  height: calc(100% - 65.5px);
+  overflow: auto;
 }

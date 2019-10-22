@@ -5,7 +5,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ItemInstanceService} from '../../../../../../_service/user/instance/item-instance.service';
 import {ContainersList} from '../../../../../../_models/response/Container';
 import {WishListItemService} from '../../../../../../_service/user/wishlist/wishListItem/wish-list-item.service';
-import {ItemInstancesList} from '../../../../../../_models/response/item/ItemInstancesList';
 import {ErrorHandlerService} from '../../../../../../_service/utils/errorhanler/error-handler.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import {DialogService} from "../../../../../../_service/utils/dialog.service";
@@ -30,7 +29,6 @@ export class WishListComponent {
   items: EntityList<WishListItem> = new EntityList<WishListItem>();
 
   containers: ContainersList;
-  itemsInstances: ItemInstancesList = new ItemInstancesList();
 
   constructor(private wishListService: WishListService,
               private wishListItemService: WishListItemService,
@@ -44,36 +42,13 @@ export class WishListComponent {
   }
 
 
-
-
-  archive() {
-    this.wishListService.archive(this._wishList);
-    this.dialogRef.close();
-  }
-
-
   addInstance(item: WishListItem) {
 
   }
 
 
-  openItem(item: WishListItem) {
-    const data = {
-      item: item
-    };
-
-    const dialogRef = DialogService.createWishListItemComponent(this.dialog, data);
-  }
-
-
   openForm() {
-    const data = {
-      wishList: this._wishList
-    };
-
-    const dialogRef = DialogService.createWishListItemFromComponent(this.dialog, data);
-    dialogRef.afterClosed().subscribe((res: WishListItem) => {
-    });
+    const dialogRef = DialogService.createWishListItemFromComponent(this.dialog, { wishList: this._wishList });
   }
 
 

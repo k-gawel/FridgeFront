@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Item} from "../../../../../../_models/response/item/Item";
 import {WishListItem} from "../../../../../../_models/response/WishListItem";
-import {PlaceDetails} from "../../../../../../_models/response/PlaceDetails";
+import {Place} from "../../../../../../_models/response/Place";
 import {ItemInstance} from "../../../../../../_models/response/item/ItemInstance";
 import {WishListItemService} from "../../../../../../_service/user/wishlist/wishListItem/wish-list-item.service";
 import {ItemInstancesList} from "../../../../../../_models/response/item/ItemInstancesList";
@@ -24,7 +24,7 @@ export class NewWishListItemInstanceItemComponent implements OnInit {
 
   @Output() ready = new EventEmitter();
 
-  places: PlaceDetails[];
+  places: Place[];
 
   newInstanceForm: boolean = false;
 

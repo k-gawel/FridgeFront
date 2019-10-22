@@ -1,11 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PlaceDetails} from '../../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../../_models/response/Place';
 import {WishListQuery, WishListService} from '../../../../../_service/user/wishlist/wishlist/wish-list.service';
 import {KeyName} from '../../../../../_models/response/KeyName';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {WishList, WishListList} from '../../../../../_models/response/WishList';
-import {Entity} from '../../../../../_models/response/Entity';
-import {CookieDataService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {SessionService} from '../../../../../_service/auth/cookieDatas/cookie-datas.service';
 import {DialogService} from "../../../../../_service/utils/dialog.service";
 import {MatDialog} from "@angular/material";
 import {PlaceService} from "../../../../../_service/user/place/place/place.service";
@@ -20,7 +19,7 @@ export class WishListMenuComponent implements OnInit {
 
 
   @Input() list: WishListList;
-  @Input() place: PlaceDetails;
+  @Input() place: Place;
 
   @Output() selectedWishList = new EventEmitter<KeyName>();
 
@@ -29,7 +28,7 @@ export class WishListMenuComponent implements OnInit {
   constructor(private wishListService: WishListService,
               private modalService: NgbModal,
               private placeService: PlaceService,
-              private cookiesData: CookieDataService,
+              private cookiesData: SessionService,
               private dialog: MatDialog) {
   }
 

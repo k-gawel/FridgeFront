@@ -2,8 +2,8 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {UserContent} from '../../../../_models/util/Content';
 import {AccountDatas} from '../../../../_models/response/AccountDatas';
 import {KeyName} from '../../../../_models/response/KeyName';
-import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
-import {CookieDataService} from '../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {Place} from '../../../../_models/response/Place';
+import {SessionService} from '../../../../_service/auth/cookieDatas/cookie-datas.service';
 
 @Component({
   selector: 'app-user',
@@ -23,7 +23,7 @@ export class UserComponent implements OnInit, OnDestroy {
   _contentParams: any;
   _accountDatas: AccountDatas;
 
-  constructor(private cookieDatas: CookieDataService) {
+  constructor(private cookieDatas: SessionService) {
   }
 
 
@@ -49,8 +49,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
 
-  removedPlace: PlaceDetails;
-  removePlace(place: PlaceDetails) {
+  removedPlace: Place;
+  removePlace(place: Place) {
     this._contentParams = null;
     this._userContent = UserContent.HOME;
     this.removedPlace = place;

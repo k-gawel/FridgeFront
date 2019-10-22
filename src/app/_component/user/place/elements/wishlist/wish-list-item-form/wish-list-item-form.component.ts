@@ -6,7 +6,7 @@ import {WishListItemService} from '../../../../../../_service/user/wishlist/wish
 import {WishListItem} from '../../../../../../_models/response/WishListItem';
 import {WishList} from '../../../../../../_models/response/WishList';
 import {WishListItemForm} from '../../../../../../_models/request/wishlistitem/WishListItemForm';
-import {CookieDataService} from '../../../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {SessionService} from '../../../../../../_service/auth/cookieDatas/cookie-datas.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 export interface WishListItemFormComponentData {
@@ -29,7 +29,7 @@ export class WishListItemFormComponent {
 
   constructor(private itemService: ItemService,
               private wishLisstItemService: WishListItemService,
-              private cookieDatas: CookieDataService,
+              private cookieDatas: SessionService,
               public dialogRef: MatDialogRef<WishListItemFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: WishListItemFormComponentData) {
     this._wishList = data.wishList;

@@ -7,7 +7,7 @@ import {ErrorHandlerService} from '../../../utils/errorhanler/error-handler.serv
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {WishListItemForm} from '../../../../_models/request/wishlistitem/WishListItemForm';
 import {HttpErrorResponse} from '@angular/common/http';
-import {CookieDataService} from '../../../auth/cookieDatas/cookie-datas.service';
+import {SessionService} from '../../../auth/cookieDatas/cookie-datas.service';
 import {ItemInstance} from '../../../../_models/response/item/ItemInstance';
 import {UserDate} from "../../../../_models/util/UserDate";
 
@@ -17,7 +17,7 @@ import {UserDate} from "../../../../_models/util/UserDate";
 export class WishListItemService {
 
   constructor(private wishListItemApi: WishListItemApiService,
-              private cookiesData: CookieDataService,
+              private cookiesData: SessionService,
               private itemService: ItemService,
               private itemInstanceService: ItemInstanceService,
               private errorHandler: ErrorHandlerService) { }
@@ -30,14 +30,20 @@ export class WishListItemService {
   }
 
 
-  public async addInstance(item: WishListItem, instance: ItemInstance) {
+  public addInstance(item: WishListItem, instance: ItemInstance): Promise<boolean> {
     return this.wishListItemApi.addInstance(item.id, instance.id)
-      .then((response: JSON) => {
-        item.added = new UserDate(this.cookiesData.getUserId());
-        instance.wishListItem = item;
-        item.addedInstance = instance;
+      .then((response: boolean) => {
+        if(response) {
+          item.added = new UserDate(this.cookiesData.getUserId());
+          instance.wishListItem = item;
+          item.addedInstance = instance;
+        }
+        return response;
       })
-      .catch((error: HttpErrorResponse) => this.errorHandler.sendErrors(new ErrorMessage(error.message)) );
+      .catch((error: HttpErrorResponse) => {
+        this.errorHandler.sendErrors(new ErrorMessage(error.message));
+        return false;
+      });
 
   }
 

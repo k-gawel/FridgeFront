@@ -1,13 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
-import {CookieDataService} from '../../../../_service/auth/cookieDatas/cookie-datas.service';
+import {Place} from '../../../../_models/response/Place';
+import {SessionService} from '../../../../_service/auth/cookieDatas/cookie-datas.service';
 import {ContainersList} from '../../../../_models/response/Container';
 import {KeyName} from '../../../../_models/response/KeyName';
 import {PlaceService} from '../../../../_service/user/place/place/place.service';
 import {IdSelector} from '../../../../_service/utils/EntitySelector';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {ErrorHandlerService} from '../../../../_service/utils/errorhanler/error-handler.service';
-import {Category} from '../../../../_models/response/Category';
 import {WishList} from '../../../../_models/response/WishList';
 import {PlaceContent} from '../../../../_models/util/Content';
 import {PlaceUserService} from '../../../../_service/user/place/placeUser/place-user.service';
@@ -19,14 +18,14 @@ import {PlaceUserService} from '../../../../_service/user/place/placeUser/place-
 })
 export class PlaceComponent  {
 
-  _place: PlaceDetails;
+  _place: Place;
   _chosenContainers: ContainersList;
 
   content: PlaceContent = PlaceContent.ITEMS;
   contentParams: any;
 
 
-  constructor(private cookieData: CookieDataService,
+  constructor(private cookieData: SessionService,
               private placeService: PlaceService,
               private placeUserService: PlaceUserService,
               private errorHandler: ErrorHandlerService) {
@@ -35,7 +34,7 @@ export class PlaceComponent  {
   @Input()
   set place(value: KeyName) {
     this.placeService.getById(new IdSelector(value))
-      .then((result: PlaceDetails) => this._place = result )
+      .then((result: Place) => this._place = result )
       .catch(e => console.log(e));
   }
 
@@ -61,7 +60,7 @@ export class PlaceComponent  {
   }
 
 
-  @Output() leavedPlace = new EventEmitter<PlaceDetails>();
+  @Output() leavedPlace = new EventEmitter<Place>();
 
 
   canLeavePlace(): boolean {

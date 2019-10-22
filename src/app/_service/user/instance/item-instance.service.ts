@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ItemInstanceApiService} from '../../api/item/item-instance-api.service';
 import {ItemInstance} from '../../../_models/response/item/ItemInstance';
-import {CookieDataService} from '../../auth/cookieDatas/cookie-datas.service';
+import {SessionService} from '../../auth/cookieDatas/cookie-datas.service';
 import {ItemInstanceForm} from '../../../_models/request/iteminstance/ItemInstanceForm';
 import {ItemInstancesList} from '../../../_models/response/item/ItemInstancesList';
 import {LocalDate} from '../../../_util/date/JavaLocalDate';
@@ -16,7 +16,7 @@ export class ItemInstanceService {
 
 
   constructor(private instanceApi: ItemInstanceApiService,
-              private cookieDatas: CookieDataService,
+              private cookieDatas: SessionService,
               private errorHandler: ErrorHandlerService) {
   }
 

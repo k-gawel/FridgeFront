@@ -1,0 +1,48 @@
+<div class="item-container" *ngFor="let item of items | entityList" >
+
+  <div class="item-header space-between">
+
+     <div id="item-image" style="width: 1.75rem; height: 1.75rem">
+        <img src="https://image.flaticon.com/icons/svg/99/99518.svg" class="rounded">
+      </div>
+
+      <h5 class="text-truncate">
+        {{item.name}}
+      </h5>
+
+      <button mat-button color="primary" (click)="newInstanceForm = item">
+        <mat-icon>add</mat-icon>
+      </button>
+
+  </div>
+
+  <div class="item-instances-list">
+
+    <mat-list *ngIf="!item.equals(newInstanceForm)">
+
+        <mat-list-item *ngFor="let instance of instances.filterByItems(item) | entityList; last as last">
+
+          <app-instance-content [instance]="instance" style="width: 100%">
+          </app-instance-content>
+
+          <button mat-button (click)="addInstance(instance)">
+            <mat-icon aria-label="Add this">add</mat-icon>
+          </button>
+
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+
+        </mat-list-item>
+
+
+    </mat-list>
+
+    <div *ngIf="item.equals(newInstanceForm)">
+      <app-new-instance-form [wishListItem]="wishListItem" [shopList]="shopList"
+                             [item]="item" [places]="[place]"
+                             (newInstance)="added.emit($event)">
+      </app-new-instance-form>
+    </div>
+
+  </div>
+
+</div>

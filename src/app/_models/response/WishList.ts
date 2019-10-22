@@ -1,5 +1,5 @@
 import {WishListItem, WishListItemList} from './WishListItem';
-import {PlaceDetailsList} from "./PlaceDetails";
+import {PlacesList} from "./Place";
 import {PlaceElement, PlaceElementList} from "./PlaceElement";
 import {UserDate} from "../util/UserDate";
 
@@ -31,7 +31,7 @@ export class WishList extends PlaceElement {
     if(json['archived'])
       this.archived = new UserDate(json['archived']);
 
-    this.place = PlaceDetailsList.ALL[json['placeId']];
+    this.place = PlacesList.ALL[json['placeId']];
     this.place.wishLists.add(this);
 
     this.description = json['description'];

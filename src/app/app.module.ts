@@ -42,7 +42,8 @@ import {
 import {WishListItemService} from './_service/user/wishlist/wishListItem/wish-list-item.service';
 import {WishListService} from './_service/user/wishlist/wishlist/wish-list.service';
 import {
-  MatAutocompleteModule, MatBottomSheetModule,
+  MatAutocompleteModule,
+  MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -58,6 +59,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
+  MatProgressSpinnerModule,
   MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
@@ -83,14 +85,20 @@ import {
   ShopListFormDialog
 } from './_component/user/place/elements/shoplist/shop-list-form/shop-list-form.component';
 import {ShopListComponent} from './_component/user/place/elements/shoplist/shop-list/shop-list.component';
-import {NewShopListInstanceComponent} from './_component/user/place/elements/item-instance/new-shop-list-instance/new-shop-list-instance.component';
-import {
-  ShopListInstanceFormComponent,
-  ShopListInstanceFormDialog
-} from './_component/user/place/elements/shoplist/shop-list-instance-form/shop-list-instance-form.component';
+import {NewShopListInstanceDialog} from './_component/user/place/elements/shoplist/new-shop-list-instance/new-shop-list-instance.component';
+import {ItemInstancesListComponent} from './_component/user/place/elements/item/item-instances-list/item-instances-list.component';
 import {FormErrorComponent} from './_component/utils/form-error/form-error.component';
-import { ShowOnDirective } from './_component/utils/show-on/show-on.directive';
-import { ItemInstancesListComponentComponent } from './_component/user/place/elements/item/item-instances-list-component/item-instances-list-component.component';
+import {ItemsListComponent} from './_component/user/place/elements/item/items-list/items-list.component';
+import {ItemInstancesForListListComponent} from './_component/user/place/elements/item-instance/item-instances-for-list-list/item-instances-for-list-list.component';
+import {ItemPickerWithCategoriesComponent} from './_component/user/place/elements/item-picker/item-picker-with-categories/item-picker-with-categories.component';
+import {ItemPickerCoreComponent} from './_component/user/place/elements/item-picker/item-picker-core/item-picker-core.component';
+import {ItemInputComponent} from './_component/user/place/elements/item-picker/item-input/item-input.component';
+import {InstanceContentComponent} from "./_component/user/place/elements/item-instance/item-instance/instance-content.component";
+import {WishListItemInstanceFormComponent} from "./_component/user/place/elements/wishlist/wish-list-item/wish-list-item-instance-form.component";
+import {WishListItemContentComponent} from "./_component/user/place/elements/wishlist/wish-list-item/wish-list-item-content.component";
+import {WishListItemDescriptionComponent} from "./_component/user/place/elements/wishlist/wish-list-item/wish-list-item-description.component";
+import {WishListHeaderComponent} from "./_component/user/place/elements/wishlist/wish-list/wish-list-header.component";
+import {ItemInstanceForListFormComponent} from "./_component/user/place/elements/item-instance/item-instance-for-list-form.component";
 
 
 const appRoutes: Routes = [];
@@ -128,30 +136,46 @@ const appRoutes: Routes = [];
     RelatedItemsSceneComponent,
     ItemPickerComponent,
     BarcodeScannerComponent,
+    ItemsListComponent,
+
 
     // ITEM INSTANCE
     ItemInstanceComponent,
+    InstanceContentComponent,
     InstanceActionInfoComponent,
     NewInstanceFormDialog,
     NewInstanceFormComponent,
     NewWishListItemInstanceItemComponent,
-    NewShopListInstanceComponent,
+    ItemInstancesListComponent,
+    ItemInstancesForListListComponent,
+    ItemInstanceForListFormComponent,
 
     // WISH LIST
     WishListComponent,
+    WishListHeaderComponent,
     WishListFormComponent,
     WishListFormDialog,
     WishListMenuComponent,
+
+    // WISH LIST ITEM
     WishListItemComponent,
+    WishListItemContentComponent,
     WishListItemFormComponent,
+    WishListItemDescriptionComponent,
+    WishListItemInstanceFormComponent,
+
 
     // SHOP LIST
     ShopListMenuComponent,
     ShopListFormComponent,
     ShopListFormDialog,
     ShopListComponent,
-    ShopListInstanceFormComponent,
-    ShopListInstanceFormDialog,
+    NewShopListInstanceDialog,
+
+    // ITEM PICKER
+    ItemPickerWithCategoriesComponent,
+    ItemPickerCoreComponent,
+    ItemInputComponent,
 
     // UTILS
     LoaderComponent,
@@ -160,9 +184,6 @@ const appRoutes: Routes = [];
     ErrorHandlerComponent,
     NavbarComponent,
     FormErrorComponent,
-    ShowOnDirective,
-    ItemInstancesListComponentComponent,
-
   ],
   entryComponents: [
     // PLACE
@@ -190,7 +211,7 @@ const appRoutes: Routes = [];
     // SHOP LIST
     ShopListComponent,
     ShopListFormDialog,
-    ShopListInstanceFormDialog
+    NewShopListInstanceDialog
   ],
   imports: [
     MatTabsModule,
@@ -222,7 +243,8 @@ const appRoutes: Routes = [];
     MatButtonToggleModule,
     MatExpansionModule,
     MatAutocompleteModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     CookieService,

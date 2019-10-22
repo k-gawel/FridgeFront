@@ -1,43 +1,24 @@
-<ng-container *ngIf="_category != null">
+<div class="input-group-prepend" style="display: flex; width: 100%">
+  <span class="input-group-text" style="flex-grow: 1" (click)="openCategoriesSheet()">
+    {{_category.name}}
+  </span>
+  <span class="input-group-text" style="flex-grow: 1" (click)="openProducersSheet()">
+    Producers
+  </span>
+</div>
 
 
-  <div class="input-group-prepend" style="display: flex; width: 100%">
-        <span class="input-group-text" style="flex-grow: 1" (click)="openCategoriesSheet()">
-          {{_category.name}}
-        </span>
-    <span class="input-group-text" style="flex-grow: 1" (click)="openProducersSheet()">
-          Producer
-        </span>
-  </div>
+<div class="content" *ngIf="content === 'LIST'">
+  <app-items-list [items]="items" [place]="place" (selectedItem)="openItem($event)">
+  </app-items-list>
+</div>
 
-  <mat-action-list *ngIf="content == 'LIST'" style="height: calc(100% - 2.4em); overflow: auto">
-    <button mat-list-item *ngFor="let item of items | entityList" (click)="openItem(item)">
 
-      <h4 mat-line class="text-truncate">{{item.name}}</h4>
-
-      <p mat-line class="space-between">
-        <span>
-          {{item.category.name}}
-        </span>
-        <span>
-          {{item.producer.name}}
-        </span>
-      </p>
-
-      <img [src]="imageUrl(item)" class="rounded" width="50px" height="50px">
-    </button>
-  </mat-action-list>
-
-  <div *ngIf="content == 'PICKER'" style="height: calc(100% - 2.4em); overflow: auto">
-
-    <app-item-picker (close)="content = 'LIST'" (selectedItem)="openItem($event)"
-                     [category]="_category" [place]="place" [closeable]="true">
-    </app-item-picker>
-
-  </div>
-
-</ng-container>
-
+<div class="content" *ngIf="content === 'PICKER'">
+  <app-item-picker (close)="content = 'LIST'" (selectedItem)="openItem($event)"
+                   [category]="_category" [place]="place" [closeable]="true">
+  </app-item-picker>
+</div>
 
 <div class="option-buttons ob-right" *ngIf="content == 'LIST'">
 

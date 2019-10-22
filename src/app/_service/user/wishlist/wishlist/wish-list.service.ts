@@ -1,14 +1,9 @@
 import {Injectable} from '@angular/core';
 import {WishListApiService} from '../../../api/wishlist/wish-list-api.service';
-import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
 import {WishList, WishListList} from '../../../../_models/response/WishList';
 import {WishListForm} from '../../../../_models/request/wishlist/WishListForm';
-import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
-import {HttpErrorResponse} from '@angular/common/http';
-import {WishListItemService} from "../wishListItem/wish-list-item.service";
 import {ErrorHandlerService} from "../../../utils/errorhanler/error-handler.service";
 import {OffsetLimit} from "../../../../_util/OffsetLimit";
-import {ItemsList} from "../../../../_models/response/item/ItemsList";
 import {Item} from "../../../../_models/response/item/Item";
 import {ItemInstance} from "../../../../_models/response/item/ItemInstance";
 

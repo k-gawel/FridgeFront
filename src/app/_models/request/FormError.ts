@@ -17,7 +17,7 @@ export class FormError {
       case FormErrorLanguages.ENG:
         return this.ENG_message;
       default:
-        throw new Error("Wrong language: " + lng);
+        throw new Error(`Wrong language: ${lng}`);
     }
   }
 

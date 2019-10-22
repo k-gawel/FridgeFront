@@ -1,4 +1,4 @@
-<mat-toolbar class="dialog-full-screen-toolbar">
+<mat-toolbar>
 
   <mat-toolbar-row>
 
@@ -23,16 +23,17 @@
 
 </mat-toolbar>
 
+<div class="dialog-content">
 
-<div [ngStyle]="{'display': content === 'INFO' ? '' : 'none'}">
-  <app-item-description [item]="item">
+  <app-item-description [ngStyle]="{'display': content === 'INFO' ? '' : 'none'}"
+                        [item]="item">
   </app-item-description>
-</div>
 
 
-<div [ngStyle]="{'display': content === 'INSTANCES' ? '' : 'none'}">
-  <app-item-instances-list-component [item]="item" [places]="places">
-  </app-item-instances-list-component>
+  <app-item-instances-list [ngStyle]="{'display': content === 'INSTANCES' ? '' : 'none'}"
+                           [item]="item" [places]="places">
+  </app-item-instances-list>
+
 </div>
 
 

@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
 import {RelatedItemsApiService} from '../../../api/item/related-items-api.service';
-import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../_models/response/Place';
 import {Category} from '../../../../_models/response/Category';
 import {ItemsList} from '../../../../_models/response/item/ItemsList';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
-import {IdSelector} from "../../../utils/EntitySelector";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +15,7 @@ export class RelatedItemsService {
   allOfCategory: Map<number, ItemsList> = new Map<number, ItemsList>();
 
 
-  public async getMostPopular(category: Category | number, place: PlaceDetails | number): Promise<ItemsList> {
+  public async getMostPopular(category: Category | number, place: Place | number): Promise<ItemsList> {
     let placeId: number = typeof place === 'number' ? place : place.id;
     let categoryId: number = typeof category === 'number' ? category : category.id;
 
@@ -35,10 +32,7 @@ export class RelatedItemsService {
   }
 
 
-  public async getAll(category: IdSelector, place: IdSelector, limit: number): Promise<ItemsList> {
-    let categoryID: number = category.id[0];
-    let placeID: number = place.id[0];
-
+  public async getAll(categoryID: number, placeID: number): Promise<ItemsList> {
     let cacheResult = this.allOfCategory.get(categoryID);
     if(cacheResult != undefined)
       return cacheResult;
@@ -48,5 +42,7 @@ export class RelatedItemsService {
         let result = new ItemsList(res);
         this.allOfCategory.set(categoryID, result);
         return result;
-      })};
+      })
+
+  }
 }

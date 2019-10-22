@@ -1,3 +1,7 @@
+:host {
+  overflow: scroll;
+}
+
 .ctg-menu-btn-group .button {
   background-color: white; /* Green */
 

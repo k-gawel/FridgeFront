@@ -1,0 +1,13 @@
+<mat-action-list>
+
+  <app-item-instance *ngFor="let instance of instances | entityList"
+                     [instance]="instance"></app-item-instance>
+
+  <button mat-list-item *ngIf="deletedOffset != null" (click)="fetchDeleted()">
+    Show archived...
+  </button>
+
+  <app-item-instance *ngFor="let instance of deleted"
+                     [instance]="instance"></app-item-instance>
+
+</mat-action-list>

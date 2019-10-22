@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
 import {WishListForm} from '../../../../../../_models/request/wishlist/WishListForm';
-import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../../../_models/response/Place';
 import {WishListService} from '../../../../../../_service/user/wishlist/wishlist/wish-list.service';
-import {CookieDataService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
+import {SessionService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {WishList} from "../../../../../../_models/response/WishList";
 
@@ -14,13 +14,13 @@ import {WishList} from "../../../../../../_models/response/WishList";
 })
 export class WishListFormComponent {
 
-  @Input() place: PlaceDetails;
+  @Input() place: Place;
   @Output() result = new EventEmitter<WishList>();
 
   form: WishListForm;
 
   constructor(private wishListService: WishListService,
-              private sessionService: CookieDataService) {
+              private sessionService: SessionService) {
   }
 
   ngOnInit() {
@@ -46,7 +46,7 @@ export class WishListFormComponent {
 }
 
 export interface WishListFormData {
-  place: PlaceDetails
+  place: Place
 }
 
 @Component({

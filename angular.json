@@ -26,6 +26,7 @@
               "src/styles/styles.css",
               "src/styles/bootstrap.min.css",
               "src/styles/util.css",
+              "src/styles/material-utils.css"
             ],
             "scripts": [
               "src/scripts/jquery-3.3.1.slim.min.js",
@@ -81,7 +82,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/styles/material-utils.css"
             ],
             "scripts": [],
             "assets": [

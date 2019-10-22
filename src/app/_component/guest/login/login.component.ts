@@ -3,7 +3,6 @@ import {LoginForm} from '../../../_models/request/login/LoginForm';
 import {AuthService} from '../../../_service/auth/auth/auth.service';
 import {RoleContent} from '../../../_models/util/Content';
 import {AccountDatas} from '../../../_models/response/AccountDatas';
-import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -23,6 +22,8 @@ export class LoginComponent implements OnInit {
     let processSubmit = (res: AccountDatas) => {
       if(res != null)
         this.account.emit(res);
+      else
+        this.authService.$roleContent.next(RoleContent.GUEST);
     };
 
     let processValidation = (res: boolean) => {

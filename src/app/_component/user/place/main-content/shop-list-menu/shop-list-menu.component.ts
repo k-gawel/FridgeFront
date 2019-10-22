@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DialogService} from "../../../../../_service/utils/dialog.service";
-import {PlaceDetails} from "../../../../../_models/response/PlaceDetails";
+import {Place} from "../../../../../_models/response/Place";
 import {ShopList, ShopListList} from "../../../../../_models/response/ShopList";
 import {ShopListFormDialogData} from "../../elements/shoplist/shop-list-form/shop-list-form.component";
 import {MatDialog} from "@angular/material";
@@ -17,7 +17,7 @@ import {ShopListService} from "../../../../../_service/user/shoplist/shop-list.s
 export class ShopListMenuComponent implements OnInit {
 
   @Input() list: ShopListList;
-  @Input() place: PlaceDetails;
+  @Input() place: Place;
 
   deleted: ShopList[] = [];
 
@@ -47,6 +47,7 @@ export class ShopListMenuComponent implements OnInit {
       if (r instanceof ShopList) this.select(r);
     })
   }
+
 
   deletedOffset = 0;
   getDeleted() {

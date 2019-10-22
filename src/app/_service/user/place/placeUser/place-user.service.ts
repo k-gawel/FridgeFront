@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {PlaceDetails} from '../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../_models/response/Place';
 import {KeyName} from '../../../../_models/response/KeyName';
 import {ErrorMessage} from '../../../../_models/util/ErrorMessage';
 import {PlaceApiService} from '../../../api/place/place-api.service';
-import {HttpErrorResponse} from '@angular/common/http';
 import {PlaceUser} from '../../../../_models/response/place-user/PlaceUser';
 
 @Injectable({
@@ -13,7 +12,7 @@ export class PlaceUserService {
 
   constructor(private placeApi: PlaceApiService) { }
 
-  public removeUser(place: PlaceDetails, user: KeyName) {
+  public removeUser(place: Place, user: KeyName) {
     return this.placeApi.removeUser(place.id, user.id)
       .then(res => {
         if(res)
@@ -22,7 +21,7 @@ export class PlaceUserService {
   }
 
 
-  public changeAdmin(place: PlaceDetails, user: KeyName){
+  public changeAdmin(place: Place, user: KeyName){
 
     return this.placeApi.changeAdmin(place.id, user.id)
       .then(res => {
@@ -36,7 +35,7 @@ export class PlaceUserService {
   }
 
 
-  public addUser(place: PlaceDetails, user: KeyName): Promise<PlaceUser> {
+  public addUser(place: Place, user: KeyName): Promise<PlaceUser> {
     let processResult = (r: boolean) => {
       if(r)
         return PlaceUser.added(user, place, true);

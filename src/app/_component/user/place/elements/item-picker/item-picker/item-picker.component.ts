@@ -1,20 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ItemService} from '../../../../../../_service/user/item/item/item.service';
-import {RelatedItemsService} from '../../../../../../_service/user/item/relatedItems/related-items.service';
-import {ErrorMessage} from '../../../../../../_models/util/ErrorMessage';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Category} from '../../../../../../_models/response/Category';
-import {PlaceDetails} from '../../../../../../_models/response/PlaceDetails';
+import {Place} from '../../../../../../_models/response/Place';
 import {ItemsList} from '../../../../../../_models/response/item/ItemsList';
 import {Item} from '../../../../../../_models/response/item/Item';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NewItemDatas} from '../../item/new-item-form/new_item.component';
-import {WindowService} from '../../../../../../_service/utils/window.service';
-import {BarcodeScannerComponent} from '../barcode-scanner/barcode-scanner.component';
-import {IdSelector} from "../../../../../../_service/utils/EntitySelector";
 import {MatDialog} from "@angular/material";
 import {DialogService} from "../../../../../../_service/utils/dialog.service";
-import {ItemGetQuery} from "../../../../../../_models/request/item/ItemGetQuery";
-import {ApiService} from "../../../../../../_service/api/api/api.service";
 
 
 @Component({
@@ -22,105 +13,29 @@ import {ApiService} from "../../../../../../_service/api/api/api.service";
   templateUrl: './item-picker.component.html',
   styleUrls: ['./item-picker.component.css']
 })
-export class ItemPickerComponent  {
-
-  constructor(private itemService: ItemService,
-              private relatedItemsService: RelatedItemsService,
-              private modalService: NgbModal,
-              public dialog: MatDialog) {
-  }
+export class ItemPickerComponent implements OnInit {
 
   @Input() closeable: boolean = false;
-  @Input() place: PlaceDetails;
+  @Input() place:     Place;
+  @Input() category:  Category;
 
   @Output() selectedItem = new EventEmitter<Item>();
   @Output() close = new EventEmitter();
 
-  items: ItemsList;
-
+  input: string | number;
+  items: ItemsList = new ItemsList();
   textSearch: string | number = '';
 
-
-  _category: Category = Category.rootCategory;
-  @Input() set category(category: Category) {
-    if(this._category.equals(category) || category == null) return;
-    else this._category = category;
-
-    if(this._category.isFinal() && this.textSearch == "")
-      this.getRelatedItems();
-    else
-      this.onTextSearchChange();
+  constructor(public dialog: MatDialog) {
   }
 
-
-  imageUrl(item: Item): string {
-    return ApiService.imageUrl(item);
+  ngOnInit() {
   }
 
-  
-  scanBarcode() {
-    const modalRef = this.modalService.open(BarcodeScannerComponent);
-    modalRef.componentInstance.barcode.subscribe(res => {
-      this.textSearch = res;
-      this.searchByBarcode(res);
-      modalRef.close()
-    });
-    modalRef.componentInstance.close.subscribe(() => modalRef.close())
-  }
-
-
-  searchByBarcode(barcode: number) {
-    let query = new ItemGetQuery();
-    query.barcode = barcode;
-    query.places = [this.place.id];
-
-    this.itemService.get(query)
-                    .then((items: ItemsList) => this.items = items );
-  }
-
-
-  searchByName(name: string) {
-    let query = new ItemGetQuery();
-    query.name = name;
-    query.places = [this.place.id];
-    query.category = this._category.id;
-
-    this.itemService.get(query)
-                    .then((i: ItemsList) => this.items = i);
-  }
-
-
-  getRelatedItems() {
-    this.items = null;
-
-    if(this._category.isFinal())
-      this.relatedItemsService.getAll(new IdSelector(this._category), new IdSelector(this.place), 100)
-                              .then(items => this.items = items);
-    else
-      this.relatedItemsService.getMostPopular(this._category, this.place)
-                              .then( (items: ItemsList) => this.items = items );
-
-  }
-
-  
-  onTextSearchChange() {
-    this.items = null;
-
-    if(this.textSearch.toString().length <= 4)
-        this.getRelatedItems();
-    else if(!isNaN(Number(this.textSearch)))
-        this.searchByBarcode(Number(this.textSearch));
-    else if(isNaN(Number(this.textSearch)))
-        this.searchByName(String(this.textSearch));
-  }
-
-  
   createNewItem() {
-    const formData = { category: this._category, place: this.place,
+    const formData = { category: this.category, place: this.place,
                        name: isNaN(Number(this.textSearch)) ? this.textSearch : null,
-                      barcode: !isNaN(Number(this.textSearch)) ? null : this.textSearch
-                     };
-
+                       barcode: !isNaN(Number(this.textSearch)) ? null : this.textSearch };
     const dialogRef = DialogService.createItemFormComponent(this.dialog, <NewItemDatas> formData);
     dialogRef.afterClosed().subscribe(i => { if (i != null) this.selectedItem.emit(i); })
   }

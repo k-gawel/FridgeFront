@@ -19,14 +19,21 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {
   }
 
+  hundred: number[] = [];
 
   ngOnInit() {
+    for(let i = 0; i < 100; i = i + 5) {
+      this.hundred.push(i);
+    }
+
     this.authService.$roleContent.subscribe((content: RoleContent) => this.content = content);
 
     this.authService.login()
       .then((response: AccountDatas) => {
         if(response != null)
           this.setAccount(response);
+        else
+          this.authService.$roleContent.next(RoleContent.GUEST);
       })
   }
 

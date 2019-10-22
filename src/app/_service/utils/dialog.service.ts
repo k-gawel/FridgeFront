@@ -34,9 +34,10 @@ import {
   ShopListData
 } from "../../_component/user/place/elements/shoplist/shop-list/shop-list.component";
 import {
-  ShopListInstanceFormData,
-  ShopListInstanceFormDialog
-} from "../../_component/user/place/elements/shoplist/shop-list-instance-form/shop-list-instance-form.component";
+  NewShopListInstanceComponent,
+  NewShopListInstanceData,
+  NewShopListInstanceDialog
+} from "../../_component/user/place/elements/shoplist/new-shop-list-instance/new-shop-list-instance.component";
 import {ItemInstance} from "../../_models/response/item/ItemInstance";
 import {ComponentType} from "@angular/cdk/typings/portal";
 
@@ -45,36 +46,45 @@ import {ComponentType} from "@angular/cdk/typings/portal";
 })
 export class DialogService {
 
+  private static readonly fullScreen = "dialog-full-screen";
+  private static readonly noPadding = "dialog-no-padding";
+  private static readonly fullWidth = "dialog-full-width";
+
   constructor() {
   }
 
   // UTILS
 
-  private static getFullScreenConfig(data: any): MatDialogConfig {
-    let config = new MatDialogConfig();
+  private static getConfig(panelClasses: string[] | string, data: any): MatDialogConfig {
+    const config = new MatDialogConfig();
     config.data = data;
-    config.panelClass = 'full-screen';
+    config.panelClass = panelClasses;
     return config;
+  }
+
+  private static getFullScreenNoPaddingConfig(data: any): MatDialogConfig {
+    return this.getConfig([this.fullScreen, this.noPadding], data);
+  }
+
+  private static getFullScreenConfig(data: any): MatDialogConfig {
+    return this.getConfig([this.fullScreen], data);
   }
 
   private static getFullWidthConfig(data: any): MatDialogConfig {
-    const config = new MatDialogConfig();
-    config.data = data;
-    config.panelClass = 'full-width';
-    config.disableClose = true;
-    return config;
+    return this.getConfig([this.fullWidth], data);
   }
 
   private static createFullWidthComponent<T>(dialog, component: ComponentType<T> | TemplateRef<T>, data): MatDialogRef<T> {
-    const config = this.getFullWidthConfig(data);
-    return dialog.open(component, config);
+    return dialog.open(component, this.getFullWidthConfig(data));
   }
 
   private static createFullScreenComponent<T>(dialog: MatDialog, component: ComponentType<T> | TemplateRef<T>, datas): MatDialogRef<T> {
-    const config = this.getFullScreenConfig(datas);
-    return dialog.open(component, config);
+    return dialog.open(component, this.getFullScreenConfig(datas));
   }
 
+  private static createFullScreenNoPaddingComponent<T>(dialog: MatDialog, component: ComponentType<T> | TemplateRef<T>, data): MatDialogRef<T> {
+    return dialog.open(component, this.getFullScreenNoPaddingConfig(data));
+  }
 
   // ITEM
 
@@ -83,7 +93,7 @@ export class DialogService {
   }
 
   public static createItemComponent(dialog: MatDialog, datas: ItemComponentData): MatDialogRef<ItemComponent, undefined> {
-    return <MatDialogRef<ItemComponent, undefined>> this.createFullScreenComponent(dialog, ItemComponent, datas);
+    return this.createFullScreenNoPaddingComponent(dialog, ItemComponent, datas);
   }
 
 
@@ -95,7 +105,7 @@ export class DialogService {
   }
 
   public static createWishListComponent(dialog: MatDialog, datas: WishListComponentData): MatDialogRef<WishListComponent, undefined> {
-    return <MatDialogRef<WishListComponent, undefined>> this.createFullScreenComponent(dialog, WishListComponent, datas);
+    return this.createFullScreenNoPaddingComponent(dialog, WishListComponent, datas);
   }
 
 
@@ -118,14 +128,12 @@ export class DialogService {
   }
 
   public static createShopList(dialog: MatDialog, data: ShopListData): MatDialogRef<ShopListComponent> {
-    const config = this.getFullScreenConfig(data);
-    return dialog.open(ShopListComponent, config);
+    return this.createFullScreenNoPaddingComponent(dialog, ShopListComponent, data);
   }
 
-  public static createShopListInstanceForm(dialog: MatDialog, data: ShopListInstanceFormData): MatDialogRef<ShopListInstanceFormDialog, ItemInstance> {
-    const config = this.getFullWidthConfig(data);
-    config.maxHeight = "90vh";
-    return dialog.open(ShopListInstanceFormDialog, config);
+  public static createShopListInstanceForm(dialog: MatDialog, data: NewShopListInstanceData): MatDialogRef<NewShopListInstanceDialog, ItemInstance> {
+    const config = this.getConfig([this.fullWidth, this.noPadding], data);
+    return dialog.open(NewShopListInstanceDialog, config);
   }
 
 }

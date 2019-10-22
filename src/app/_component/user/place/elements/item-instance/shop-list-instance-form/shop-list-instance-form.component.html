@@ -1,0 +1,83 @@
+<div>
+
+  <div id="item-header" style="position: relative; width: 100%">
+
+    <div>
+
+      <!--ICON-->
+      <div style="display: flex">
+        <div id="item-image" style="width: 1.75rem; height: 1.75rem">
+          <img src="https://image.flaticon.com/icons/svg/99/99518.svg" class="rounded">
+        </div>
+
+        <h3 class="text-truncate">
+          {{_item != null ? _item.name : _category.name }}
+        </h3>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="item-instances-list">
+
+    <mat-list *ngIf="!newInstanceForm">
+
+      <ng-container *ngFor="let item of items | entityList">
+
+        <span style="display: flex">
+
+          <img src="https://image.flaticon.com/icons/svg/99/99518.svg" style="width: 2.5em; height: 2.5em" class="rounded">
+
+          <h5 style="width: calc(100% - 5.5em)" showOn>
+            {{item.name}}
+          </h5>
+
+          <button mat-button color="primary" style="width: 3em" (click)="newInstanceForm = true">
+            <mat-icon>add</mat-icon>
+          </button>
+
+        </span>
+
+        <mat-list-item *ngFor="let instance of instances.filterByItems(item) | entityList; last as last">
+
+          <button mat-button (click)="addInstance(instance)">
+            <mat-icon aria-label="Add this">add</mat-icon>
+          </button>
+
+          <span mat-line class="space-between">
+
+            <span>
+              <i class="far fa-calendar-plus"></i> {{instance.added.simpleDateString}}
+            </span>
+
+            <span>
+              <i class="fas fa-user-plus"></i> {{instance.added.name}}
+            </span>
+
+          </span>
+
+          <span mat-line>
+            {{instance.comment}}
+          </span>
+
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+
+        </mat-list-item>
+
+      </ng-container>
+
+
+    </mat-list>
+
+    <div *ngIf="newInstanceForm">
+      <app-new-instance-form [wishListItem]="wishListItem" [item]="_item" [places]="places"
+                             (newInstance)="addInstance($event); newInstanceForm = false">
+      </app-new-instance-form>
+    </div>
+
+  </div>
+
+</div>

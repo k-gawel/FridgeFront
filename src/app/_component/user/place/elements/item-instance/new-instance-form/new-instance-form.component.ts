@@ -5,11 +5,11 @@ import {ItemInstance} from '../../../../../../_models/response/item/ItemInstance
 import {AccountService} from '../../../../../../_service/user/user/account.service';
 import {PlaceService} from '../../../../../../_service/user/place/place/place.service';
 import {ItemInstanceService} from '../../../../../../_service/user/instance/item-instance.service';
-import {PlaceDetailsList} from "../../../../../../_models/response/PlaceDetails";
+import {PlacesList} from "../../../../../../_models/response/Place";
 import {WishListItem, WishListItemList} from "../../../../../../_models/response/WishListItem";
 import {WishList, WishListList} from "../../../../../../_models/response/WishList";
 import {Currencies, Currency} from "ts-money";
-import {CookieDataService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
+import {SessionService} from "../../../../../../_service/auth/cookieDatas/cookie-datas.service";
 import {ShopList, ShopListList} from "../../../../../../_models/response/ShopList";
 
 
@@ -25,7 +25,7 @@ export class NewInstanceFormComponent implements OnInit {
   console = console;
 
   @Input() item: Item;
-  @Input() places: PlaceDetailsList;
+  @Input() places: PlacesList;
 
   @Input() wishListItem: WishListItem;
   @Input() shopList: ShopList;
@@ -35,7 +35,7 @@ export class NewInstanceFormComponent implements OnInit {
   form: ItemInstanceForm = new ItemInstanceForm();
 
 
-  constructor(private cookieService: CookieDataService,
+  constructor(private cookieService: SessionService,
               private userService: AccountService,
               private placeService: PlaceService,
               private instanceService: ItemInstanceService) {

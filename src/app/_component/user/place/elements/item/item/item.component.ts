@@ -1,20 +1,15 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import {Item} from "../../../../../../_models/response/item/Item";
-import {PlaceDetails, PlaceDetailsList} from "../../../../../../_models/response/PlaceDetails";
+import {Place, PlacesList} from "../../../../../../_models/response/Place";
 import {ItemInstance} from "../../../../../../_models/response/item/ItemInstance";
 import {ItemInstanceService} from "../../../../../../_service/user/instance/item-instance.service";
 import {WishListItemService} from "../../../../../../_service/user/wishlist/wishListItem/wish-list-item.service";
-import {EntityList} from "../../../../../../_models/response/Entity";
-import {Container} from "../../../../../../_models/response/Container";
-import {ItemInstancesList} from "../../../../../../_models/response/item/ItemInstancesList";
-import {ItemInstanceParams, ItemInstanceQuery} from "../../../../../../_models/request/iteminstance/ItemInstanceQuery";
-import {OffsetLimit} from "../../../../../../_util/OffsetLimit";
 import {ApiService} from "../../../../../../_service/api/api/api.service";
 
 export interface ItemComponentData {
   item: Item;
-  places: PlaceDetails[]
+  places: Place[]
 }
 
 @Component({
@@ -26,7 +21,7 @@ export class ItemComponent {
 
   content: string = 'INSTANCES';
   item: Item;
-  places: PlaceDetailsList = new PlaceDetailsList();
+  places: PlacesList = new PlacesList();
   wishListItem: any;
 
 

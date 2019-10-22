@@ -1,0 +1,19 @@
+<mat-action-list>
+
+  <button mat-list-item *ngFor="let item of items | entityList" (click)="selectedItem.emit(item)">
+
+    <h4 mat-line class="text-truncate">{{item.name}}</h4>
+
+    <p mat-line class="space-between">
+      <span class="item-card">
+        {{item.category.name}}
+      </span>
+      <span class="item-producer">
+        {{item.producer.name}}
+      </span>
+    </p>
+
+    <img [src]="imageUrl(item)" class="rounded" width="50px" height="50px">
+  </button>
+
+</mat-action-list>
