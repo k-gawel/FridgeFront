@@ -34,7 +34,6 @@ import {
   ShopListData
 } from "../../_component/user/place/elements/shoplist/shop-list/shop-list.component";
 import {
-  NewShopListInstanceComponent,
   NewShopListInstanceData,
   NewShopListInstanceDialog
 } from "../../_component/user/place/elements/shoplist/new-shop-list-instance/new-shop-list-instance.component";
